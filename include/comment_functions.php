@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: comment_functions.php,v 1.6 2005/07/01 15:03:18 tohokuaiki Exp $
+ *
  * Copyright (c) 2003 by Jeremy N. Cowgar <jc@cowgar.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,20 +24,20 @@
  */
 
 // configure values and common functions
-if( ! defined( 'XOOPS_ROOT_PATH' ) ) exit ;
+defined('XOOPS_ROOT_PATH') || exit('XOOPS Root Path not defined');
 
 // configure values and common functions
-if( ! isset($mydirname) ){
-    $mydirname = basename(  dirname( dirname( __FILE__ ) ) );
+$moduleDirName = basename(dirname(__DIR__));
+
+function weblog_com_update($link_id, $total_num)
+{
+    global $moduleDirName;
+    $db  = XoopsDatabaseFactory::getDatabaseConnection();
+    $sql = 'UPDATE ' . $db->prefix($moduleDirName) . ' SET comments = ' . $total_num . ' WHERE blog_id = ' . $link_id;
+    $db->query($sql);
 }
 
-function weblog_com_update($link_id, $total_num){
-  global $mydirname ;
-  $db = Database::getInstance();
-  $sql = 'UPDATE '.$db->prefix($mydirname).' SET comments = '.$total_num.' WHERE blog_id = '.$link_id;
-  $db->query($sql);
-}
-
-function weblog_com_approve(&$comment){
-  // send notification mail
+function weblog_com_approve(&$comment)
+{
+    // send notification mail
 }

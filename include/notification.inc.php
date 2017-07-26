@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: notification.inc.php,v 1.4 2005/05/06 18:53:29 tohokuaiki Exp $
+ *
  * Copyright (c) 2003 by Jeremy N. Cowgar <jc@cowgar.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,61 +23,64 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-if( ! defined( 'XOOPS_ROOT_PATH' ) ) exit ;
+defined('XOOPS_ROOT_PATH') || exit('XOOPS Root Path not defined');
 
-$mydirname = basename( dirname( dirname( __FILE__ ) ) );
-if( ! preg_match( '/^(\D+)(\d*)$/' , $mydirname , $regs ) ) die ( "invalid dirname: " . htmlspecialchars( $mydirname ) ) ;
-$mydirnumber = $regs[2] === '' ? '' : intval( $regs[2] ) ;
+$moduleDirName = basename(dirname(__DIR__));
+if (!preg_match('/^(\D+)(\d*)$/', $moduleDirName, $regs)) {
+    die('invalid dirname: ' . htmlspecialchars($moduleDirName));
+}
+$mydirnumber = $regs[2] === '' ? '' : (int)$regs[2];
 
 eval('
-function blog'.$mydirnumber.'_info($category, $item_id)
+function blog' . $mydirnumber . '_info($category, $item_id)
 {
-	return blog_info_base( "'.$mydirname.'", $category, $item_id ) ;
+    return blog_info_base( "' . $moduleDirName . '", $category, $item_id ) ;
 }
-') ;
+');
 
-//function blog'.$mydirnumber.'_info_base( $mydirname, $category, $item_id )
-function blog_info_base( $mydirname, $category, $item_id )
+//function blog'.$mydirnumber.'_info_base( $moduleDirName , $category, $item_id )
+function blog_info_base($moduleDirName, $category, $item_id)
 {
-  global $xoopsModule, $xoopsModuleConfig, $xoopsConfig;
-  
-  if (empty($xoopsModule) || $xoopsModule->getVar("dirname") != $mydirname) {
-    $module_handler =& xoops_gethandler("module");
-    $module =& $module_handler->getByDirname($mydirname);
-    $config_handler =& xoops_gethandler("config");
-    $config =& $config_handler->getConfigsByCat(0,$module->getVar("mid"));
-  } else {
-    $module =& $xoopsModule;
-    $config =& $xoopsModuleConfig;
-  }
-  
-  include_once XOOPS_ROOT_PATH . "/modules/" . $mydirname . "/language/" . $xoopsConfig["language"] . "/main.php";
-  
-  if ($category=="global") {
-    $item["name"] = "";
-    $item["url"] = "";
+    global $xoopsModule, $xoopsModuleConfig, $xoopsConfig;
 
-    return $item;
-  }
-  
-  global $xoopsDB;
-  if ($category=="blog") {
-    // Assume we have a valid forum id
-    $sql = "SELECT uname FROM " . $xoopsDB->prefix("users") . " WHERE uid = ".$item_id;
-    $result = $xoopsDB->query($sql); // TODO: error check
-    $result_array = $xoopsDB->fetchArray($result);
-    $item["name"] = sprintf(_BL_WHOS_BLOG, $result_array["uname"]);
-    $item["url"] = XOOPS_URL . "/modules/" . $module->getVar("dirname") . "/index.php?user_id=" . $item_id;
+    if (empty($xoopsModule) || $xoopsModule->getVar('dirname') != $moduleDirName) {
+        /** @var XoopsModuleHandler $moduleHandler */
+        $moduleHandler = xoops_getHandler('module');
+        $module        = $moduleHandler->getByDirname($moduleDirName);
+        $configHandler = xoops_getHandler('config');
+        $config        = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
+    } else {
+        $module =& $xoopsModule;
+        $config =& $xoopsModuleConfig;
+    }
 
-    return $item;
-  } else if ($category=="blog_entry") {
-    // Assume we have a valid forum id
-    $sql = "SELECT title FROM " . $xoopsDB->prefix($mydirname) . " WHERE blog_id = ".$item_id;
-    $result = $xoopsDB->query($sql); // TODO: error check
-    $result_array = $xoopsDB->fetchArray($result);
-    $item["name"] = $result_array["title"];
-    $item["url"] = XOOPS_URL . "/modules/" . $mydirname . "/details.php?blog_id=" . $item_id;
+    require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/language/' . $xoopsConfig['language'] . '/main.php';
 
-    return $item;
-  }
+    if ($category == 'global') {
+        $item['name'] = '';
+        $item['url']  = '';
+
+        return $item;
+    }
+
+    global $xoopsDB;
+    if ($category == 'blog') {
+        // Assume we have a valid forum id
+        $sql          = 'SELECT uname FROM ' . $xoopsDB->prefix('users') . ' WHERE uid = ' . $item_id;
+        $result       = $xoopsDB->query($sql); // TODO: error check
+        $result_array = $xoopsDB->fetchArray($result);
+        $item['name'] = sprintf(_BL_WHOS_BLOG, $result_array['uname']);
+        $item['url']  = XOOPS_URL . '/modules/' . $module->getVar('dirname') . '/index.php?user_id=' . $item_id;
+
+        return $item;
+    } elseif ($category == 'blog_entry') {
+        // Assume we have a valid forum id
+        $sql          = 'SELECT title FROM ' . $xoopsDB->prefix($moduleDirName) . ' WHERE blog_id = ' . $item_id;
+        $result       = $xoopsDB->query($sql); // TODO: error check
+        $result_array = $xoopsDB->fetchArray($result);
+        $item['name'] = $result_array['title'];
+        $item['url']  = XOOPS_URL . '/modules/' . $moduleDirName . '/details.php?blog_id=' . $item_id;
+
+        return $item;
+    }
 }

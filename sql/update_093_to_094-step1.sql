@@ -1,5 +1,5 @@
 --
--- $Id: update_093_to_094-step1.sql,v 1.3 2003/08/29 14:10:29 wellwine Exp $
+-- 
 --
 -- ATTENTION:
 --
@@ -10,4 +10,5 @@
 -- mysql [-u username] [-p] <database_name> < update_093_to_094-step1.sql
 --
 
-ALTER TABLE `xoops_blogger` RENAME `xoops_weblog_tmp`
+ALTER TABLE `xoops_blogger`
+  RENAME `xoops_weblog_tmp`

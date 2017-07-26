@@ -14,57 +14,63 @@
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
- * @author     XOOPS Development Team
- * @version    $Id $
+ * @author       XOOPS Development Team
  */
 
-require_once dirname(dirname(dirname(dirname(__FILE__)))) . '/include/cp_header.php';
-include_once dirname(__FILE__) . '/admin_header.php';
+require_once __DIR__ . '/../../../include/cp_header.php';
+require_once __DIR__ . '/admin_header.php';
 
 xoops_cp_header();
 
-    $indexAdmin = new ModuleAdmin();
+$adminObject = \Xmf\Module\Admin::getInstance();
 
 //------ check directories ---------------
-include_once dirname(dirname(__FILE__)) . '/include/directorychecker.php';
-$indexAdmin->addConfigBoxLine('');
+require_once __DIR__ . '/../include/directorychecker.php';
+$adminObject->addConfigBoxLine('');
 $redirectFile = $_SERVER['PHP_SELF'];
 
-$languageConstants = array(_AM_WEBLOG_AVAILABLE2,_AM_WEBLOG_NOTAVAILABLE2, _AM_WEBLOG_CREATETHEDIR2, _AM_WEBLOG_NOTWRITABLE2, _AM_WEBLOG_SETMPERM2, _AM_WEBLOG_DIRCREATED2,_AM_WEBLOG_DIRNOTCREATED2,_AM_WEBLOG_PERMSET2,_AM_WEBLOG_PERMNOTSET2);
+$languageConstants = array(
+    _AM_WEBLOG_AVAILABLE2,
+    _AM_WEBLOG_NOTAVAILABLE2,
+    _AM_WEBLOG_CREATETHEDIR2,
+    _AM_WEBLOG_NOTWRITABLE2,
+    _AM_WEBLOG_SETMPERM2,
+    _AM_WEBLOG_DIRCREATED2,
+    _AM_WEBLOG_DIRNOTCREATED2,
+    _AM_WEBLOG_PERMSET2,
+    _AM_WEBLOG_PERMNOTSET2
+);
 
 //        foreach (array_keys($folder) as $i) {
-//            $indexAdmin->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($folder[$i],0755,$languageConstants,$redirectFile));
-//      		}
+//            $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($folder[$i],0755,$languageConstants,$redirectFile));
+//              }
 
-
-$path =  XOOPS_ROOT_PATH . $xoopsModuleConfig['weblog_myalbum_photospath'] . '/';
-$indexAdmin->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path ,0777,$languageConstants,$redirectFile));
+$path = XOOPS_ROOT_PATH . $xoopsModuleConfig['weblog_myalbum_photospath'] . '/';
+$adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $languageConstants, $redirectFile));
 
 $path = XOOPS_ROOT_PATH . $xoopsModuleConfig['weblog_myalbum_thumbspath'] . '/';
-$indexAdmin->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path ,0777,$languageConstants,$redirectFile));
+$adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($path, 0777, $languageConstants, $redirectFile));
 
 /*
 //$path = XOOPS_ROOT_PATH . '/' . $xoopsModuleConfig['catimage'] . '/';
-$indexAdmin->addConfigBoxLine(DirectoryChecker::getDirectoryStatus(WEBLOG_PICTURES_PATH,0777,$languageConstants,$redirectFile));
-
+$adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus(WEBLOG_PICTURES_PATH,0777,$languageConstants,$redirectFile));
 
 //$path = XOOPS_ROOT_PATH . '/' . $xoopsModuleConfig['mainimagedir'] . '/';
-$indexAdmin->addConfigBoxLine(DirectoryChecker::getDirectoryStatus(WEBLOG_CSV_PATH,0775,$languageConstants,$redirectFile));
+$adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus(WEBLOG_CSV_PATH,0775,$languageConstants,$redirectFile));
 
 //$path = XOOPS_ROOT_PATH . '/' . $xoopsModuleConfig['catimage'] . '/';
-$indexAdmin->addConfigBoxLine(DirectoryChecker::getDirectoryStatus(WEBLOG_CACHE_PATH,0777,$languageConstants,$redirectFile));
-
+$adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus(WEBLOG_CACHE_PATH,0777,$languageConstants,$redirectFile));
 
 //$path = XOOPS_ROOT_PATH . '/' . $xoopsModuleConfig['mainimagedir'] . '/';
-$indexAdmin->addConfigBoxLine(DirectoryChecker::getDirectoryStatus(WEBLOG_TEXT_PATH,0777,$languageConstants,$redirectFile));
+$adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus(WEBLOG_TEXT_PATH,0777,$languageConstants,$redirectFile));
 
-//echo $indexAdmin->addNavigation('index.php');
-//echo $indexAdmin->renderIndex();
+//$adminObject->displayNavigation(basename(__FILE__));
+//$adminObject->displayIndex();
 //echo wfd_serverstats();
 //---------------------------
 */
 
-        echo $indexAdmin->addNavigation('index.php');
-        echo $indexAdmin->renderIndex();
+$adminObject->displayNavigation(basename(__FILE__));
+$adminObject->displayIndex();
 
-include "admin_footer.php";
+require_once __DIR__ . '/admin_footer.php';

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: print.php,v 1.3 2005/11/06 15:56:30 tohokuaiki Exp $
+ *
  * Copyright (c) 2003 by Hiro SAKAI (http://wellwine.zive.net/)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,43 +22,41 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-require('header.php');
-require_once(XOOPS_ROOT_PATH.'/class/template.php');
-include_once(sprintf('%s/modules/%s/class/class.weblog.php', XOOPS_ROOT_PATH, $xoopsModule->dirname()));
+require_once __DIR__ . '/header.php';
+require_once XOOPS_ROOT_PATH . '/class/template.php';
+require_once sprintf('%s/modules/%s/class/class.weblog.php', XOOPS_ROOT_PATH, $xoopsModule->dirname());
 
 // Include our module's language file
-if ( file_exists(XOOPS_ROOT_PATH.'/modules/'.$xoopsModule->dirname().'/language/'.$xoopsConfig['language'].'/main.php') ) {
-  require_once(XOOPS_ROOT_PATH.'/modules/'.$xoopsModule->dirname().'/language/'.$xoopsConfig['language'].'/main.php');
-  require_once(XOOPS_ROOT_PATH.'/modules/'.$xoopsModule->dirname().'/language/'.$xoopsConfig['language'].'/modinfo.php');
+if (file_exists(XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/language/' . $xoopsConfig['language'] . '/main.php')) {
+    require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/language/' . $xoopsConfig['language'] . '/main.php';
+    require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/language/' . $xoopsConfig['language'] . '/modinfo.php';
 } else {
-  require_once(XOOPS_ROOT_PATH.'/modules/'.$xoopsModule->dirname().'/language/english/main.php');
-  require_once(XOOPS_ROOT_PATH.'/modules/'.$xoopsModule->dirname().'/language/english/modinfo.php');
+    require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/language/english/main.php';
+    require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/language/english/modinfo.php';
 }
 
 // privilege check
-include_once(sprintf('%s/modules/%s/include/privilege.inc.php', XOOPS_ROOT_PATH, $xoopsModule->dirname())) ;
-if(  ! checkprivilege( "read_detail" , $xoopsModule->dirname() ) ){
-    redirect_header(sprintf('%s/index.php', XOOPS_URL ),
-                    5, _BL_CANNOT_READ_SORRY);
-    exit();
+require_once sprintf('%s/modules/%s/include/privilege.inc.php', XOOPS_ROOT_PATH, $xoopsModule->dirname());
+if (!checkprivilege('read_detail', $xoopsModule->dirname())) {
+    redirect_header(sprintf('%s/index.php', XOOPS_URL), 5, _BL_CANNOT_READ_SORRY);
 }
 
 // obtain GET/POST parameters
-$blog_id = isset($HTTP_GET_VARS['blog_id']) ? intval($HTTP_GET_VARS['blog_id']) : 0;
-if ( empty($blog_id) ) {
-    redirect_header("index.php");
+$blog_id = isset($HTTP_GET_VARS['blog_id']) ? (int)$HTTP_GET_VARS['blog_id'] : 0;
+if (empty($blog_id)) {
+    redirect_header('index.php');
 }
 
 // obtain class instances
-$myts = MyTextSanitizer::getInstance();
+$myts   = MyTextSanitizer::getInstance();
 $weblog = Weblog::getInstance();
 
 // Determine the user we are retrieving the blog entries for
-$currentuid = !empty($xoopsUser) ? $xoopsUser->getVar('uid','E') : 0;
+$currentuid = !empty($xoopsUser) ? $xoopsUser->getVar('uid', 'E') : 0;
 
-header ('Content-Type:text/html; charset='._CHARSET);
+header('Content-Type:text/html; charset=' . _CHARSET);
 $tpl = new XoopsTpl();
-$tpl->xoops_setTemplateDir(XOOPS_ROOT_PATH.'/themes');
+$tpl->xoops_setTemplateDir(XOOPS_ROOT_PATH . '/themes');
 $tpl->xoops_setCaching(2);
 $tpl->xoops_setCacheTime(10);
 
@@ -67,17 +65,17 @@ $entryObject = $weblog->getEntry($currentuid, $blog_id);
 $tpl->assign('charset', _CHARSET);
 $tpl->assign('author', $entryObject->getVar('uname'));
 $tpl->assign('sitename', $xoopsConfig['sitename']);
-$tpl->assign('description', "");
+$tpl->assign('description', '');
 $tpl->assign('generator', _MI_WEBLOG_NAME);
 $tpl->assign('image_url', $xoopsModuleConfig['imgurl']);
-$tpl->assign('datetime', formatTimestamp($entryObject->getVar('created'), "l"));
+$tpl->assign('datetime', formatTimestamp($entryObject->getVar('created'), 'l'));
 $tpl->assign('blog_title', $entryObject->getVar('title'));
 $tpl->assign('lang_date', _BL_POSTED);
 $tpl->assign('lang_author', _BL_AUTHOR);
 $tpl->assign('lang_comesfrom', sprintf(_BL_COMESFROM, $xoopsConfig['sitename']));
-$tpl->assign('contents', $myts->displayTarea($entryObject->getVar('contents'),1,1,1,1,1,1,1,1,1));
+$tpl->assign('contents', $myts->displayTarea($entryObject->getVar('contents'), 1, 1, 1, 1, 1, 1, 1, 1, 1));
 $tpl->assign('site_url', XOOPS_URL);
 $tpl->assign('lang_parmalink', _BL_PARMALINK);
 $tpl->assign('parmalink', sprintf('%s/modules/%s/details.php?blog_id=%d', XOOPS_URL, $xoopsModule->dirname(), $blog_id));
 
-$tpl->display('db:weblog_print.html');
+$tpl->display('db:weblog_print.tpl');

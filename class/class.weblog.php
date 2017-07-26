@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: class.weblog.php 11979 2013-08-25 20:45:24Z beckmi $
+ *
  * Copyright (c) 2003 by Hiro SAKAI (http://wellwine.zive.net/)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,41 +24,47 @@
  *
  */
 
-include_once(sprintf('%s/modules/%s/class/class.weblogtree.php', XOOPS_ROOT_PATH, $xoopsModule->dirname()));
+require_once sprintf('%s/modules/%s/class/class.weblogtree.php', XOOPS_ROOT_PATH, $xoopsModule->dirname());
 
-class Weblog {
+class Weblog
+{
+    public $handler;
 
-    var $handler;
-
-    function Weblog() {
-        $this->handler =& xoops_getmodulehandler('entry');
+    public function __construct()
+    {
+        $this->handler = xoops_getModuleHandler('entry');
     }
 
-    function &getInstance() {
+    public static function getInstance()
+    {
         static $instance;
-        if (!isset($instance)) {
-            $instance = new Weblog();
+        if (null === $instance) {
+            $instance = new static();
         }
 
         return $instance;
     }
 
-    function &newInstance() {
+    public function &newInstance()
+    {
         return $this->handler->create();
     }
 
-    function saveEntry(&$entry) {
+    public function saveEntry(&$entry)
+    {
         return $this->handler->insert($entry);
     }
 
-    function removeEntry($blog_id) {
-        $entry =& $this->handler->create();
-        $entry->setVar('blog_id', intval($blog_id));
+    public function removeEntry($blog_id)
+    {
+        $entry = $this->handler->create();
+        $entry->setVar('blog_id', (int)$blog_id);
 
         return $this->handler->delete($entry);
     }
 
-    function isOwner($blog_id, $user_id) {
+    public function isOwner($blog_id, $user_id)
+    {
         $criteria = new criteriaCompo(new criteria('user_id', $user_id));
         $criteria->add(new criteria('blog_id', $blog_id));
         $count = $this->handler->getCount($criteria);
@@ -69,7 +75,8 @@ class Weblog {
         return false;
     }
 
-    function getCountByUser($currentuid, $user_id=0) {
+    public function getCountByUser($currentuid, $user_id = 0)
+    {
         $criteria = new criteriaCompo(new criteria('user_id', $currentuid));
         $criteria->add(new criteria('private', 'N'), 'OR');
         if ($user_id > 0) {
@@ -80,11 +87,12 @@ class Weblog {
         return $this->handler->getCount($criteria);
     }
 
-    function getCountByCategory($currentuid, $cat_id, $user_id=0) {
+    public function getCountByCategory($currentuid, $cat_id, $user_id = 0)
+    {
         $criteria = new criteriaCompo(new criteria('user_id', $currentuid));
         $criteria->add(new criteria('private', 'N'), 'OR');
         $criteria = new criteriaCompo($criteria);
-        if ($cat_id>0) {
+        if ($cat_id > 0) {
             $criteria->add(new criteria('cat_id', $cat_id));
         }
         if ($user_id > 0) {
@@ -94,15 +102,16 @@ class Weblog {
         return $this->handler->getCount($criteria);
     }
 
-    function getCountByDate($currentuid, $cat_id, $user_id=0, $date, $useroffset) {
+    public function getCountByDate($currentuid, $cat_id, $user_id = 0, $date, $useroffset)
+    {
         $criteria = new criteriaCompo(new criteria('user_id', $currentuid));
         $criteria->add(new criteria('private', 'N'), 'OR');
         $criteria = new criteriaCompo($criteria);
-        if ($date>0) {
-            $date_num = strlen(strval($date)) ;
-            $criteria->add( new criteria(sprintf('left(from_unixtime(created+%d)+0,%d)',$useroffset*3600 , $date_num) , $date) ) ;
+        if ($date > 0) {
+            $date_num = strlen((string)$date);
+            $criteria->add(new criteria(sprintf('left(from_unixtime(created+%d)+0,%d)', $useroffset * 3600, $date_num), $date));
         }
-        if ($cat_id>0) {
+        if ($cat_id > 0) {
             $criteria->add(new criteria('cat_id', $cat_id));
         }
         if ($user_id > 0) {
@@ -112,7 +121,8 @@ class Weblog {
         return $this->handler->getCount($criteria);
     }
 
-    function getEntries($currentuid, $user_id=0, $start=0, $perPage=0, $order='DESC', $useroffset=0) {
+    public function getEntries($currentuid, $user_id = 0, $start = 0, $perPage = 0, $order = 'DESC', $useroffset = 0)
+    {
         $criteria = new criteriaCompo(new criteria('user_id', $currentuid));
         $criteria->add(new criteria('private', 'N'), 'OR');
         if ($user_id > 0) {
@@ -124,7 +134,7 @@ class Weblog {
         if ($start > 0) {
             $criteria->setStart($start);
         }
-        if ($perPage > 0 ) {
+        if ($perPage > 0) {
             $criteria->setLimit($perPage);
         }
         $result = $this->handler->getObjects($criteria, false, 'details', $useroffset);
@@ -132,7 +142,15 @@ class Weblog {
         return $result;
     }
 
-    function getEntriesByCreated($currentuid, $from, $to, $user_id=0, $start=0, $perPage=0, $order='DESC') {
+    public function getEntriesByCreated(
+        $currentuid,
+        $from,
+        $to,
+        $user_id = 0,
+        $start = 0,
+        $perPage = 0,
+        $order = 'DESC'
+    ) {
         $criteria = new criteriaCompo(new criteria('user_id', $currentuid));
         $criteria->add(new criteria('private', 'N'), 'OR');
         $criteria = new criteriaCompo($criteria);
@@ -146,7 +164,7 @@ class Weblog {
         if ($start > 0) {
             $criteria->setStart($start);
         }
-        if ($perPage > 0 ) {
+        if ($perPage > 0) {
             $criteria->setLimit($perPage);
         }
         $result = $this->handler->getObjects($criteria);
@@ -154,11 +172,19 @@ class Weblog {
         return $result;
     }
 
-    function getEntriesByCategory($currentuid, $cat_id=0, $user_id=0, $start=0, $perPage=0, $order='DESC', $useroffset=0) {
+    public function getEntriesByCategory(
+        $currentuid,
+        $cat_id = 0,
+        $user_id = 0,
+        $start = 0,
+        $perPage = 0,
+        $order = 'DESC',
+        $useroffset = 0
+    ) {
         $criteria = new criteriaCompo(new criteria('user_id', $currentuid));
         $criteria->add(new criteria('private', 'N'), 'OR');
         $criteria = new criteriaCompo($criteria);
-        if ($cat_id>0) {
+        if ($cat_id > 0) {
             $criteria->add(new criteria('cat_id', $cat_id));
         }
         if ($user_id > 0) {
@@ -169,15 +195,16 @@ class Weblog {
         if ($start > 0) {
             $criteria->setStart($start);
         }
-        if ($perPage > 0 ) {
+        if ($perPage > 0) {
             $criteria->setLimit($perPage);
         }
-        $result = $this->handler->getObjects($criteria, false , 'details', $useroffset);
+        $result = $this->handler->getObjects($criteria, false, 'details', $useroffset);
 
         return $result;
     }
 
-    function getEntry($currentuid, $blog_id=0, $user_id=0, $useroffset=0) {
+    public function getEntry($currentuid, $blog_id = 0, $user_id = 0, $useroffset = 0)
+    {
         $criteria = new criteriaCompo(new criteria('user_id', $currentuid));
         $criteria->add(new criteria('private', 'N'), 'OR');
         $criteria = new criteriaCompo($criteria);
@@ -193,41 +220,49 @@ class Weblog {
         }
     }
 
-    function incrementReads($blog_id) {
+    public function incrementReads($blog_id)
+    {
         return $this->handler->incrementReads($blog_id);
     }
 
-    function updateComments($blog_id, $total_num) {
+    public function updateComments($blog_id, $total_num)
+    {
         return $this->handler->updateComments($blog_id, $total_num);
     }
 
-    function getPrevNext($blog_id , $created , $currentuid=0 , $isAdmin=0 , $cat_id=0 , $user_id=0 ){
-        if( empty($isAdmin) ){
+    public function getPrevNext($blog_id, $created, $currentuid = 0, $isAdmin = 0, $cat_id = 0, $user_id = 0)
+    {
+        if (empty($isAdmin)) {
             $criteria = new criteriaCompo(new criteria('user_id', $currentuid));
             $criteria->add(new criteria('private', 'N'), 'OR');
-        }else{
-            $criteria = NULL ;
+        } else {
+            $criteria = null;
         }
         $criteria = new criteriaCompo($criteria);
-        if( $cat_id > 0){
+        if ($cat_id > 0) {
             $criteria->add(new criteria('cat_id', $cat_id));
         }
         if ($user_id > 0) {
             $criteria->add(new criteria('user_id', $user_id));
         }
 
-        return $this->handler->getPrevNextBlog_id($blog_id , $created , $criteria) ;
+        return $this->handler->getPrevNextBlog_id($blog_id, $created, $criteria);
     }
 
-/**
-* get count of categories specified in array
-* @author hodaka <hodaka@hodaka.net>
-*/
-    function getCountByCategoryArray($currentuid, $cid_array=array(), $user_id=0) {
+    /**
+     * get count of categories specified in array
+     * @author hodaka <hodaka@hodaka.net>
+     * @param       $currentuid
+     * @param array $cid_array
+     * @param int   $user_id
+     * @return
+     */
+    public function getCountByCategoryArray($currentuid, $cid_array = array(), $user_id = 0)
+    {
         $criteria = new criteriaCompo(new criteria('user_id', $currentuid));
         $criteria->add(new criteria('private', 'N'), 'OR');
         $criteria = new criteriaCompo($criteria);
-        $criteria->add(new Criteria('cat_id', "(".implode(',', $cid_array).")", 'IN'));
+        $criteria->add(new Criteria('cat_id', '(' . implode(',', $cid_array) . ')', 'IN'));
 
         if ($user_id > 0) {
             $criteria->add(new criteria('user_id', $user_id));
@@ -236,22 +271,33 @@ class Weblog {
         return $this->handler->getCount($criteria);
     }
 
-    function getEntriesForArchives($currentuid , $blogger_id , $date , $cat_id , $start=0 , $perPage=0 , $order='DESC' , $useroffset=0 ){
-        $date = intval($date) ;
+    public function getEntriesForArchives(
+        $currentuid,
+        $blogger_id,
+        $date,
+        $cat_id,
+        $start = 0,
+        $perPage = 0,
+        $order = 'DESC',
+        $useroffset = 0
+    ) {
+        $date = (int)$date;
         // basic
         $criteria = new criteriaCompo(new criteria('user_id', $currentuid));
         $criteria->add(new criteria('private', 'N'), 'OR');
         $criteria = new criteriaCompo($criteria);
         // by user_id
-        if( $blogger_id > 0 )
-            $criteria->add( new criteria('user_id', $blogger_id) ) ;
+        if ($blogger_id > 0) {
+            $criteria->add(new criteria('user_id', $blogger_id));
+        }
         // by category
-        if( $cat_id > 0 )
-            $criteria->add( new criteria('cat_id', $cat_id) ) ;
+        if ($cat_id > 0) {
+            $criteria->add(new criteria('cat_id', $cat_id));
+        }
         // by date
-        if( $date > 0 ){
-            $date_num = strlen(strval($date)) ;
-            $criteria->add( new criteria(sprintf('left(from_unixtime(created+%d)+0,%d)',$useroffset*3600 , $date_num) , $date) ) ;
+        if ($date > 0) {
+            $date_num = strlen((string)$date);
+            $criteria->add(new criteria(sprintf('left(from_unixtime(created+%d)+0,%d)', $useroffset * 3600, $date_num), $date));
         }
         // order , start , Limit
         $criteria->setSort('created');
@@ -259,23 +305,37 @@ class Weblog {
         if ($start > 0) {
             $criteria->setStart($start);
         }
-        if ($perPage > 0 ) {
+        if ($perPage > 0) {
             $criteria->setLimit($perPage);
         }
-        $result = $this->handler->getObjects($criteria, false, 'details' , $useroffset);
+        $result = $this->handler->getObjects($criteria, false, 'details', $useroffset);
 
         return $result;
     }
 
-/**
-* get entries of categories specified in array sorted order by created for archive.php
-* @author hodaka <hodaka@hodaka.org>
-*/
-    function getLatestEntriesByCategoryArray($currentuid, $cid_array=array(), $user_id=0, $start=0, $perPage=0, $order='DESC') {
+    /**
+     * get entries of categories specified in array sorted order by created for archive.php
+     * @author hodaka <hodaka@hodaka.org>
+     * @param        $currentuid
+     * @param array  $cid_array
+     * @param int    $user_id
+     * @param int    $start
+     * @param int    $perPage
+     * @param string $order
+     * @return
+     */
+    public function getLatestEntriesByCategoryArray(
+        $currentuid,
+        $cid_array = array(),
+        $user_id = 0,
+        $start = 0,
+        $perPage = 0,
+        $order = 'DESC'
+    ) {
         $criteria = new criteriaCompo(new criteria('user_id', $currentuid));
         $criteria->add(new criteria('private', 'N'), 'OR');
         $criteria = new criteriaCompo($criteria);
-        $criteria->add(new Criteria('cat_id', "(".implode(',', $cid_array).")", 'IN'));
+        $criteria->add(new Criteria('cat_id', '(' . implode(',', $cid_array) . ')', 'IN'));
         if ($user_id > 0) {
             $criteria->add(new criteria('user_id', $user_id));
         }
@@ -284,7 +344,7 @@ class Weblog {
         if ($start > 0) {
             $criteria->setStart($start);
         }
-        if ($perPage > 0 ) {
+        if ($perPage > 0) {
             $criteria->setLimit($perPage);
         }
         $result = $this->handler->getObjects($criteria);
@@ -292,15 +352,29 @@ class Weblog {
         return $result;
     }
 
-/**
-* get entries of categories specified in array sorted order by cat_id, created for index.php
-* @author hodaka <hodaka@hodaka.org>
-*/
-    function getEntriesByCategoryArray($currentuid, $cid_array=array(), $user_id=0, $start=0, $perPage=0, $order='DESC') {
+    /**
+     * get entries of categories specified in array sorted order by cat_id, created for index.php
+     * @author hodaka <hodaka@hodaka.org>
+     * @param        $currentuid
+     * @param array  $cid_array
+     * @param int    $user_id
+     * @param int    $start
+     * @param int    $perPage
+     * @param string $order
+     * @return
+     */
+    public function getEntriesByCategoryArray(
+        $currentuid,
+        $cid_array = array(),
+        $user_id = 0,
+        $start = 0,
+        $perPage = 0,
+        $order = 'DESC'
+    ) {
         $criteria = new criteriaCompo(new criteria('user_id', $currentuid));
         $criteria->add(new criteria('private', 'N'), 'OR');
         $criteria = new criteriaCompo($criteria);
-        $criteria->add(new Criteria('cat_id', "(".implode(',', $cid_array).")", 'IN'));
+        $criteria->add(new Criteria('cat_id', '(' . implode(',', $cid_array) . ')', 'IN'));
         if ($user_id > 0) {
             $criteria->add(new criteria('user_id', $user_id));
         }
@@ -309,12 +383,11 @@ class Weblog {
         if ($start > 0) {
             $criteria->setStart($start);
         }
-        if ($perPage > 0 ) {
+        if ($perPage > 0) {
             $criteria->setLimit($perPage);
         }
         $result = $this->handler->getObjects($criteria);
 
         return $result;
     }
-
 }

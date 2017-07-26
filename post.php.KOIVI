@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: post.php,v 1.16 2005/05/11 11:24:48 tohokuaiki Exp $
+ * 
  * Copyright (c) 2003 by Hiro SAKAI <http://wellwine.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -30,12 +30,12 @@ include_once(sprintf('%s/modules/%s/class/class.weblogcategories.php', XOOPS_ROO
 include_once(sprintf('%s/modules/%s/class/class.weblogtrackback.php', XOOPS_ROOT_PATH, $xoopsModule->dirname()));
 include_once(sprintf('%s/modules/%s/include/gtickets.php', XOOPS_ROOT_PATH, $xoopsModule->dirname())) ;
 
-$weblog =& Weblog::getInstance();
-$weblogcat =& WeblogCategories::getInstance();
-$tb_operator =& Weblog_Trackback_Operator::getInstance() ;
+$weblog = Weblog::getInstance();
+$weblogcat = WeblogCategories::getInstance();
+$tb_operator = Weblog_Trackback_Operator::getInstance() ;
 
 function &getEntry($post) {
-    $weblog =& Weblog::getInstance();
+    $weblog = Weblog::getInstance();
 
     $permission_group = "" ;
     if( isset($post['permission_group']) && is_array($post['permission_group']) ){
@@ -72,7 +72,7 @@ function weblog_confirm($hiddens, $action, $msg, $submit='', $back=false) {
             foreach ($value as $caption => $newvalue) {
                 $input_hidden .= '<input type="radio" name="'.$name.'" value="'.$newvalue.'" /> '.$caption;
             }
-            $input_hidden .= '<br />';
+            $input_hidden .= '<br>';
         } else {
             $input_hidden .= '<input type="hidden" name="'.$name.'" value="'.$value.'" />';
         }
@@ -114,8 +114,8 @@ if( isset($_POST['created_date']['date']) && is_array($_POST['created_date'])){
 }
 // Save the post
 if (!empty($_POST['post'])) {
-  if ( ! $xoopsGTicket->check() ) {
-     redirect_header(XOOPS_URL.'/',3,$xoopsGTicket->getErrors());
+  if ( ! $GLOBALS['xoopsSecurity']->check() ) {
+     redirect_header(XOOPS_URL.'/',3,$GLOBALS['xoopsSecurity']->getErrors());
   }
   $entry =& getEntry($_POST);
   if (strlen($entry->getVar('contents', 'n')) < $xoopsModuleConfig['minentrysize']) {
@@ -145,7 +145,7 @@ if (!empty($_POST['post'])) {
     exit();
   }
 
-  $notification_handler =& xoops_gethandler('notification');
+  $notification_handler = xoops_gethandler('notification');
   $pageUri = sprintf('%s/modules/%s/details.php?blog_id=', XOOPS_URL, $xoopsModule->dirname());
 
   if ($entry->getVar('blog_id') > 0) {
@@ -227,7 +227,7 @@ if (!empty($_POST['post'])) {
 
         $trackback_result_msg = $tb_operator->Xoops_Weblog_Msg() ;
         if( $trackback_result_msg ){
-            $trackback_result_msg =  "<br />\n---- &nbsp; Trackback &nbsp; ----\n<br />\n" . $trackback_result_msg . "<br />" ;
+            $trackback_result_msg =  "<br>\n---- &nbsp; Trackback &nbsp; ----\n<br>\n" . $trackback_result_msg . "<br>" ;
         }
     }
 	// trackback(recieved) delete
@@ -252,7 +252,7 @@ if (!empty($_POST['post'])) {
         $commonping_server_file = sprintf('%s/modules/%s/language/%s/commonping_servers.inc.php',
                                                                     XOOPS_ROOT_PATH, $xoopsModule->dirname() , $xoopsConfig['language']) ;
         $common_ping_result_msg = $Common_Updateping->xoops_weblog_commonping_process( $commonping_server_file ) ;
-        $common_ping_result_msg =  "<br />\n---- &nbsp; Update &nbsp; Ping &nbsp; ----\n<br />\n" . $common_ping_result_msg . "<br />" ;
+        $common_ping_result_msg =  "<br>\n---- &nbsp; Update &nbsp; Ping &nbsp; ----\n<br>\n" . $common_ping_result_msg . "<br>" ;
     }
     // redirect
     redirect_header($pageUri, 2, $trackback_result_msg . $common_ping_result_msg . _BL_ENTRY_POSTED );
@@ -263,8 +263,8 @@ if (!empty($_POST['post'])) {
     exit();
   }
 } else if (!empty($_POST['delete']) || (!empty($_POST['op']) && $_POST['op'] == 'delete')) {
-  if ( ! $xoopsGTicket->check() ) {
-    redirect_header(XOOPS_URL.'/',3,$xoopsGTicket->getErrors());
+  if ( ! $GLOBALS['xoopsSecurity']->check() ) {
+    redirect_header(XOOPS_URL.'/',3,$GLOBALS['xoopsSecurity']->getErrors());
   }
   $entry =& getEntry($_POST);
   if (!empty($_POST['ok'])) {
@@ -312,8 +312,8 @@ if (!empty($_POST['post'])) {
 } else {
   // Edit/Create/Preview the post
   if( ! empty($_POST['preview']) || ! empty($_POST['continue']) ){  // in case of Preview|Continue check GTicket
-    if ( ! $xoopsGTicket->check() )
-       redirect_header(XOOPS_URL.'/',3,$xoopsGTicket->getErrors());
+    if ( ! $GLOBALS['xoopsSecurity']->check() )
+       redirect_header(XOOPS_URL.'/',3,$GLOBALS['xoopsSecurity']->getErrors());
   }
   $blog_id=!empty($_GET['blog_id']) ? $_GET['blog_id'] : 0;
   if ($blog_id>0 && empty($_POST['preview'])) {	// edit mode
@@ -325,7 +325,7 @@ if (!empty($_POST['post'])) {
     }
     $selbox = $weblogcat->getMySelectBox($entry->getVar('cat_id'));
     // add trackback data
-    $tb_operator =& Weblog_Trackback_Operator::getInstance() ;
+    $tb_operator = Weblog_Trackback_Operator::getInstance() ;
     $ent_trackback = $tb_operator->handler->getTrackbackurl_string( $blog_id , "transmit" ) ;
     $entry->setVar( 'ent_trackbackurl' , $ent_trackback );
     $recieved_trackback = $tb_operator->handler->get( $blog_id , "recieved" ) ;
@@ -335,7 +335,7 @@ if (!empty($_POST['post'])) {
     $entry =& getEntry($_POST);
     $selbox = $weblogcat->getMySelectBox($entry->getVar('cat_id'));
     // add trackback data
-    $tb_operator =& Weblog_Trackback_Operator::getInstance() ;
+    $tb_operator = Weblog_Trackback_Operator::getInstance() ;
     $recieved_trackback = $tb_operator->handler->get( $entry->getVar('blog_id') , "recieved" ) ;
   } else {	// first post
     $entry = $weblog->newInstance();
@@ -343,7 +343,7 @@ if (!empty($_POST['post'])) {
     $selbox = $weblogcat->getMySelectBox();
     $entry->setVar( 'permission_group' , $xoopsModuleConfig['default_permission'] );
   }
-  $xoopsOption['template_main'] = 'weblog_post.html';
+  $xoopsOption['template_main'] = 'weblog_post.tpl';
   include_once XOOPS_ROOT_PATH."/include/xoopscodes.php";
 
   if( isset($recieved_trackback) && is_array($recieved_trackback) && count($recieved_trackback)>0 ){
@@ -399,7 +399,7 @@ if (!empty($_POST['post'])) {
 				$imagemanager_valid = true ;
 		}
 		if( $imagemanager_valid ){
-			$imagemanager_tag = sprintf('<img onmouseover=\'style.cursor="hand"\' onclick=\'javascript:openWithSelfMain("%s/modules/%s/weblog-imagemanager.php?target=contents","imgmanager",400,430);\' src="%s/modules/%s/images/weblog_imagemanager.gif" alt="image" />' ,
+			$imagemanager_tag = sprintf('<img onmouseover=\'style.cursor="hand"\' onclick=\'javascript:openWithSelfMain("%s/modules/%s/weblog-imagemanager.php?target=contents","imgmanager",400,430);\' src="%s/modules/%s/assets/images/weblog_imagemanager.gif" alt="image" />' ,
                                                             XOOPS_URL , $xoopsModule->dirname() , XOOPS_URL , $xoopsModule->dirname() );
 		}else{
 			$imagemanager_tag = _BL_WEBLOG_IMAGEMANAGER_CAUTION ;
@@ -411,7 +411,7 @@ if (!empty($_POST['post'])) {
 		// one click image upload
 //		if( $imagemanager_valid ){
 //			$oneclick_im_tray = new XoopsFormElementTray("one click IM" ,'') ;
-//			$oneclick_im_tray->addElement(new XoopsFormFile("you can post image file at ease.<br />" , 'oneclick_image_file', 5000000)) ;
+//			$oneclick_im_tray->addElement(new XoopsFormFile("you can post image file at ease.<br>" , 'oneclick_image_file', 5000000)) ;
 ///			$blog_form->addElement($oneclick_im_tray) ;
 //		}
 	}
@@ -421,7 +421,7 @@ if (!empty($_POST['post'])) {
 
 	if( isset($xoopsModuleConfig['use_separator']) && $xoopsModuleConfig['use_separator'] ){
 	    $separator_tray = new XoopsFormElementTray( _BL_ENTRY_SEPARATOR ,'');
-		$separator_button = new XoopsFormButton(_BL_ENTRY_SEPARATOR_CAPTION . "<br />" , '' , _BL_ENTRY_SEPARATOR_VALUE , 'button') ;
+		$separator_button = new XoopsFormButton(_BL_ENTRY_SEPARATOR_CAPTION . "<br>" , '' , _BL_ENTRY_SEPARATOR_VALUE , 'button') ;
 		$separator_button->setExtra("onclick='xoopsCodeSmilie(\"contents\", \"\\n" . _BL_ENTRY_SEPARATOR_DELIMETER . "\\n\");'") ;
 		$separator_tray->addElement($separator_button) ;
 	    $blog_form->addElement($separator_tray) ;
@@ -429,13 +429,13 @@ if (!empty($_POST['post'])) {
 	// add member only javascript
 	if( isset($xoopsModuleConfig['use_memberonly']) && $xoopsModuleConfig['use_memberonly'] ){
 	    $membershow_tray = new XoopsFormElementTray( _BL_MEMBER_ONLY_READ ,'');
-		$membershow_button = new XoopsFormButton(_BL_MEMBER_ONLY_READ_CAPTION . "<br />" , '' , _BL_MEMBER_ONLY_READ_VALUE , 'button') ;
+		$membershow_button = new XoopsFormButton(_BL_MEMBER_ONLY_READ_CAPTION . "<br>" , '' , _BL_MEMBER_ONLY_READ_VALUE , 'button') ;
 		$membershow_button->setExtra("onclick='xoopsCodeSmilie(\"contents\", \"\\n" . MEMBER_ONLY_READ_DELIMETER . "\\n\");'") ;
 		$membershow_tray->addElement($membershow_button) ;
 	    $blog_form->addElement($membershow_tray) ;
 	}
     // options check box
-    $checkbox_tray = new XoopsFormElementTray(_BL_OPTIONS ,'<br />');
+    $checkbox_tray = new XoopsFormElementTray(_BL_OPTIONS ,'<br>');
     $checkbox_dohtml = new XoopsFormCheckBox('', 'dohtml', !$entry->doHtml());
     $checkbox_dohtml->addOption('dohtml', _BL_DISABLEHTML);
         $checkbox_tray->addElement($checkbox_dohtml);
@@ -455,8 +455,8 @@ if (!empty($_POST['post'])) {
     $checkbox_tray->addElement($checkbox_publish);
     $blog_form->addElement($checkbox_tray);
     // trackback url textbox
-    $trackback_tray = new XoopsFormElementTray(_BL_TRACKBACK, '<br />') ;
-    $trackback_textarea = new XoopsFormTextArea(_BL_TRACKBACK_DSC."<br />",'ent_trackbackurl',
+    $trackback_tray = new XoopsFormElementTray(_BL_TRACKBACK, '<br>') ;
+    $trackback_textarea = new XoopsFormTextArea(_BL_TRACKBACK_DSC."<br>",'ent_trackbackurl',
                                                     $entry->getVar('ent_trackbackurl', 'e'),
                                                     4,
                                                     $xoopsModuleConfig['editorwidth'] ) ;
@@ -465,7 +465,7 @@ if (!empty($_POST['post'])) {
 
     // received trackback administrator tray
     if( isset($recieved_trackback) && is_array($recieved_trackback) && count($recieved_trackback)>0 ){
-        $recieved_trackback_tray = new XoopsFormElementTray(_BL_TRACKBACK_ADMIN ,'<br />');
+        $recieved_trackback_tray = new XoopsFormElementTray(_BL_TRACKBACK_ADMIN ,'<br>');
         foreach( $recieved_trackback as $key=>$tb_obj ){
             $checked = ( isset($_POST['delete_trackback'][$key]) ) ? true : false ;
             $recieved_trackback = new XoopsFormCheckBox(_BL_TRACKBACK_DELETE, "delete_trackback[$key]", $checked );
@@ -476,11 +476,11 @@ if (!empty($_POST['post'])) {
     }
   // permission control
   if( isset($xoopsModuleConfig['use_permissionsystem']) && $xoopsModuleConfig['use_permissionsystem'] ){
-    $permission_tray = new XoopsFormElementTray( _BL_PERMISSION , '<br />');
-//  $permission_tab = new XoopsFormSelect('Please set read permission of this Entry.<br />L to R :Your group\'s, Other group\'s and Anonymous users\'. "r" means readable.<br />', "permission" , $entry->getVar('permission') ) ;
+    $permission_tray = new XoopsFormElementTray( _BL_PERMISSION , '<br>');
+//  $permission_tab = new XoopsFormSelect('Please set read permission of this Entry.<br>L to R :Your group\'s, Other group\'s and Anonymous users\'. "r" means readable.<br>', "permission" , $entry->getVar('permission') ) ;
 //  $permission_tab->addOptionArray( array('111'=>'r-r-r' , '110'=>'r-r--' , '100'=>'r----' , '010'=>'--r--') ) ;
-    $member_handler =& xoops_gethandler('group');
-    $groups =& $member_handler->getObjects();
+    $member_handler = xoops_gethandler('group');
+    $groups = $member_handler->getObjects();
     $group_option = array() ;
     $group_array = array() ;
     foreach( $groups as $group ){
@@ -497,7 +497,7 @@ if (!empty($_POST['post'])) {
            $default_permission = explode('|',$entry->getVar('permission_group','n')) ;
        }
     }
-    $permission_tab = new XoopsFormSelect(_BL_PERMISSION_CAPTION."<br />" , "permission_group" , $default_permission , 4 , true ) ;
+    $permission_tab = new XoopsFormSelect(_BL_PERMISSION_CAPTION."<br>" , "permission_group" , $default_permission , 4 , true ) ;
     $permission_tab->addOptionArray($group_option) ;
     $permission_tray->addElement($permission_tab) ;
     $blog_form->addElement($permission_tray);

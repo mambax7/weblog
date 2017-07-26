@@ -7,7 +7,7 @@ Sie finden diesen Eintrag unter folgender URL:
 
 -----------
 
-Sie erhalten diese E-Mail/PN weil Sie benachrichtigt werden wollten wenn neue blog-Einträge für diesen blog erstellt worden sind.
+Sie erhalten diese E-Mail/PN weil Sie benachrichtigt werden wollten wenn neue blog-EintrÃ¤ge fÃ¼r diesen blog erstellt worden sind.
 
 Wenn dies ein Fehler ist und Sie keine weiteren Nachrichten dieser Art mehr empfangen wollen, folgen Sie diesem Link:
 {X_UNSUBSCRIBE_URL}
@@ -15,6 +15,6 @@ Wenn dies ein Fehler ist und Sie keine weiteren Nachrichten dieser Art mehr empf
 Bitte nicht auf diese E-Mail antworten.
 
 -----------
-{X_SITENAME} ({X_SITEURL}) 
+{X_SITENAME} ({X_SITEURL})
 Der Webmaster
 {X_ADMINMAIL}

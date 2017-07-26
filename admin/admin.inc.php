@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: admin.inc.php,v 1.1 2003/08/29 14:10:29 wellwine Exp $
+ *
  * Copyright (c) 2003 by Hiro SAKAI (http://wellwine.zive.net/)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,26 +23,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-function indexLink() {
+function indexLink()
+{
     global $xoopsModule;
 
-    return sprintf('<a href=\'%s/modules/%s/admin/index.php\'>%s</a>',
-                   XOOPS_URL, $xoopsModule->dirname(), _AM_WEBLOG_CONFIG);
+    return sprintf('<a href=\'%s/modules/%s/admin/index.php\'>%s</a>', XOOPS_URL, $xoopsModule->dirname(), _AM_WEBLOG_CONFIG);
 }
 
-function tableRow($title, $description, $action='', $hidden=array()) {
-    $html = sprintf("<tr valign='top' align='left'><td class='head'>%s<br /><br /><span style='font-weight:normal;'>%s</span></td>",
-                    $title, $description);
-    if ($action!='') {
+function tableRow($title, $description, $action = '', $hidden = array())
+{
+    $html = sprintf("<tr valign='top' align='left'><td class='head'>%s<br><br><span style='font-weight:normal;'>%s</span></td>", $title, $description);
+    if ($action != '') {
         $html .= "<td class='even'><form method='post' action='dbmanager.php'>\r\n";
-        $html .= sprintf("<input type='hidden' name='action' value='%s' />", $action);
-        if (count($hidden)>0) {
+        $html .= sprintf("<input type='hidden' name='action' value='%s'>", $action);
+        if (count($hidden) > 0) {
             foreach ($hidden as $p) {
-                $html .= sprintf("<input type='hidden' name='param[]' value='%s'/>", $p);
+                $html .= sprintf("<input type='hidden' name='param[]' value='%s'>", $p);
             }
         }
-        $html .= sprintf("<input type='submit' class='formButton' name='button'  value='%s'/>", _AM_WEBLOG_GO);
-        $html .= "</form>";
+        $html .= sprintf("<input type='submit' class='formButton' name='button'  value='%s'>", _AM_WEBLOG_GO);
+        $html .= '</form>';
     }
     $html .= "</td></tr>\r\n";
 

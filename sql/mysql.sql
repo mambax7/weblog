@@ -12,23 +12,24 @@
 #
 
 CREATE TABLE weblog (
-  blog_id mediumint(9) NOT NULL auto_increment,
-  user_id mediumint(9) NOT NULL default '0',
-  cat_id int(5) unsigned NOT NULL default '0',
-  created int(10) NOT NULL default '0',
-  title varchar(128) NOT NULL default '',
-  contents text NOT NULL,
-  private char(1) NOT NULL default '',
-  comments int(11) NOT NULL default '0',
-  `reads` int(11) NOT NULL default '0',
-  trackbacks int(11) NOT NULL default '0',
-  description text NOT NULL,
-  dohtml tinyint(1) UNSIGNED NOT NULL default '0',
-  dobr tinyint(1) UNSIGNED NOT NULL default '1',
-  permission_group varchar(255) NOT NULL default 'all',
-  PRIMARY KEY  (blog_id),
-  KEY user_id (user_id,created,title,private)
-) ENGINE=MyISAM;
+  blog_id          MEDIUMINT(9)        NOT NULL AUTO_INCREMENT,
+  user_id          MEDIUMINT(9)        NOT NULL DEFAULT '0',
+  cat_id           INT(5) UNSIGNED     NOT NULL DEFAULT '0',
+  created          INT(10)             NOT NULL DEFAULT '0',
+  title            VARCHAR(128)        NOT NULL DEFAULT '',
+  contents         TEXT                NOT NULL,
+  private          CHAR(1)             NOT NULL DEFAULT '',
+  comments         INT(11)             NOT NULL DEFAULT '0',
+  `reads`          INT(11)             NOT NULL DEFAULT '0',
+  trackbacks       INT(11)             NOT NULL DEFAULT '0',
+  description      TEXT                NOT NULL,
+  dohtml           TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  dobr             TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
+  permission_group VARCHAR(255)        NOT NULL DEFAULT 'all',
+  PRIMARY KEY (blog_id),
+  KEY user_id (user_id, created, title, private)
+)
+  ENGINE = MyISAM;
 # --------------------------------------------------------
 
 #
@@ -36,41 +37,44 @@ CREATE TABLE weblog (
 #
 
 CREATE TABLE weblog_category (
-  cat_id int(5) unsigned NOT NULL auto_increment,
-  cat_pid int(5) unsigned NOT NULL default '0',
-  cat_title varchar(50) NOT NULL default '',
-  cat_description text NOT NULL,
-  cat_created int(10) NOT NULL default '0',
-  cat_imgurl varchar(150) NOT NULL default '',
-  PRIMARY KEY  (cat_id),
+  cat_id          INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  cat_pid         INT(5) UNSIGNED NOT NULL DEFAULT '0',
+  cat_title       VARCHAR(50)     NOT NULL DEFAULT '',
+  cat_description TEXT            NOT NULL,
+  cat_created     INT(10)         NOT NULL DEFAULT '0',
+  cat_imgurl      VARCHAR(150)    NOT NULL DEFAULT '',
+  PRIMARY KEY (cat_id),
   KEY cat_pid (cat_pid)
-) ENGINE=MyISAM;
+)
+  ENGINE = MyISAM;
 
 INSERT INTO weblog_category (
   cat_id, cat_pid, cat_title, cat_description, cat_created, cat_imgurl)
-  VALUES (
-    '1', '0', 'Miscellaneous', '', '1051983686', ''
+VALUES (
+  '1', '0', 'Miscellaneous', '', '1051983686', ''
 );
 # --------------------------------------------------------
 
 CREATE TABLE weblog_priv (
-  priv_id smallint(5) unsigned NOT NULL auto_increment,
-  priv_gid smallint(5) unsigned NOT NULL default '0',
-  PRIMARY KEY  (priv_id)
-) ENGINE=MyISAM;
+  priv_id  SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  priv_gid SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (priv_id)
+)
+  ENGINE = MyISAM;
 
 # --------------------------------------------------------
 CREATE TABLE weblog_trackback (
-  blog_id mediumint(9) NOT NULL ,
-  tb_url text NOT NULL,
-  blog_name varchar(255) NOT NULL,
-  title varchar(255) NOT NULL,
-  description text NOT NULL,
-  link text NOT NULL,
-  direction enum('','transmit','recieved') NOT NULL default '',
-  trackback_created int(10) NOT NULL default '0',
-  PRIMARY KEY  (blog_id,tb_url(100),direction)
-) ENGINE=MyISAM;
+  blog_id           MEDIUMINT(9)                      NOT NULL,
+  tb_url            TEXT                              NOT NULL,
+  blog_name         VARCHAR(255)                      NOT NULL,
+  title             VARCHAR(255)                      NOT NULL,
+  description       TEXT                              NOT NULL,
+  link              TEXT                              NOT NULL,
+  direction         ENUM ('', 'transmit', 'recieved') NOT NULL DEFAULT '',
+  trackback_created INT(10)                           NOT NULL DEFAULT '0',
+  PRIMARY KEY (blog_id, tb_url(100), direction)
+)
+  ENGINE = MyISAM;
 
 # --------------------------------------------------------
 #
@@ -78,15 +82,16 @@ CREATE TABLE weblog_trackback (
 #
 
 CREATE TABLE weblogmyalbum_photos (
-  lid int(11) unsigned NOT NULL auto_increment,
-  cid int(5) unsigned NOT NULL default '0',
-  title varchar(100) NOT NULL default '',
-  ext varchar(10) NOT NULL default '',
-  res_x int(11) NOT NULL default '0',
-  res_y int(11) NOT NULL default '0',
-  submitter int(11) unsigned NOT NULL default '0',
-  status tinyint(2) NOT NULL default '0',
-  date int(10) NOT NULL default '0',
-  PRIMARY KEY  (lid),
+  lid       INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  cid       INT(5) UNSIGNED  NOT NULL DEFAULT '0',
+  title     VARCHAR(100)     NOT NULL DEFAULT '',
+  ext       VARCHAR(10)      NOT NULL DEFAULT '',
+  res_x     INT(11)          NOT NULL DEFAULT '0',
+  res_y     INT(11)          NOT NULL DEFAULT '0',
+  submitter INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  status    TINYINT(2)       NOT NULL DEFAULT '0',
+  date      INT(10)          NOT NULL DEFAULT '0',
+  PRIMARY KEY (lid),
   KEY cid (cid)
-) ENGINE=MyISAM;
+)
+  ENGINE = MyISAM;

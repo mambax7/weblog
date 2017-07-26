@@ -1,6 +1,7 @@
 <?php
+
 /*
- * $Id: class.weblogcategories.php,v 1.3 2005/05/06 18:53:29 tohokuaiki Exp $
+ *
  * Copyright (c) 2003 by Hiro SAKAI (http://wellwine.net/)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,35 +25,39 @@
  *
  */
 
-class WeblogCategories {
+class WeblogCategories
+{
+    public $handler;
 
-    var $handler;
-    
-    function WeblogCategories() {
-        $this->handler =& xoops_getmodulehandler('category');
+    public function __construct()
+    {
+        $this->handler = xoops_getModuleHandler('category');
     }
 
-    function &getInstance() {
+    public static function getInstance()
+    {
         static $instance;
-        if (!isset($instance)) {
-            $instance = new WeblogCategories();
+        if (null === $instance) {
+            $instance = new static();
         }
 
         return $instance;
     }
 
-    function &newInstance() {
+    public function &newInstance()
+    {
         return $this->handler->create();
     }
 
-    function getCategoriesByParent($cat_pid=0, $start=0, $perPage=0, $order='ASC') {
+    public function getCategoriesByParent($cat_pid = 0, $start = 0, $perPage = 0, $order = 'ASC')
+    {
         $criteria = new criteriaCompo(new criteria('cat_pid', $cat_pid));
         $criteria->setSort('cat_title');
         $criteria->setOrder($order);
         if ($start > 0) {
             $criteria->setStart($start);
         }
-        if ($perPage > 0 ) {
+        if ($perPage > 0) {
             $criteria->setLimit($perPage);
         }
         $result = $this->handler->getObjects($criteria);
@@ -60,9 +65,10 @@ class WeblogCategories {
         return $result;
     }
 
-    function getCategory($cat_id) {
+    public function getCategory($cat_id)
+    {
         $criteria = new criteriaCompo(new criteria('cat_id', $cat_id));
-        $result = $this->handler->getObjects($criteria, true);
+        $result   = $this->handler->getObjects($criteria, true);
         if (isset($result[$cat_id])) {
             return $result[$cat_id];
         } else {
@@ -70,40 +76,48 @@ class WeblogCategories {
         }
     }
 
-    function getAllChildrenIds($cat_id) {
+    public function getAllChildrenIds($cat_id)
+    {
         return $this->handler->getAllChildrenIds($cat_id);
     }
 
-    function getFirstChildren($cat_id) {
+    public function getFirstChildren($cat_id)
+    {
         return $this->handler->getFirstChildren($cat_id);
     }
 
-    function getCategoryPath($cat_id, $delim='/') {
-        $self =& $this->getCategory($cat_id);
+    public function getCategoryPath($cat_id, $delim = '/')
+    {
+        $self    =& $this->getCategory($cat_id);
         $parents = $this->handler->getParents($cat_id);
-        $path = '';
-        foreach($parents as $p) {
-            $path .= $delim.$p->getVar('cat_title');
+        $path    = '';
+        foreach ($parents as $p) {
+            $path .= $delim . $p->getVar('cat_title');
         }
-        $path .= $delim.$self->getVar('cat_title');
+        $path .= $delim . $self->getVar('cat_title');
 
         return substr($path, strlen($delim));
     }
 
-    function getNicePathFromId($cat_id, $url) {
+    public function getNicePathFromId($cat_id, $url)
+    {
         return $this->handler->getNicePathFromId($cat_id, $url);
     }
 
-    function getMySelectBox($cat_id=0,$none=0,$sel_name="") {
-        return $this->handler->getMySelectBox($cat_id,$none,$sel_name);
+    public function getMySelectBox($cat_id = 0, $none = 0, $sel_name = '')
+    {
+        return $this->handler->getMySelectBox($cat_id, $none, $sel_name);
     }
-   
+
     /**
-     *@return category tree array with counts
-     *@remarks added by hodaka
+     * @param int    $cat_id
+     * @param string $order
+     * @param int    $none
+     * @return category tree array with counts
+     * @remarks added by hodaka
      */
-    function getChildTreeArray($cat_id=0, $order="",$none=0) {
-        return $this->handler->getChildTreeArray($cat_id, $order,$none);
+    public function getChildTreeArray($cat_id = 0, $order = '', $none = 0)
+    {
+        return $this->handler->getChildTreeArray($cat_id, $order, $none);
     }
-    
 }

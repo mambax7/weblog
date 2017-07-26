@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: myblog.php,v 1.5 2005/06/18 17:56:01 tohokuaiki Exp $
+ *
  * Copyright (c) 2003 by Jeremy N. Cowgar <jc@cowgar.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,12 +23,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-include('header.php');
+include __DIR__ . '/header.php';
 
 if (!empty($xoopsUser)) {
-  redirect_header(XOOPS_URL.'/modules/'.$mydirname.'/index.php?user_id='.$xoopsUser->getVar('uid', 'E'),
-                  1,_BL_GATHERING);
+    redirect_header(XOOPS_URL . '/modules/' . $moduleDirName . '/index.php?user_id=' . $xoopsUser->getVar('uid', 'E'), 1, _BL_GATHERING);
 } else {
-  redirect_header(XOOPS_URL.'/modules/'.$mydirname.'/index.php', 5,
-                  _BL_GATHERING_SORRY);
+    redirect_header(XOOPS_URL . '/modules/' . $moduleDirName . '/index.php', 5, _BL_GATHERING_SORRY);
 }

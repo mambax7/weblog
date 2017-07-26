@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: privmanager.php 11979 2013-08-25 20:45:24Z beckmi $
+ *
  * Copyright (c) 2003 by Hiro SAKAI (http://wellwine.net/)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,11 +22,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
-include('../../../mainfile.php');
-include(sprintf('%s/include/cp_header.php', XOOPS_ROOT_PATH));
-include_once(sprintf('%s/modules/%s/header.php', XOOPS_ROOT_PATH, $xoopsModule->dirname()));
-include('admin.inc.php');
-include_once dirname(__FILE__) . '/admin_header.php';
+include __DIR__ . '/../../../mainfile.php';
+include sprintf('%s/include/cp_header.php', XOOPS_ROOT_PATH);
+require_once sprintf('%s/modules/%s/header.php', XOOPS_ROOT_PATH, $xoopsModule->dirname());
+include __DIR__ . '/admin.inc.php';
+require_once __DIR__ . '/admin_header.php';
 
 $action = '';
 if (isset($_POST)) {
@@ -35,45 +35,46 @@ if (isset($_POST)) {
     }
 }
 
-function privManagerLink() {
+function privManagerLink()
+{
     global $xoopsModule;
 
-    return sprintf('<a href=\'%s/modules/%s/admin/privmanager.php\'>%s</a>',
-                   XOOPS_URL, $xoopsModule->dirname(), _AM_WEBLOG_PRIVMANAGER_WEBLOG);
+    return sprintf('<a href=\'%s/modules/%s/admin/privmanager.php\'>%s</a>', XOOPS_URL, $xoopsModule->dirname(), _AM_WEBLOG_PRIVMANAGER_WEBLOG);
 }
 
-function privmanager() {
-    $member_handler =& xoops_gethandler('group');
-    $groups = $member_handler->getObjects();
-    $group_ids = array();
+function privmanager()
+{
+    $memberHandler = xoops_getHandler('group');
+    $groups        = $memberHandler->getObjects();
+    $group_ids     = array();
     foreach ($groups as $group) {
         $group_ids[$group->getVar('groupid')] = $group->getVar('name');
     }
 
-    $group_handler =& xoops_getmodulehandler('priv');
-    $priv_groups = $group_handler->getObjects();
+    $groupHandler   = xoops_getModuleHandler('priv');
+    $priv_groups    = $groupHandler->getObjects();
     $priv_group_ids = array();
     foreach ($priv_groups as $priv_group) {
         $priv_group_ids[$priv_group->getVar('priv_gid')] = $priv_group->getVar('name');
     }
 
-    $non_groups =& array_diff($group_ids, $priv_group_ids);
+    $non_groups = array_diff($group_ids, $priv_group_ids);
 
     xoops_cp_header();
-//    echo sprintf('<h4>%s&nbsp;&raquo;&raquo;&nbsp;%s</h4>',
-//                 indexLink(), _AM_WEBLOG_PRIVMANAGER_WEBLOG);
-    $indexAdmin = new ModuleAdmin();
-        echo $indexAdmin->addNavigation('privmanager.php');
+    //    echo sprintf('<h4>%s&nbsp;&raquo;&raquo;&nbsp;%s</h4>',
+    //                 indexLink(), _AM_WEBLOG_PRIVMANAGER_WEBLOG);
+    $adminObject = \Xmf\Module\Admin::getInstance();
+    $adminObject->displayNavigation(basename(__FILE__));
 
-    echo  _AM_WEBLOG_PRIVMANAGER_WEBLOG_CAUTION . "<br /><br />";
+    echo _AM_WEBLOG_PRIVMANAGER_WEBLOG_CAUTION . '<br><br>';
     echo "<table width='100%' class='outer' cellspacing='1'>\r\n";
     echo sprintf("<tr><th colspan='3'>%s</th></tr>", _AM_WEBLOG_PRIVMANAGER_WEBLOG);
 
-    echo "<tr valign='top' align='center'><td width='40%' class='head'>"._AM_WEBLOG_NONPRIV."</td>";
-    echo "<td class='head'><br /></td>";
-    echo "<td width='40%' class='head'>"._AM_WEBLOG_PRIV."</td></tr>";
+    echo "<tr valign='top' align='center'><td width='40%' class='head'>" . _AM_WEBLOG_NONPRIV . '</td>';
+    echo "<td class='head'><br></td>";
+    echo "<td width='40%' class='head'>" . _AM_WEBLOG_PRIV . '</td></tr>';
     echo "<form action='privmanager.php' method='post'>";
-
+    echo $GLOBALS['xoopsSecurity']->getTokenHTML();
     echo "<tr valign='top' align='center'>";
     echo "<td class='even'><select name='gid[]' size='10' multiple>";
     foreach ($non_groups as $g_id => $g_name) {
@@ -81,47 +82,50 @@ function privmanager() {
             echo sprintf("<option value='%d'>%s</option>", $g_id, $g_name);
         }
     }
-    echo "</select></td>";
+    echo '</select></td>';
     echo "<td class='odd' valign='middle'>";
-    echo sprintf("<input type='submit' class='formButton' name='add' value='%s'/>", _AM_WEBLOG_ADDPRIV.' -->');
-    echo "<input type='hidden' name='action' value='add' />";
-    echo "</form>";
+    echo sprintf("<input type='submit' class='formButton' name='add' value='%s'>", _AM_WEBLOG_ADDPRIV . ' -->');
+    echo "<input type='hidden' name='action' value='add'>";
+    echo '</form>';
     echo "<form action='privmanager.php' method='post'>";
-    echo sprintf("<input type='submit' class='formButton' name='delete' value='%s'/>", '<-- '._AM_WEBLOG_DELETEPRIV);
-    echo "<input type='hidden' name='action' value='delete' />";
-    echo "</td>";
+    echo $GLOBALS['xoopsSecurity']->getTokenHTML();
+    echo sprintf("<input type='submit' class='formButton' name='delete' value='%s'>", '<-- ' . _AM_WEBLOG_DELETEPRIV);
+    echo "<input type='hidden' name='action' value='delete'>";
+    echo '</td>';
     echo "<td class='even'>";
     echo "<select name='gid[]' size='10' multiple>";
     foreach ($priv_group_ids as $g_id => $g_name) {
         echo sprintf("<option value='%d'>%s</option>", $g_id, $g_name);
     }
-    echo "</select></td></tr>";
+    echo '</select></td></tr>';
 
-    echo "</form>";
+    echo '</form>';
     echo "</table>\r\n";
     xoops_cp_footer();
 }
 
-function addGroup($post) {
+function addGroup($post)
+{
     if (isset($post['gid'])) {
-        $group_handler =& xoops_getmodulehandler('priv');
+        $groupHandler = xoops_getModuleHandler('priv');
         foreach ($post['gid'] as $gid) {
-            $group =& $group_handler->create();
+            $group = $groupHandler->create();
             $group->setVar('priv_gid', $gid);
-            $group_handler->insert($group);
+            $groupHandler->insert($group);
         }
     }
     redirect_header('privmanager.php', 2, _AM_WEBLOG_DBUPDATED);
 }
 
-function deleteGroup($post) {
+function deleteGroup($post)
+{
     if (isset($post['gid'])) {
-        $group_handler =& xoops_getmodulehandler('priv');
+        $groupHandler = xoops_getModuleHandler('priv');
         foreach ($post['gid'] as $gid) {
             $criteria = new Criteria('priv_gid', $gid);
-            $group = $group_handler->getObjects($criteria);
+            $group    = $groupHandler->getObjects($criteria);
             if (is_object($group[0])) {
-                $group_handler->delete($group[0]);
+                $groupHandler->delete($group[0]);
             }
         }
     }
@@ -129,13 +133,13 @@ function deleteGroup($post) {
 }
 
 switch ($action) {
-    case "comments":
+    case 'comments':
         synchronizeComments();
         break;
-    case "add":
+    case 'add':
         addGroup($_POST);
         break;
-    case "delete":
+    case 'delete':
         deleteGroup($_POST);
         break;
     default:

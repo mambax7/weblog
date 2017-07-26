@@ -1,5 +1,5 @@
 --
--- $Id: update_093_to_094-step2.sql,v 1.3 2003/08/29 14:10:29 wellwine Exp $
+-- 
 --
 -- ATTENTION:
 --
@@ -11,5 +11,5 @@
 --
 
 INSERT INTO `xoops_weblog`
-SELECT *
-FROM `xoops_weblog_tmp`
+  SELECT *
+  FROM `xoops_weblog_tmp`

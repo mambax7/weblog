@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: menu.php 11979 2013-08-25 20:45:24Z beckmi $
+ *
  * Copyright (c) 2003 by Hiro SAKAI (http://wellwine.zive.net/)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,54 +23,51 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-defined("XOOPS_ROOT_PATH") or die("XOOPS root path not defined");
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-$path = dirname(dirname(dirname(dirname(__FILE__))));
-include_once $path . '/mainfile.php';
+$moduleDirName = basename(dirname(__DIR__));
 
-$dirname         = basename(dirname(dirname(__FILE__)));
-$module_handler  = xoops_gethandler('module');
-$module          = $module_handler->getByDirname($dirname);
-$pathIcon32      = $module->getInfo('icons32');
-$pathModuleAdmin = $module->getInfo('dirmoduleadmin');
-$pathLanguage    = $path . $pathModuleAdmin;
-
-if (!file_exists($fileinc = $pathLanguage . '/language/' . $GLOBALS['xoopsConfig']['language'] . '/' . 'main.php')) {
-    $fileinc = $pathLanguage . '/language/english/main.php';
+if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
+} else {
+    $moduleHelper = Xmf\Module\Helper::getHelper('system');
 }
+$adminObject = \Xmf\Module\Admin::getInstance();
 
-include_once $fileinc;
+$pathIcon32 = \Xmf\Module\Admin::menuIconPath('');
+//$pathModIcon32 = $moduleHelper->getModule()->getInfo('modicons32');
 
-$adminmenu = array();
-$i=0;
-$adminmenu[$i]["title"] = _AM_MODULEADMIN_HOME;
-$adminmenu[$i]['link'] = "admin/index.php";
-$adminmenu[$i]["icon"]  = $pathIcon32 . '/home.png';
-$i++;
+$moduleHelper->loadLanguage('modinfo');
+
+$adminObject            = array();
+$i                      = 0;
+$adminmenu[$i]['title'] = _AM_MODULEADMIN_HOME;
+$adminmenu[$i]['link']  = 'admin/index.php';
+$adminmenu[$i]['icon']  = $pathIcon32 . '/home.png';
+++$i;
 $adminmenu[$i]['title'] = _MI_WEBLOG_CATMANAGER;
-$adminmenu[$i]['link'] = "admin/catmanager.php";
-$adminmenu[$i]["icon"]  = $pathIcon32 . '/category.png';
-$i++;
+$adminmenu[$i]['link']  = 'admin/catmanager.php';
+$adminmenu[$i]['icon']  = $pathIcon32 . '/category.png';
+++$i;
 $adminmenu[$i]['title'] = _MI_WEBLOG_PRIVMANAGER;
-$adminmenu[$i]['link'] = "admin/privmanager.php";
-$adminmenu[$i]["icon"]  = $pathIcon32 . '/manage.png';
-$i++;
-$adminmenu[$i]['title'] = _MI_WEBLOG_MYGROUPSADMIN ;
-$adminmenu[$i]['link'] = "admin/groupperm_global.php";
-$adminmenu[$i]["icon"]  = $pathIcon32 . '/permissions.png';
-$i++;
+$adminmenu[$i]['link']  = 'admin/privmanager.php';
+$adminmenu[$i]['icon']  = $pathIcon32 . '/manage.png';
+++$i;
+$adminmenu[$i]['title'] = _MI_WEBLOG_MYGROUPSADMIN;
+$adminmenu[$i]['link']  = 'admin/groupperm_global.php';
+$adminmenu[$i]['icon']  = $pathIcon32 . '/permissions.png';
+++$i;
 $adminmenu[$i]['title'] = _MI_WEBLOG_DBMANAGER;
-$adminmenu[$i]['link'] = "admin/dbmanager.php";
-$adminmenu[$i]["icon"]  = $pathIcon32 . '/list.png';
-//$i++;
+$adminmenu[$i]['link']  = 'admin/dbmanager.php';
+$adminmenu[$i]['icon']  = $pathIcon32 . '/list.png';
+//++$i;
 //$adminmenu[$i]['title'] = _MI_WEBLOG_MYBLOCKSADMIN ;
 //$adminmenu[$i]['link'] = "admin/myblocksadmin.php" ;
 //$adminmenu[$i]["icon"]  = $pathIcon32 . '/block.png';
-//$i++;
+//++$i;
 //$adminmenu[$i]['title'] = _MI_WEBLOG_TEMPLATE_MANEGER ;
 //$adminmenu[$i]['link'] = "admin/index.php?op=templates" ;
 //$adminmenu[$i]["icon"]  = $pathIcon32 . '/watermark.png';
-$i++;
+++$i;
 $adminmenu[$i]['title'] = _AM_MODULEADMIN_ABOUT;
-$adminmenu[$i]["link"]  = "admin/about.php";
-$adminmenu[$i]["icon"]  = $pathIcon32 . '/about.png';
+$adminmenu[$i]['link']  = 'admin/about.php';
+$adminmenu[$i]['icon']  = $pathIcon32 . '/about.png';

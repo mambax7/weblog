@@ -1,174 +1,104 @@
-/* $Id: styles.css,v 1.8 2005/06/18 17:56:01 tohokuaiki Exp $ */
-#blog {
-	width:100%;
-}
-
-#blog div.page {
-	border-bottom:1px solid #aaa;
-	margin-bottom:20px;
-}
-#blog div.page span.title {
-	font-size:1.3em;
-	font-weight:bold;	
-	
-}
-#blog div.rss {
-display:inline-block;
-float:right;
-font-size:.8em;		
-}
-#blog div.rss span {
-	display:block;
-	margin-top:10px;
-}
-div.blogEntry {
-	border-left:solid 5px #eee;	
-	border-radius:10px;
-	padding-left:30px;
-	
-}
-
-.blogTitle h2 {
-	margin-bottom:40px
-}
-.blogTitle h2 {
-	font-style:normal;
-	text-decoration:none;;
-	font-variant:normal;
-	text-transform:none;
-}
-.blogTitle h2:hover {
-	text-decoration:underline;
-}
-.authorInfo img {
-
-	box-shadow:1px 1px 4px 5px #ddd;
-	margin-bottom:20px;
-
-
-}
-.authorInfo {
-	display:inline-block;
-	vertical-align:top;
-	text-align:right;
-	float:right;
-
-}
-.blogContents {
-	width:75%;
-	display:inline-block;
-	
-	}
-div.blogFooter {
-	margin-top:15px;
-	padding: 10px 10px 10px 0;
-	font-size: 80%;
-	text-align: right;
-	border-top:dashed 1px #aaa;	
-	border-bottom:dashed 1px #aaa;
-	border-radius:10px;	
-
-}
-
-.blogindicate{
-	float:left;
-	}
-
-/* div.blogEntry {margin-left: 30px; margin-top: 10px; margin-bottom: 10px;} */
-div.blogDate {font-family: Verdana; margin-bottom: 10px;margin-top: 10px; font-style: normal; font-weight: bold;}
-/* div.blogTitle {font-family: Verdana; margin-left: 0px; margin-bottom: 0px; font-size: 130%;font-weight: bold;}*/
-/* div.blogTitle a {font-family: Verdana;}*/
+/*
+div.blogEntry {margin-left: 30px; margin-top: 10px; margin-bottom: 10px;}
+div.blogDate {font-family: verdana, sans-serif; margin-bottom: 10px;margin-top: 10px; font-style: normal; font-weight: bold;}
+div.blogTitle {font-family: verdana, sans-serif; margin-left: 0px; margin-bottom: 0px; font-size: 130%;font-weight: bold;}
+div.blogTitle a {font-family: verdana, sans-serif;}
 div.blogCategory {margin-left: 0px; font-size: 80%;font-weight: normal;}
 div.blogShoulder {margin-top: 0px; margin-bottom: 0px; font-size: 80%; font-weight: normal; text-align: right; vertical-align: top;}
+div.blogContents {font-family: verdana, sans-serif; margin: 0px;}
 div.blogContents:first-letter {}
+div.blogFooter {margin-top: 10px; margin-left: 0px; font-size: 80%; text-align: right;}
 div.blogTrackbackAnounce {margin-top: 10px; margin-left: 0px; font-size: 80%; text-align: right;}
 .blogShowTrackbackURL {margin-top: 10px; margin-left: 0px; font-size: 80%; text-align: right; text-decoration: underline;}
 .blogTrackbackTransmit {color: #888888;
-	font-family: Verdana, Arial, sans-serif;
-	font-size: 100%;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 100%;
     line-height:180%;
-	border-bottom: 1px solid #888888;
-	border-left: 6px solid #888888;	
-	text-align: left;
-	font-weight: bold;	
-	margin-bottom: 10px;
-	margin-top: 10px;
-	margin-right: 10px;
-	margin-left: 30px;
-	padding-left: 15px;
+    border-bottom: 1px solid #888888;
+    border-left: 6px solid #888888;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-left: 30px;
+    padding-left: 15px;
 }
 .blogTrackbackRecieved {color: #888888;
-	font-family: Verdana, Arial, sans-serif;
-	font-size: 100%;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 100%;
     line-height:180%;
-	border-bottom: 1px solid #888888;
-	border-left: 6px solid #888888;	
-	text-align: left;
-	font-weight: bold;	
-	margin-bottom: 10px;
-	margin-top: 10px;
-	margin-right: 10px;
-	margin-left: 30px;
-	padding-left: 15px;
+    border-bottom: 1px solid #888888;
+    border-left: 6px solid #888888;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-left: 30px;
+    padding-left: 15px;
 }
 .blogTrackbackURL { text-align: right; font-size:80%; margin-right:15px;}
-.blogTrackbackTitle {	font-family: Verdana;margin-left: 30px; margin-top: 10px; }
+.blogTrackbackTitle {   font-family: verdana, sans-serif;margin-left: 30px; margin-top: 10px; }
 .blogTrackbackDescription {
-	font-family: Verdana;
-	font-size:12px;
-	line-height:14px;
-	color:#666666;
-	margin-top: 10px;
-	margin-right: 10px;
-	margin-left: 50px;
-	padding:4px 10px;
-	border-top-width: 1px;
-	border-right-width: 1px;
-	border-bottom-width: 1px;
-	border-left-width: 1px;
-	border-right-style: none;
-	border-bottom-style: dotted;
-	border-left-style: none;
-	border-top-color: #990000;
-	border-right-color: #990000;
-	border-bottom-color: #990000;
-	border-left-color: #990000;
+    font-family: verdana, sans-serif;
+    font-size:12px;
+    line-height:14px;
+    color:#666666;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-left: 50px;
+    padding:4px 10px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-right-style: none;
+    border-bottom-style: dotted;
+    border-left-style: none;
+    border-top-color: #990000;
+    border-right-color: #990000;
+    border-bottom-color: #990000;
+    border-left-color: #990000;
 }
-
+.blogindicate{margin-right: 5px; margin-top: 2px; margin-bottom: 2px; text-align: right ;}
 .blogTrackbackBlogname {margin-right: 15px; margin-top: 4px; margin-bottom: 4px; text-align: right ;}
-.blogTrackbackCreated { margin-right:15px; font-family: Verdana;margin-top: 4px; margin-bottom: 8px; font-size: 80%; font-weight: normal; text-align: right; vertical-align: top;}
-.blogHeader {margin: 0px; border: 0px; padding: 4px;}
+.blogTrackbackCreated { margin-right:15px; font-family: verdana, sans-serif;margin-top: 4px; margin-bottom: 8px; font-size: 80%; font-weight: normal; text-align: right; vertical-align: top;}
+blogHeader {margin: 0px; border: 0px; padding: 4px;}
 
 
 /* calendar and archives */
 
 #weblog-calendar {
-	empty-cells: show;
-	font-size: 100%;
-	margin: 0 auto;
-	width: 132px;	/* change if you like:  pixels = column with * 7 + cellspacing */
-					/* sample 14*7+6=104 or 18*7+6=132 or 22*7+6=160 */
-/*	background-color:#fff;*/
+    empty-cells: show;
+    font-size: 100%;
+    margin: 0 auto;
+    width: 132px; /* change if you like:  pixels = column with * 7 + cellspacing */
+    /* sample 14*7+6=104 or 18*7+6=132 or 22*7+6=160 */
+    /*  background-color:#fff;*/
 }
 
 #weblog-calendar a {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 #weblog-calendar a:hover {
-	background: transparent;
-	color: #c00;
+    background: transparent;
+    color: #c00;
 }
 
 #weblog-calendar caption {
-	color: #000;
-	font: 100% Tahoma, Arial, Serif;	/* Font-size critical if you change box width */
-	margin: 0;
-	padding: 0;
-	text-align: center;
+    color: #000;
+    font: 100% Tahoma, Arial, Serif; /* Font-size critical if you change box width */
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
 
-#weblog-calendar #to-this { padding: 0 5px; }
+#weblog-calendar #to-this {
+    padding: 0 5px;
+}
+
 #weblog-calendar #to-next a,
 #weblog-calendar #to-prev a,
 #weblog-calendar #to-this a {
@@ -177,54 +107,125 @@ div.blogTrackbackAnounce {margin-top: 10px; margin-left: 0px; font-size: 80%; te
 #weblog-calendar #to-next a:hover,
 #weblog-calendar #to-prev a:hover,
 #weblog-calendar #to-this a:hover {
-	color: #c00;
+    color: #c00;
 }
 
 #weblog-calendar th {
-	color: #000;
-	text-transform: uppercase;
-	font-size: 90%;				/* Font-size critical if you change box width */
-	font-weight: normal;
-	text-align: center;
-	vertical-align: middle;
-	width: 18px;				/* Critical if you change box width */
-	height: 18px;				/* Critical if you change box width */
-/*	background-color:#eee;*/
+    color: #000;
+    text-transform: uppercase;
+    font-size: 90%; /* Font-size critical if you change box width */
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    width: 18px; /* Critical if you change box width */
+    height: 18px; /* Critical if you change box width */
+    /*  background-color:#eee;*/
 }
 
 #weblog-calendar td {
-	color: #000;
-	font: normal 100% Tahoma, Arial, Serif;	/* Font-size critical if you change box width */
-	text-align: center;
-	vertical-align: middle;
-	width: 18px;				/* Critical if you change box width */
-	height: 18px;				/* Critical if you change box width */
-/*  background-color:#fff;*/
+    color: #000;
+    font: normal 100% Tahoma, Arial, Serif; /* Font-size critical if you change box width */
+    text-align: center;
+    vertical-align: middle;
+    width: 18px; /* Critical if you change box width */
+    height: 18px; /* Critical if you change box width */
+    /*  background-color:#fff;*/
 }
 
 #weblog-calendar .today {
-	border: 1px solid #000;
+    border: 1px solid #000;
 }
 
 #weblog-calendar tr.weblog-header {
-/*	color: #xxx;
-	background-color: #xxx */
+    /*  color: #xxx;
+        background-color: #xxx */
 }
+
 #weblog-calendar tr.weblog-week {
-/*	color: #xxx;
-	background-color: #xxx */
+    /*  color: #xxx;
+        background-color: #xxx */
 }
+
 #weblog-calendar th.sunday,
 #weblog-calendar td.sunday {
-/*	color: #xxx;
-	background-color: #xxx */
+    /*  color: #xxx;
+        background-color: #xxx */
 }
+
 #weblog-calendar th.saturday,
 #weblog-calendar td.saturday {
-/*	color: #xxx;
-	background-color: #xxx */
+    /*  color: #xxx;
+        background-color: #xxx */
 }
+
 #weblog-calendar td.prevmonth,
 #weblog-calendar td.nextmonth {
-	color: #fff;				/* hides if the same color used as background */
+    color: #fff; /* hides if the same color used as background */
+}
+
+/* this is for the date icon */
+
+body, div, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, img, form, fieldset, input, textarea, blockquote {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    background: #f3f3f3 url(bg.png);
+    line-height: 1;
+}
+
+#container {
+    width: 150px;
+    margin: 100px auto;
+}
+
+.date {
+    width: 130px;
+    height: 160px;
+    background: #fcfcfc;
+    background: linear-gradient(top, #fcfcfc 0%, #dad8d8 100%);
+    background: -moz-linear-gradient(top, #fcfcfc 0%, #dad8d8 100%);
+    background: -webkit-linear-gradient(top, #fcfcfc 0%, #dad8d8 100%);
+    border: 1px solid #d2d2d2;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.date p {
+    font-family: Helvetica, sans-serif;
+    font-size: 100px;
+    text-align: center;
+    color: #9e9e9e;
+}
+
+.date p span {
+    background: #d10000;
+    background: linear-gradient(top, #d10000 0%, #7a0909 100%);
+    background: -moz-linear-gradient(top, #d10000 0%, #7a0909 100%);
+    background: -webkit-linear-gradient(top, #d10000 0%, #7a0909 100%);
+    font-size: 45px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    display: block;
+    border-top: 3px solid #a13838;
+    border-radius: 0 0 10px 10px;
+    -moz-border-radius: 0 0 10px 10px;
+    -webkit-border-radius: 0 0 10px 10px;
+    padding: 6px 0 6px 0;
+}
+
+@-moz-document url-prefix() {
+    .date {
+        padding: 16px 0 0 0;
+    }
+    .date p span {
+        padding: 9px 0 3px 0;
+    }
 }
