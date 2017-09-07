@@ -24,7 +24,7 @@
  *
  */
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS Root Path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 global $xoopsModule;
 
@@ -103,11 +103,26 @@ if (!class_exists('WeblogCategoryBase')) {
 
             $count = $this->getCount(new Criteria('cat_id', $cat_id));
             if ($cat_id > 0 && $count > 0) {
-                $sql = sprintf('UPDATE %s SET cat_pid=%d, cat_created=%d, cat_title=%s, cat_description=%s, cat_imgurl=%s WHERE cat_id=%d', $this->db->prefix($this->moduleDirName . '_category'), $cat_pid, $cat_created, $this->db->quoteString($cat_title), $this->db->quoteString($cat_description),
-                               $this->db->quoteString($cat_imgurl), $cat_id);
+                $sql = sprintf(
+                    'UPDATE %s SET cat_pid=%d, cat_created=%d, cat_title=%s, cat_description=%s, cat_imgurl=%s WHERE cat_id=%d',
+                    $this->db->prefix($this->moduleDirName . '_category'),
+                    $cat_pid,
+                    $cat_created,
+                    $this->db->quoteString($cat_title),
+                    $this->db->quoteString($cat_description),
+                               $this->db->quoteString($cat_imgurl),
+                    $cat_id
+                );
             } else {
-                $sql = sprintf('INSERT INTO %s (cat_pid, cat_created, cat_title, cat_description, cat_imgurl) VALUES (%d, %d, %s, %s, %s)', $this->db->prefix($this->moduleDirName . '_category'), $cat_pid, $cat_created, $this->db->quoteString($cat_title), $this->db->quoteString($cat_description),
-                               $this->db->quoteString($cat_imgurl));
+                $sql = sprintf(
+                    'INSERT INTO %s (cat_pid, cat_created, cat_title, cat_description, cat_imgurl) VALUES (%d, %d, %s, %s, %s)',
+                    $this->db->prefix($this->moduleDirName . '_category'),
+                    $cat_pid,
+                    $cat_created,
+                    $this->db->quoteString($cat_title),
+                    $this->db->quoteString($cat_description),
+                               $this->db->quoteString($cat_imgurl)
+                );
             }
 
             if (!$result = $this->db->queryF($sql)) {  // must be queryF()
@@ -153,7 +168,7 @@ if (!class_exists('WeblogCategoryBase')) {
 
         public function &getObjects($criteria = null, $id_as_key = false)
         {
-            $ret   = array();
+            $ret   = [];
             $limit = $start = 0;
 
             $sql = sprintf('SELECT * FROM %s', $this->db->prefix($this->moduleDirName . '_category'));
@@ -207,7 +222,7 @@ if (!class_exists('WeblogCategoryBase')) {
         {
             $mytree  = $this->getTreeInstance();//new WeblogTree($this->db->prefix('_category'), 'cat_id', 'cat_pid');
             $arr     = $mytree->getAllParentId($cat_id);
-            $parents = array();
+            $parents = [];
             foreach ($arr as $p) {
                 $parents[] = $this->get($p);
             }
@@ -326,7 +341,7 @@ if (!class_exists('WeblogCategoryBase')) {
         }
 
         // override
-        public function getChildTreeArray($sel_id = 0, $order = '', $parray = array(), $r_prefix = '')
+        public function getChildTreeArray($sel_id = 0, $order = '', $parray = [], $r_prefix = '')
         {
             global $xoopsModule, $xoopsModuleConfig, $xoopsUser;
 
@@ -382,7 +397,7 @@ if (!class_exists('WeblogCategoryBase')) {
                 }
             } else {
                 $currentuid       = 0;
-                $currentusergroup = array(XOOPS_GROUP_ANONYMOUS);
+                $currentusergroup = [XOOPS_GROUP_ANONYMOUS];
                 $isAdmin          = false;
             }
             foreach ($currentusergroup as $groupid) {

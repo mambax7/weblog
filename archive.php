@@ -36,7 +36,7 @@ require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
 $myModule = $moduleHelper->getModule();
 
-$months_arr = array(
+$months_arr = [
     1  => _CAL_JANUARY,
     2  => _CAL_FEBRUARY,
     3  => _CAL_MARCH,
@@ -49,7 +49,7 @@ $months_arr = array(
     10 => _CAL_OCTOBER,
     11 => _CAL_NOVEMBER,
     12 => _CAL_DECEMBER
-);
+];
 
 // obtain GET parameters
 $user_id = !empty($_GET['user_id']) ? (int)$_GET['user_id'] : 0;
@@ -100,8 +100,8 @@ include XOOPS_ROOT_PATH . '/header.php';
 $cat_array = $weblogcat->getChildTreeArray();
 //$cat_array = $weblogcat->getMySelectBox(0, 0, "selectcat");
 
-$catselbox                 = array();
-$catbox                    = array();
+$catselbox                 = [];
+$catbox                    = [];
 $catselbox[0]['prefix']    = '';
 $catselbox[0]['cat_id']    = 0;
 $catselbox[0]['cat_title'] = _BL_SELECT_ALL;
@@ -123,7 +123,7 @@ $xoopsTpl->assign('catselbox', $catselbox);
 /**
  * make user_id select box
  */
-$blogger_id = array('' => _BL_SELECT_ALL);
+$blogger_id = ['' => _BL_SELECT_ALL];
 $sql        = sprintf('SELECT user_id,uname FROM %s,%s WHERE uid=user_id AND private=\'N\' GROUP BY user_id ', $xoopsDB->prefix($moduleDirName), $xoopsDB->prefix('users'));
 if ($uid_result = $xoopsDB->query($sql)) {
     while ($uid_uname = $xoopsDB->fetchArray($uid_result)) {
@@ -140,7 +140,7 @@ $xoopsTpl->assign('uidselbox', $selbox_blogger->render());
 $sql          = sprintf('SELECT created FROM %s GROUP BY LEFT(from_unixtime(created+%d)+0,6) ORDER BY created DESC', $xoopsDB->prefix($moduleDirName), $useroffset * 3600, '%Y%');
 $month_result = $xoopsDB->query($sql);
 $last_year    = 100000;
-$months       = array('' => _BL_SELECT_ALL);
+$months       = ['' => _BL_SELECT_ALL];
 while ($created_example = $xoopsDB->fetchArray($month_result)) {
     list($this_year, $this_month) = explode(':', date('Y:m', $created_example['created']));
     if ($last_year > $this_year) {
@@ -189,9 +189,9 @@ function makeTplVars()
     $blog['lang_cat_title']  = _BL_CATEGORY;
     $blog['lang_show']       = _BL_SHOW;
 
-    $blog['entries'] = array();
+    $blog['entries'] = [];
     foreach ($results as $entryObject) {
-        $entry               = array();
+        $entry               = [];
         $entry['title']      = sprintf('<a href=\'detail.php?blog_id=%d\'>%s</a>', $entryObject->getVar('blog_id'), $entryObject->getVar('title', 's'));
         $entry['reads']      = $entryObject->getVar('reads');
         $entry['date']       = formatTimestamp($entryObject->getVar('created'), $xoopsModuleConfig['dateformat'], $useroffset);

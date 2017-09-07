@@ -44,7 +44,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
 
         $currentuid = !empty($xoopsUser) ? $xoopsUser->getVar('uid', 'E') : 0;
 
-        $block = array();
+        $block = [];
         $rank  = 0;
 
         $sql    = sprintf('SELECT b.user_id, b.created, u.uname, u.user_avatar, count(b.blog_id) AS count FROM %s AS b, %s AS u', $xoopsDB->prefix($moduleDirName), $xoopsDB->prefix('users'));
@@ -55,7 +55,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
             ++$rank;
 
             // Get the user, and retrieve his avatar
-            $entry         = array();
+            $entry         = [];
             $entry['rank'] = $rank;
 
             // Retrieve his/her avatar
@@ -134,7 +134,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
         }
 
         $myts  = MyTextSanitizer::getInstance();
-        $block = array();
+        $block = [];
 
         require_once sprintf('%s/modules/%s/config.php', XOOPS_ROOT_PATH, $moduleDirName);
         $wb_configs = get_wb_moduleconfig($moduleDirName);
@@ -154,7 +154,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
 
         $alart = false;
         while ($myrow = $xoopsDB->fetchArray($result)) {
-            $entry = array();
+            $entry = [];
             $title = $myts->htmlSpecialChars($myrow['title']);
             if ($block_size != 3) {
                 if (strlen($title) >= $max_size) {
@@ -281,7 +281,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
         $currentuid = !empty($xoopsUser) ? $xoopsUser->getVar('uid', 'E') : 0;
 
         $myts  = MyTextSanitizer::getInstance();
-        $block = array();
+        $block = [];
 
         if (is_object($xoopsUser)) {
             $useroffset = $xoopsUser->timezone() - $xoopsConfig['server_TZ'];
@@ -305,22 +305,29 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
         $wb_configs = get_wb_moduleconfig($moduleDirName);
         list($bl_contents_field, $permission_group_sql) = weblog_create_permissionsql($wb_configs, $moduleDirName);
 
-        $users = array();
+        $users = [];
         $alart = false;
         while ($userrow = $xoopsDB->fetchArray($result_user)) {
             $user_id         = $myts->htmlSpecialChars($userrow['user_id']);
             $user_sortvalue  = ($order_by == 0) ? date($date_format, $myts->htmlSpecialChars($userrow['sort_value'])) : $myts->htmlSpecialChars($userrow['sort_value']);
-            $users[$user_id] = array(
+            $users[$user_id] = [
                 'uname'         => $myts->htmlSpecialChars($userrow['uname']),
                 'avatar_img'    => sprintf('%s/uploads/%s', XOOPS_URL, $myts->htmlSpecialChars($userrow['user_avatar'])),
                 'sort_value'    => $user_sortvalue,
                 'profile_uri'   => sprintf('%s/userinfo.php?uid=%d', XOOPS_URL, $user_id),
                 'user_blog_uri' => sprintf('%s/modules/%s/index.php?user_id=%d', XOOPS_URL, $moduleDirName, $user_id),
-                'entries'       => array()
-            );
+                'entries'       => []
+            ];
             // get user's entries
-            $entry_sql                          = sprintf('SELECT blog_id,user_id,created+%d AS created,title,%s AS contents,`reads`,comments,trackbacks FROM %s AS bl WHERE user_id=%d AND (private=\'N\' OR user_id=\'%d\')  %s ORDER BY created DESC ', $useroffset * 3600, $bl_contents_field,
-                                                          $xoopsDB->prefix($moduleDirName), $user_id, $currentuid, $permission_group_sql);
+            $entry_sql                          = sprintf(
+                'SELECT blog_id,user_id,created+%d AS created,title,%s AS contents,`reads`,comments,trackbacks FROM %s AS bl WHERE user_id=%d AND (private=\'N\' OR user_id=\'%d\')  %s ORDER BY created DESC ',
+                $useroffset * 3600,
+                $bl_contents_field,
+                                                          $xoopsDB->prefix($moduleDirName),
+                $user_id,
+                $currentuid,
+                $permission_group_sql
+            );
             $result_entry                       = $xoopsDB->query($entry_sql, $max_entries, 0);
             $users[$user_id]['entry_num_plus1'] = $xoopsDB->getRowsNum($result_entry) + 1;    // used by template rowspan
             while ($entryrow = $xoopsDB->fetchArray($result_entry)) {
@@ -337,7 +344,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
                 } else {
                     $contents = '';
                 }
-                $users[$user_id]['entries'][] = array(
+                $users[$user_id]['entries'][] = [
                     'created'    => date($date_format, $myts->htmlSpecialChars($entryrow['created'])),
                     'title'      => xoops_substr($myts->htmlSpecialChars($entryrow['title']), 0, $max_size),
                     'contents'   => $contents,
@@ -346,7 +353,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
                     'comments'   => $myts->htmlSpecialChars($entryrow['comments']),
                     'trackbacks' => $myts->htmlSpecialChars($entryrow['trackbacks']),
                     'permission' => bl_permission_alart($entryrow['contents'])
-                );
+                ];
                 if (bl_permission_alart($entryrow['contents'])) {
                     $alart = true;
                 }
@@ -418,10 +425,15 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
         list($bl_contents_field, $permission_group_sql) = weblog_create_permissionsql($wb_configs, $moduleDirName);
 
         $myts                = MyTextSanitizer::getInstance();
-        $block               = array();
-        $block['trackbacks'] = array();
-        $sql                 = sprintf('SELECT bl.user_id, t.blog_id, if(t.tb_url!=\'\',t.tb_url,t.link) AS link , t.blog_name, t.title AS tb_title, t.trackback_created+%d AS trackback_created ,bl.title AS entry_title,%s AS contents FROM %s AS t , %s AS bl', $useroffset * 3600, $bl_contents_field,
-                                       $xoopsDB->prefix($moduleDirName . '_trackback'), $xoopsDB->prefix($moduleDirName));
+        $block               = [];
+        $block['trackbacks'] = [];
+        $sql                 = sprintf(
+            'SELECT bl.user_id, t.blog_id, if(t.tb_url!=\'\',t.tb_url,t.link) AS link , t.blog_name, t.title AS tb_title, t.trackback_created+%d AS trackback_created ,bl.title AS entry_title,%s AS contents FROM %s AS t , %s AS bl',
+            $useroffset * 3600,
+            $bl_contents_field,
+                                       $xoopsDB->prefix($moduleDirName . '_trackback'),
+            $xoopsDB->prefix($moduleDirName)
+        );
         $sql                 = sprintf('%s WHERE t.blog_id=bl.blog_id and (bl.private = \'N\' OR bl.user_id=\'%d\') and t.direction=\'recieved\' %s ', $sql, $currentuid, $permission_group_sql);
         if ($user_id) {
             $sql = sprintf('%s and bl.user_id=%d', $sql, $user_id);
@@ -433,7 +445,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
         $result = $xoopsDB->query($sql, $max_trackbacks, 0);
         $alart  = false;
         while ($myrow = $xoopsDB->fetchArray($result)) {
-            $trackback = array();
+            $trackback = [];
             $tb_title  = $myts->htmlSpecialChars($myrow['tb_title']);
             if ($block_size != 3) {
                 if (strlen($tb_title) >= $max_size) {
@@ -508,10 +520,17 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
         list($bl_contents_field, $permission_group_sql) = weblog_create_permissionsql($wb_configs, $moduleDirName);
 
         $myts              = MyTextSanitizer::getInstance();
-        $block             = array();
-        $block['comments'] = array();
-        $sql               = sprintf('SELECT com_modified+%d AS com_modified, com_uid, com_title, com_itemid, title,%s AS contents, uname FROM %s AS xc , %s AS m , %s AS bl , %s AS u', $useroffset * 3600, $bl_contents_field, $xoopsDB->prefix('xoopscomments'), $xoopsDB->prefix('modules'),
-                                     $xoopsDB->prefix($moduleDirName), $xoopsDB->prefix('users'));
+        $block             = [];
+        $block['comments'] = [];
+        $sql               = sprintf(
+            'SELECT com_modified+%d AS com_modified, com_uid, com_title, com_itemid, title,%s AS contents, uname FROM %s AS xc , %s AS m , %s AS bl , %s AS u',
+            $useroffset * 3600,
+            $bl_contents_field,
+            $xoopsDB->prefix('xoopscomments'),
+            $xoopsDB->prefix('modules'),
+                                     $xoopsDB->prefix($moduleDirName),
+            $xoopsDB->prefix('users')
+        );
         $sql               = sprintf('%s WHERE com_modid=mid and dirname=\'%s\' and (bl.private = \'N\' OR bl.user_id=\'%d\') and blog_id=com_itemid and com_status=2 and (com_uid=uid or com_uid=0) %s group by com_id', $sql, $moduleDirName, $currentuid, $permission_group_sql);
         if ($user_id) {
             $sql = sprintf('%s and bl.user_id=%d', $sql, $user_id);
@@ -523,7 +542,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
         $result = $xoopsDB->query($sql, $max_comments, 0);
         $alart  = false;
         while ($myrow = $xoopsDB->fetchArray($result)) {
-            $comment   = array();
+            $comment   = [];
             $com_title = $myts->htmlSpecialChars($myrow['com_title']);
             if ($block_size != 3) {
                 if (strlen($com_title) >= $max_size) {
@@ -594,8 +613,8 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
         $max_contents_length = $options[3];
         $date_format         = $options[4];
         $show_forbidden_pic  = $options[5];
-        $block               = array();
-        $block['images']     = array();
+        $block               = [];
+        $block['images']     = [];
 
         $currentuid = !empty($xoopsUser) ? $xoopsUser->getVar('uid', 'E') : 0;
         $user_id    = !empty($_GET['user_id']) ? (int)$_GET['user_id'] : 0;
@@ -625,7 +644,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
         $result = $xoopsDB->query($sql, $max_images, 0);
         $alart  = false;
         while ($myrow = $xoopsDB->fetchArray($result)) {
-            $image = array();
+            $image = [];
             $title = '';
             if ($max_title_length > 0) {
                 $title = $myts->htmlSpecialChars($myrow['title']);
@@ -647,7 +666,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
             }
 
             $img_pattern        = "/\[img( align=['\"]?)?(left|center|right)?]([^\"\(\)\?\&'<>]*)\[\/img\]/sU";
-            $image['image_url'] = array();
+            $image['image_url'] = [];
             if (!(!$show_forbidden_pic && $image['permission'])) {
                 if (preg_match_all($img_pattern, $myrow['contents'], $matches)) {
                     $image['image_uri'] = str_replace($wb_configs['weblog_myalbum_photospath'], $wb_configs['weblog_myalbum_thumbspath'], $matches[3]);
@@ -708,9 +727,9 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
         $array   = $cattree->getChildTreeArray(0, $sort_order);
 
         $myts  = MyTextSanitizer::getInstance();
-        $block = array();
+        $block = [];
         foreach ($array as $cat) {
-            $category              = array();
+            $category              = [];
             $category['cat_id']    = $cat['cat_id'];
             $category['cat_title'] = $myts->htmlSpecialChars($cat['cat_title']);
             $count_sql             = sprintf("SELECT count(*) FROM %s WHERE (user_id=%d OR private='N') AND cat_id=%d ", $xoopsDB->prefix($moduleDirName), $currentuid, $cat['cat_id']);
@@ -781,7 +800,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
     {
         global $xoopsDB;
 
-        $config = array();
+        $config = [];
         $sql    = sprintf('SELECT conf_name,conf_value FROM %s,%s WHERE mid=conf_modid AND dirname=\'%s\' ', $xoopsDB->prefix('config'), $xoopsDB->prefix('modules'), $moduleDirName);
         $result = $xoopsDB->query($sql);
         while ($rows = $xoopsDB->fetchArray($result)) {

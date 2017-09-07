@@ -409,6 +409,7 @@ function XML_RPC_ee($parser_resource, $name)
             $XML_RPC_xh[$parser]['vt'] = strtolower($name);
         // Drop through intentionally.
 
+        // no break
         case 'I4':
         case 'INT':
         case 'STRING':
@@ -1914,6 +1915,7 @@ function XML_RPC_encode($php_val)
             }
         // fall though if it's not an enumerated array
 
+        // no break
         case 'object':
             $arr = array();
             foreach ($php_val as $k => $v) {

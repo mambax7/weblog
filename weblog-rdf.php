@@ -13,8 +13,8 @@ if (!$isAdmin && !checkprivilege('read_index', $xoopsModule->dirname())) {
 
 // get PEAR::XML_Serializer
 require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname() . '/include/PEAR/XML/Serializer.php';
-$item_data = array();
-$data      = array();
+$item_data = [];
+$data      = [];
 
 // obtain GET/POST parameters
 $user_id = !empty($_GET['user_id']) ? (int)$_GET['user_id'] : 0;
@@ -42,7 +42,7 @@ if ($user_id > 0) {
 $results = $weblog->getEntries(0, $user_id, 0, $max);
 $sign    = ($xoopsConfig['default_TZ'] >= 0) ? '+' : '-';
 foreach ($results as $entryObject) {
-    $item                = array();
+    $item                = [];
     $data_excerpt        = '';
     $dc_creator          = $entryObject->getVar('uname');
     $item['title']       = encoding_set($entryObject->getVar('title', 'e'), 'UTF-8');
@@ -51,11 +51,11 @@ foreach ($results as $entryObject) {
     $item['dc:creator']  = $entryObject->getVar('uname');
     $description         = preg_replace("|<br\s*\>|i", "\n", $entryObject->getVar('contents', 's', $entryObject->getVar('blog_id'), 'rss'));
     $item['description'] = encoding_set(xoops_substr(htmlspecialchars(strip_tags($description), ENT_QUOTES), 0, WEBLOG_TB_EXCERPT_NUM), 'UTF-8');
-    $item['_attributes'] = array('rdf:about' => $item['link']);
+    $item['_attributes'] = ['rdf:about' => $item['link']];
     $item_data[]         = $item;
 }
 
-$options = array(
+$options = [
     'mode'            => 'simplexml',
     'indent'          => '    ',
     'linebreak'       => "\n",
@@ -63,26 +63,26 @@ $options = array(
     'addDecl'         => true,
     'encoding'        => 'utf-8',
     'rootName'        => 'rdf:RDF',
-    'rootAttributes'  => array(
+    'rootAttributes'  => [
         'xmlns'         => 'http://purl.org/rss/1.0/',
         'xmlns:rdf'     => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         'xmlns:dc'      => 'http://purl.org/dc/elements/1.1/',
         'xmlns:sy'      => 'http://purl.org/rss/1.0/modules/syndication/',
         'xmlns:admin'   => 'http://webns.net/mvcb/',
         'xmlns:content' => 'http://purl.org/rss/1.0/modules/content/'
-    ),
+    ],
     'defaultTagName'  => 'item',
     'attributesArray' => '_attributes'
-);
+];
 
-$data['channel'] = array(
+$data['channel'] = [
     'title'       => encoding_set($xoopsModule->getVar('name'), 'UTF-8'),
     'link'        => XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/',
     'description' => encoding_set($xoopsConfig['sitename'], 'UTF-8'),
     'dc:language' => _LANGCODE,
     'dc:creator'  => encoding_set($dc_creator, 'UTF-8'),
-    '_attributes' => array('rdf:about' => XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/')
-);
+    '_attributes' => ['rdf:about' => XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/']
+];
 
 for ($item_num = 0; $item_num < count($item_data); ++$item_num) {
     $data['channel']['items']['rdf:Seq']['rdf:li'][$item_num]['_attributes']['rdf:resource'] = $item_data[$item_num]['link'];

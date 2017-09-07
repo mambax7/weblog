@@ -186,7 +186,7 @@ function checkTables()
     $adminObject->displayNavigation(basename(__FILE__));
 
     // checking table 'weblog'
-    $columns = array(
+    $columns = [
         'blog_id',
         'user_id',
         'cat_id',
@@ -200,22 +200,22 @@ function checkTables()
         'permission_group',
         'dohtml',
         'dobr'
-    );
+    ];
     checkTable($moduleDirName, $columns);
 
     echo '<br>';
     // checking table 'weblog_category'
-    $columns = array('cat_id', 'cat_pid', 'cat_title', 'cat_description', 'cat_created', 'cat_imgurl');
+    $columns = ['cat_id', 'cat_pid', 'cat_title', 'cat_description', 'cat_created', 'cat_imgurl'];
     checkTable($moduleDirName . '_category', $columns);
 
     echo '<br>';
     // checking table 'weblog_priv'
-    $columns = array('priv_id', 'priv_gid');
+    $columns = ['priv_id', 'priv_gid'];
     checkTable($moduleDirName . '_priv', $columns);
 
     echo '<br>';
     // checking table 'weblog_trackback'
-    $columns = array(
+    $columns = [
         'blog_id',
         'tb_url',
         'blog_name',
@@ -224,18 +224,18 @@ function checkTables()
         'link',
         'direction',
         'trackback_created'
-    );
+    ];
     checkTable($moduleDirName . '_trackback', $columns);
 
     echo '<br>';
     // checking table 'weblogmyalbum_photos'
-    $columns = array('lid', 'cid', 'title', 'ext', 'res_x', 'res_y', 'submitter', 'status', 'date');
+    $columns = ['lid', 'cid', 'title', 'ext', 'res_x', 'res_y', 'submitter', 'status', 'date'];
     checkTable($moduleDirName . 'myalbum_photos', $columns);
 
     xoops_cp_footer();
 }
 
-function checkTable($table, $columns = array())
+function checkTable($table, $columns = [])
 {
     global $xoopsDB, $moduleDirName;
 
@@ -253,13 +253,13 @@ function checkTable($table, $columns = array())
     // if table does not exist or table does not have rows
     //if (!$table_exist || !$row_exist) {
     if (!$table_exist) {
-        $hidden = array(0 => $table);
+        $hidden = [0 => $table];
         echo tableRow(sprintf(_AM_WEBLOG_CREATETABLE, $table), sprintf(_AM_WEBLOG_CREATETABLEDSC, $table), 'addtable', $hidden);
         // table does exist and columns are missing
     } else {
         $sql    = sprintf('SHOW COLUMNS FROM %s', $xoopsDB->prefix($table));
         $result = $xoopsDB->query($sql);
-        $fields = array();
+        $fields = [];
         while (list($field) = $xoopsDB->fetchRow($result)) {
             $fields[] = $field;
         }
@@ -270,7 +270,7 @@ function checkTable($table, $columns = array())
                     continue 2;
                 }
             }
-            $hidden = array(0 => $table, 1 => $column);
+            $hidden = [0 => $table, 1 => $column];
             echo tableRow(sprintf(_AM_WEBLOG_ADD, $column), sprintf(_AM_WEBLOG_ADDDSC, $column), 'addcolumn', $hidden);
             $alter = true;
         }

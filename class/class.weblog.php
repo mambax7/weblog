@@ -257,7 +257,7 @@ class Weblog
      * @param int   $user_id
      * @return
      */
-    public function getCountByCategoryArray($currentuid, $cid_array = array(), $user_id = 0)
+    public function getCountByCategoryArray($currentuid, $cid_array = [], $user_id = 0)
     {
         $criteria = new criteriaCompo(new criteria('user_id', $currentuid));
         $criteria->add(new criteria('private', 'N'), 'OR');
@@ -326,7 +326,7 @@ class Weblog
      */
     public function getLatestEntriesByCategoryArray(
         $currentuid,
-        $cid_array = array(),
+        $cid_array = [],
         $user_id = 0,
         $start = 0,
         $perPage = 0,
@@ -365,7 +365,7 @@ class Weblog
      */
     public function getEntriesByCategoryArray(
         $currentuid,
-        $cid_array = array(),
+        $cid_array = [],
         $user_id = 0,
         $start = 0,
         $perPage = 0,

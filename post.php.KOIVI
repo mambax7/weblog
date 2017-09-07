@@ -256,7 +256,6 @@ if (!empty($_POST['post'])) {
     }
     // redirect
     redirect_header($pageUri, 2, $trackback_result_msg . $common_ping_result_msg . _BL_ENTRY_POSTED );
-    exit();
   } else {
     redirect_header(sprintf('%s/modules/%s/index.php', XOOPS_URL, $xoopsModule->dirname()),
                     5, _BL_ANON_CANNOT_POST_SORRY);

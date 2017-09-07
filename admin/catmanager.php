@@ -86,7 +86,7 @@ function getCategory($post)
     $cat->setVar('cat_title', isset($post['cat_title']) ? $post['cat_title'] : '');
     $cat->setVar('cat_description', isset($post['desc']) ? $post['desc'] : '');
     $cat->setVar('cat_imgurl', isset($post['imgurl']) ? $post['imgurl'] : '');
-    $cat->setVar('postgroup', isset($post['postgroup']) ? $post['postgroup'] : array());
+    $cat->setVar('postgroup', isset($post['postgroup']) ? $post['postgroup'] : []);
 
     return $cat;
 }
@@ -104,7 +104,7 @@ function catManager()
 
     require_once sprintf('%s/modules/%s/class/class.weblogcategories.php', XOOPS_ROOT_PATH, $xoopsModule->dirname());
     require_once sprintf('%s/modules/%s/admin/mygrouppermform.php', XOOPS_ROOT_PATH, $xoopsModule->dirname());
-    require_once sprintf('%s/modules/%s/include/gtickets.php', XOOPS_ROOT_PATH, $xoopsModule->dirname());
+//    require_once sprintf('%s/modules/%s/include/gtickets.php', XOOPS_ROOT_PATH, $xoopsModule->dirname());
 
     //    xoops_cp_header();
     //    echo sprintf('<h4>%s&nbsp;&raquo;&raquo;&nbsp;%s</h4>', indexLink(), _AM_WEBLOG_CATMANAGER);
@@ -142,7 +142,7 @@ function catManager()
     if (isset($xoopsModuleConfig['category_post_permission']) && $xoopsModuleConfig['category_post_permission']) {
         $wb_cat_array = $weblogcats->getChildTreeArray();
 
-        $global_perms_array = array();
+        $global_perms_array = [];
         foreach ($wb_cat_array as $category_data) {
             $global_perms_array[$category_data['cat_id']] = $category_data['cat_title'];
         }
@@ -206,7 +206,7 @@ function delCategory($post, $get)
     if (!isset($post['ok']) || $post['ok'] != 1) {
         $category = $catHandler->get($get['cat_id']);
         xoops_cp_header();
-        xoops_confirm(array('action' => 'delCat', 'cat_id' => (int)$get['cat_id'], 'ok' => 1), 'catmanager.php', sprintf(_AM_WEBLOG_DELCONFIRM, $category->getVar('cat_title')));
+        xoops_confirm(['action' => 'delCat', 'cat_id' => (int)$get['cat_id'], 'ok' => 1], 'catmanager.php', sprintf(_AM_WEBLOG_DELCONFIRM, $category->getVar('cat_title')));
         xoops_cp_footer();
     } else {
         $entryHandler = xoops_getModuleHandler('entry');
@@ -339,7 +339,6 @@ function modifyCategory($post)
         $cat_title    = $wb_cat->getVar('cat_title', 's');
     } else {
         redirect_header('catmanager.php', 2, _AM_WEBLOG_CATNOTMODED);
-        exit();
     }
 
     xoops_cp_header();
@@ -356,9 +355,15 @@ function modifyCategory($post)
     }
     $form_add->addElement(new XoopsFormHidden('cat_id', $cat_id));
     $form_add->addElement(new XoopsFormHidden('action', 'modCatS'));
-    $form_add->addElement(new XoopsFormLabel(_AM_WEBLOG_CAT_OPERATE,
-                                             sprintf('<input type=submit value=\'%s\'>', _AM_WEBLOG_MODIFY) . '&nbsp;' . sprintf('<input type=button value=\'%s\' onClick="location=\'catmanager.php?cat_pid=%d&amp;cat_id=%d&amp;action=delCat\'">', _AM_WEBLOG_DELETE, $wb_cat->getVar('cat_pid'),
-                                                                                                                                 $wb_cat->getVar('cat_id')) . '&nbsp;' . sprintf('<input type=button value="%s"  onclick="location=\'catmanager.php\'">', _AM_WEBLOG_CANCEL)));
+    $form_add->addElement(new XoopsFormLabel(
+        _AM_WEBLOG_CAT_OPERATE,
+                                             sprintf('<input type=submit value=\'%s\'>', _AM_WEBLOG_MODIFY) . '&nbsp;' . sprintf(
+                                                 '<input type=button value=\'%s\' onClick="location=\'catmanager.php?cat_pid=%d&amp;cat_id=%d&amp;action=delCat\'">',
+                                                 _AM_WEBLOG_DELETE,
+                                                 $wb_cat->getVar('cat_pid'),
+                                                                                                                                 $wb_cat->getVar('cat_id')
+                                             ) . '&nbsp;' . sprintf('<input type=button value="%s"  onclick="location=\'catmanager.php\'">', _AM_WEBLOG_CANCEL)
+    ));
 
     $form_add->display();
 

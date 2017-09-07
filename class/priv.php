@@ -24,7 +24,7 @@
  *
  */
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS Root Path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 require_once XOOPS_ROOT_PATH . '/kernel/object.php';
 
@@ -148,7 +148,7 @@ if (!class_exists('WeblogPrivBase')) {
 
         public function &getObjects($criteria = null, $id_as_key = false)
         {
-            $ret   = array();
+            $ret   = [];
             $limit = $start = 0;
 
             $sql = sprintf('SELECT p.priv_id, p.priv_gid, g.name FROM %s AS p, %s AS g', $this->db->prefix($this->moduleDirName . '_priv'), $this->db->prefix('groups'));

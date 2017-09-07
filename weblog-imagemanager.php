@@ -19,7 +19,6 @@ if (!is_object($xoopsUser)
     || !$xoopsUser->isAdmin($xoopsModule->mid())
        && (!checkprivilege('edit', $xoopsModule->dirname()))) {
     redirect_header($mod_url . '/weblog-imagemanager_close.php', 5, _BL_ALBM_MUSTREGFIRST);
-    exit();
 } else {
     $post_privilege = true;
 }
@@ -39,7 +38,6 @@ $lid = empty($_POST['lid']) ? 0 : (int)$_POST['lid'];
 if (!empty($_POST['do_delete'])) {
     if (!$GLOBALS['xoopsSecurity']->check()) {
         redirect_header($mod_url . '/weblog-imagemanager.php?target=contents', 3, $GLOBALS['xoopsSecurity']->getErrors());
-        exit();
     }
     /*  if ( ! ( $global_perms & GPERM_DELETABLE ) ) {
             redirect_header( $mod_url. "weblog-imagemanager.php?target=contents" , 3 , _NOPERM ) ;
@@ -62,14 +60,12 @@ if (!empty($_POST['do_delete'])) {
     myalbum_delete_photos($whr);
 
     redirect_header($mod_url . '/weblog-imagemanager.php?target=contents', 3, _BL_ALBM_DELETINGPHOTO);
-    exit;
 }
 
 // Confirm Delete
 if (isset($_POST['op']) && $_POST['op'] == 'conf_delete') {
     if (!$GLOBALS['xoopsSecurity']->check()) {
         redirect_header($mod_url . '/weblog-imagemanager.php?target=contents', 3, $GLOBALS['xoopsSecurity']->getErrors());
-        exit();
     }
     /*  if ( ! ( $global_perms & GPERM_DELETABLE ) ) {
             redirect_header( $mod_url . "weblog-imagemanager.php?target=contents" , 3 , _NOPERM ) ;
@@ -130,7 +126,7 @@ if (count($cats) > 0) {
     $cat_options = "<option value='0'>--</option>\n";
     //  $prs = $xoopsDB->query( "SELECT cid,COUNT(lid) FROM $table_photos WHERE status>0 AND $whr_ext GROUP BY cid" ) ;
     $prs          = $xoopsDB->query("SELECT cid,COUNT(lid) FROM $table_photos WHERE $whr_ext GROUP BY cid");
-    $photo_counts = array();
+    $photo_counts = [];
     while (list($c, $p) = $xoopsDB->fetchRow($prs)) {
         $photo_counts[$c] = $p;
     }
@@ -202,7 +198,7 @@ if (count($cats) > 0) {
                 $xcodebl = "[$img_tag align=left]$pdir/{$lid}.{$ext}[/$img_tag]";
                 $xcodebc = "[$img_tag]$pdir/{$lid}.{$ext}[/$img_tag]";
                 $xcodebr = "[$img_tag align=right]$pdir/{$lid}.{$ext}[/$img_tag]";
-                $xoopsTpl->append('photos', array(
+                $xoopsTpl->append('photos', [
                     'lid'        => $lid,
                     'ext'        => $ext,
                     'res_x'      => $res_x,
@@ -220,7 +216,7 @@ if (count($cats) > 0) {
                     'xcodebr'    => $xcodebr,
                     'is_normal'  => $is_normal,
                     'count'      => ++$i
-                ));
+                ]);
             }
         } else {
             $xoopsTpl->assign('image_total', 0);

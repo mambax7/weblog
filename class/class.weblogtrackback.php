@@ -32,12 +32,12 @@ require_once sprintf('%s/modules/%s/include/encode_set.inc.php', XOOPS_ROOT_PATH
 class Weblog_Trackback_Operator extends Net_TrackBack
 {
     public $handler;
-    public $tb_result  = array();
+    public $tb_result  = [];
     public $user_agent = 'Xoops WeBlog TrackBack System';
     public $sender_ip;     // hodaka
 
     //  var $post_trackback_urls=array() ;
-    public $post_trackback_data = array();
+    public $post_trackback_data = [];
 
     public function __construct()
     {
@@ -86,13 +86,13 @@ class Weblog_Trackback_Operator extends Net_TrackBack
     public function get_Trackback_Url($entry, $old_trackbackurl)
     {
         // create $post_trackback_urls
-        $trackback_url_array = array();
+        $trackback_url_array = [];
         if ($entry->getVar('blog_id') == 0 || !$old_trackbackurl) {
             $trackback_url_add_array = explode("\n", trim($entry->getVar('ent_trackbackurl')));
-            $trackback_url_del_array = array();
+            $trackback_url_del_array = [];
         } else {
-            $old_trackbackurl_array = array();
-            $new_trackbackurl_array = array();
+            $old_trackbackurl_array = [];
+            $new_trackbackurl_array = [];
             foreach (explode("\n", trim($old_trackbackurl)) as $key => $value) {
                 if ($value = trim($value)) {
                     array_push($old_trackbackurl_array, $value);
@@ -135,7 +135,7 @@ class Weblog_Trackback_Operator extends Net_TrackBack
             return true;
         }
 
-        $data            = array();
+        $data            = [];
         $data['url']     = $blog_url;
         $data['title']   = encoding_set($entry->getVar('title', 'n'), 'UTF-8');
         $data['excerpt'] = $entry->getVar('contents', 's', $entry->getVar('blog_id'), 'trackback');
@@ -151,7 +151,7 @@ class Weblog_Trackback_Operator extends Net_TrackBack
     public function Set_Trackback_Values(&$trackback, $tb_rss_data, $trackback_url, $direction, $entry = null)
     {
         // init $tb_rss_data
-        $tb_rss_key = array('blog_id', 'blog_name', 'title', 'description', 'link');
+        $tb_rss_key = ['blog_id', 'blog_name', 'title', 'description', 'link'];
         foreach ($tb_rss_key as $key) {
             if (!isset($tb_rss_data[$key])) {
                 $tb_rss_data[$key] = '';
@@ -208,7 +208,7 @@ class Weblog_Trackback_Operator extends Net_TrackBack
             }
 
             // in case keywords are specified by xoopsModuleConfig
-            $bannedwords = !empty($GLOBALS['xoopsModuleConfig']['spam_word']) ? explode('|', $GLOBALS['xoopsModuleConfig']['spam_word']) : array();
+            $bannedwords = !empty($GLOBALS['xoopsModuleConfig']['spam_word']) ? explode('|', $GLOBALS['xoopsModuleConfig']['spam_word']) : [];
             foreach ($bannedwords as $banned) {
                 if (empty($banned)) {
                     continue;
@@ -275,7 +275,7 @@ class Weblog_Trackback_Operator extends Net_TrackBack
             $tb_url    = trim($tb_url, '?');
             $url_array = parse_url($tb_url);
             if ($url_array['scheme'] === 'http' && $url_array['host'] && $url_array['path']) {
-                $params = array('method' => HTTP_REQUEST_METHOD_GET);
+                $params = ['method' => HTTP_REQUEST_METHOD_GET];
                 if (preg_match("/\?/", $url_array['path'])) {
                     $tb_url .= '&__mode=rss';
                 } else {
@@ -296,7 +296,7 @@ class Weblog_Trackback_Operator extends Net_TrackBack
 
     public function Parse_XML($xml)
     {
-        $data = array('encoding' => '');
+        $data = ['encoding' => ''];
         if (trim($xml)) {
             foreach (explode("\n", $xml) as $xml_line) {
                 if (preg_match("/<\?xml.+encoding=[\"\']+([^\"]+)[\"\']+\?>/i", $xml_line, $match)) {
@@ -338,7 +338,7 @@ class Weblog_Trackback_Operator extends Net_TrackBack
     public function check_RBL()
     {
         // get rbllist
-        $rbllist = !empty($GLOBALS['xoopsModuleConfig']['rbllist']) ? $GLOBALS['xoopsModuleConfig']['rbllist'] : array();
+        $rbllist = !empty($GLOBALS['xoopsModuleConfig']['rbllist']) ? $GLOBALS['xoopsModuleConfig']['rbllist'] : [];
         if (!count($rbllist)) {
             return true;
         }
@@ -360,12 +360,12 @@ class Weblog_Trackback_Operator extends Net_TrackBack
 
     public function getIP()
     {
-        $ip_private_list = array(
+        $ip_private_list = [
             '127.0.0./8',
             '10.0.0.0/8',
             '172.16.0.0/12',
             '192.168.0.0/16'
-        );
+        ];
         $ip              = 'unknown';
         $ip_array        = $this->getIpArray();
 
@@ -433,7 +433,7 @@ class Weblog_Trackback_Operator extends Net_TrackBack
             $body        .= '[body]' . encoding_set($tb_rss_data['description'], _CHARSET, $tb_rss_data['encoding']) . "\n";
             $body        .= '[url]' . $tb_rss_data['link'] . "\n";
             $body        .= '[ip]' . $this->sender_ip . "\n";
-            $xoopsMailer = &xoops_getMailer();
+            $xoopsMailer = xoops_getMailer();
             $xoopsMailer->useMail();
             $xoopsMailer->setToEmails($sendaddress);
             $xoopsMailer->setFromEmail($GLOBALS['xoopsConfig']['adminmail']);

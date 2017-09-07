@@ -30,7 +30,7 @@ function indexLink()
     return sprintf('<a href=\'%s/modules/%s/admin/index.php\'>%s</a>', XOOPS_URL, $xoopsModule->dirname(), _AM_WEBLOG_CONFIG);
 }
 
-function tableRow($title, $description, $action = '', $hidden = array())
+function tableRow($title, $description, $action = '', $hidden = [])
 {
     $html = sprintf("<tr valign='top' align='left'><td class='head'>%s<br><br><span style='font-weight:normal;'>%s</span></td>", $title, $description);
     if ($action != '') {

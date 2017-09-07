@@ -12,7 +12,7 @@ require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/myalbum_
 // require_once XOOPS_ROOT_PATH."/modules/".$moduleDirName ."/include/myalbum_imagemanager/include/get_perms.php";
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/myalbum_imagemanager/include/functions.php';
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/myalbum_imagemanager/include/draw_functions.php';
-require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/gtickets.php';
+//require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/gtickets.php';
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/class.weblogtree.php';
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/myalbum_imagemanager/class/myuploader.php';
 require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/myalbum_imagemanager/class/myalbum.textsanitizer.php';
@@ -23,7 +23,6 @@ if (!is_object($xoopsUser)
     || !$xoopsUser->isAdmin($xoopsModule->mid())
        && (!checkprivilege('edit', $xoopsModule->dirname()))) {
     redirect_header($mod_url . '/weblog-imagemanager_close.php', 5, _BL_ALBM_MUSTREGFIRST);
-    exit();
 } else {
     $post_privilege = true;
 }
@@ -49,7 +48,6 @@ $result = $xoopsDB->query("SELECT count(cat_id) as count FROM $table_cat");
 list($count) = $xoopsDB->fetchRow($result);
 if ($count < 1) {
     redirect_header(XOOPS_URL . "/modules/$moduleDirName/weblog-imagemanager_post.php", 2, _BL_ALBM_MUSTADDCATFIRST);
-    exit;
 }
 
 // check file_uploads = on
@@ -64,13 +62,11 @@ $safe_mode_flag = ini_get('safe_mode');
 if (!is_dir($photos_dir)) {
     if ($safe_mode_flag) {
         redirect_header(XOOPS_URL . "/modules/$moduleDirName/weblog-imagemanager_post.php", 10, "At first create & chmod 777 '$photos_dir' by ftp or shell.");
-        exit;
     }
 
     $rs = mkdir($photos_dir, 0777);
     if (!$rs) {
         redirect_header(XOOPS_URL . "/modules/$moduleDirName/weblog-imagemanager_post.php", 10, "$photos_dir is not a directory");
-        exit;
     } else {
         @chmod($photos_dir, 0777);
     }
@@ -80,13 +76,11 @@ if (!is_dir($photos_dir)) {
 if ($myalbum_makethumb && !is_dir($thumbs_dir)) {
     if ($safe_mode_flag) {
         redirect_header(XOOPS_URL . "/modules/$moduleDirName/weblog-imagemanager_post.php", 10, "At first create & chmod 777 '$thumbs_dir' by ftp or shell.");
-        exit;
     }
 
     $rs = mkdir($thumbs_dir, 0777);
     if (!$rs) {
         redirect_header(XOOPS_URL . "/modules/$moduleDirName/weblog-imagemanager_post.php", 10, "$thumbs_dir is not a directory");
-        exit;
     } else {
         @chmod($thumbs_dir, 0777);
     }
@@ -97,7 +91,6 @@ if (!is_writable($photos_dir) || !is_readable($photos_dir)) {
     $rs = chmod($photos_dir, 0777);
     if (!$rs) {
         redirect_header(XOOPS_URL . "/modules/$moduleDirName/weblog-imagemanager_post.php", 5, "chmod 0777 into $photos_dir failed");
-        exit;
     }
 }
 
@@ -106,7 +99,6 @@ if ($myalbum_makethumb && !is_writable($thumbs_dir)) {
     $rs = chmod($thumbs_dir, 0777);
     if (!$rs) {
         redirect_header(XOOPS_URL . "/modules/$moduleDirName/weblog-imagemanager_post.php", 5, "chmod 0777 into $thumbs_dir failed");
-        exit;
     }
 }
 
@@ -125,7 +117,6 @@ if (!empty($_POST['submit'])) {
     // Check if cid is valid
     if ($cid <= 0) {
         redirect_header(XOOPS_URL . "/modules/$moduleDirName/weblog-imagemanager_post.php", 2, 'Category is not specified.');
-        exit;
     }
 
     // Check if upload file name specified
@@ -147,7 +138,6 @@ if (!empty($_POST['submit'])) {
         } else {
             if (empty($myalbum_allownoimage)) {
                 redirect_header('weblog-imagemanager_post.php', 2, _BL_ALBM_NOIMAGESPECIFIED);
-                exit;
             } else {
                 @copy("$mod_path/assets/images/pixel_trans.gif", "$photos_dir/pixel_trans.gif");
                 $tmp_name = 'pixel_trans.gif';
@@ -156,7 +146,6 @@ if (!empty($_POST['submit'])) {
     } elseif ($_FILES[$field]['tmp_name'] == '') {
         // Fail to upload (wrong file name etc.)
         redirect_header('weblog-imagemanager_post.php', 2, _BL_ALBM_FILEERROR);
-        exit;
     } else {
         if ($myalbum_canresize) {
             $uploader = new MyXoopsMediaUploader($photos_dir, $array_allowed_mimetypes, $myalbum_fsize, null, null, $array_allowed_exts);
@@ -188,7 +177,6 @@ if (!empty($_POST['submit'])) {
 
     if (!is_readable("$photos_dir/$tmp_name")) {
         redirect_header(XOOPS_URL . "/modules/$moduleDirName/weblog-imagemanager_post.php", 2, _BL_ALBM_FILEREADERROR);
-        exit;
     }
 
     $title = $myts->stripSlashesGPC($_POST['title']);
@@ -212,7 +200,6 @@ if (!empty($_POST['submit'])) {
     if (!myalbum_create_thumb("$photos_dir/$newid.$ext", $newid, $ext)) {
         $xoopsDB->query("DELETE FROM $table_photos WHERE lid=$newid");
         redirect_header(XOOPS_URL . "/modules/$moduleDirName/weblog-imagemanager_post.php", 2, _BL_ALBM_FILEREADERROR);
-        exit;
     }
 
     //  $xoopsDB->query( "INSERT INTO $table_text (lid, description) VALUES ($newid, '".addslashes($desc_text)."')") || die( "DB error: INSERT text table" ) ;
@@ -240,7 +227,6 @@ if (!empty($_POST['submit'])) {
     //  if( $caller == 'imagemanager' ) $redirect_uri = 'close.php' ;
     $redirect_uri = XOOPS_URL . "/modules/$moduleDirName/weblog-imagemanager_close.php";
     redirect_header($redirect_uri, 2, _BL_ALBM_RECEIVED);
-    exit;
 }
 
 // Editing Display
@@ -317,11 +303,11 @@ if ( $caller != 'imagemanager' && ! empty( $_POST['preview'] ) ) {
 
 } else {
 */
-$photo = array(
+$photo = [
     'cid'         => empty($_GET['cid']) ? 0 : (int)$_GET['cid'],
     'description' => '',
     'title'       => ''
-);
+];
 //}
 
 // Show the form

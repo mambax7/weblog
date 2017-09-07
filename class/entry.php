@@ -24,7 +24,7 @@
  *
  */
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS Root Path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 require_once XOOPS_ROOT_PATH . '/kernel/object.php';
 
@@ -213,8 +213,14 @@ if (!class_exists('WeblogEntryBase')) {
             // use permission system or show title ?
             list($bl_contents_field, $permission_group_sql) = weblog_create_permissionsql();
             if ($blog_id > 0) {
-                $sql = sprintf('SELECT bl.blog_id, bl.user_id, bl.cat_id, bl.created, bl.title, %s AS contents, bl.private, bl.comments, bl.`reads`, bl.dohtml, bl.dobr, bl.trackbacks, bl.permission_group, u.uname, u.user_avatar FROM %s AS bl, %s AS u WHERE blog_id=%d AND bl.user_id=u.uid %s',
-                               $bl_contents_field, $this->db->prefix($this->moduleDirName), $this->db->prefix('users'), $blog_id, $permission_group_sql);
+                $sql = sprintf(
+                    'SELECT bl.blog_id, bl.user_id, bl.cat_id, bl.created, bl.title, %s AS contents, bl.private, bl.comments, bl.`reads`, bl.dohtml, bl.dobr, bl.trackbacks, bl.permission_group, u.uname, u.user_avatar FROM %s AS bl, %s AS u WHERE blog_id=%d AND bl.user_id=u.uid %s',
+                               $bl_contents_field,
+                    $this->db->prefix($this->moduleDirName),
+                    $this->db->prefix('users'),
+                    $blog_id,
+                    $permission_group_sql
+                );
                 if ($result = $this->db->query($sql)) {
                     if ($this->db->getRowsNum($result) == 1) {
                         $result = $entry = $this->create();
@@ -255,7 +261,7 @@ if (!class_exists('WeblogEntryBase')) {
 
                 $memberHandler = xoops_getHandler('group');
                 $groups        = $memberHandler->getObjects();
-                $group_array   = array();
+                $group_array   = [];
                 foreach ($groups as $group) {
                     if ($group->getVar('groupid') == 1) {
                         continue;
@@ -290,11 +296,35 @@ if (!class_exists('WeblogEntryBase')) {
             }
             // create sql
             if ($blog_id > 0 && $count > 0) {
-                $sql = sprintf('UPDATE %s SET user_id=%d, cat_id=%d, created=%s, title=%s, contents=%s, private=%s, dohtml=%d, dobr=%d %s WHERE blog_id=%d', $this->db->prefix($this->moduleDirName), $user_id, $cat_id, $created, $this->db->quoteString($title), $this->db->quoteString($contents),
-                               $this->db->quoteString($private), $dohtml, $dobr, $permission_group_field . $permission_group_value, $blog_id);
+                $sql = sprintf(
+                    'UPDATE %s SET user_id=%d, cat_id=%d, created=%s, title=%s, contents=%s, private=%s, dohtml=%d, dobr=%d %s WHERE blog_id=%d',
+                    $this->db->prefix($this->moduleDirName),
+                    $user_id,
+                    $cat_id,
+                    $created,
+                    $this->db->quoteString($title),
+                    $this->db->quoteString($contents),
+                               $this->db->quoteString($private),
+                    $dohtml,
+                    $dobr,
+                    $permission_group_field . $permission_group_value,
+                    $blog_id
+                );
             } else {
-                $sql = sprintf('INSERT INTO %s (user_id, cat_id, created, title, contents, private, dohtml, dobr %s) VALUES (%d, %d, %d, %s, %s, %s, %d, %d %s)', $this->db->prefix($this->moduleDirName), $permission_group_field, $user_id, $cat_id, $created, $this->db->quoteString($title),
-                               $this->db->quoteString($contents), $this->db->quoteString($private), $dohtml, $dobr, $permission_group_value);
+                $sql = sprintf(
+                    'INSERT INTO %s (user_id, cat_id, created, title, contents, private, dohtml, dobr %s) VALUES (%d, %d, %d, %s, %s, %s, %d, %d %s)',
+                    $this->db->prefix($this->moduleDirName),
+                    $permission_group_field,
+                    $user_id,
+                    $cat_id,
+                    $created,
+                    $this->db->quoteString($title),
+                               $this->db->quoteString($contents),
+                    $this->db->quoteString($private),
+                    $dohtml,
+                    $dobr,
+                    $permission_group_value
+                );
             }
             //      echo $sql ;
             if (!$result = $this->db->query($sql)) {  // must be query()
@@ -345,13 +375,18 @@ if (!class_exists('WeblogEntryBase')) {
 
         public function &getObjects($criteria = null, $id_as_key = false, $contents_mode = 'detail', $useroffset = 0)
         {
-            $ret   = array();
+            $ret   = [];
             $limit = $start = 0;
             // use permission system or show title ?
             list($bl_contents_field, $permission_group_sql) = weblog_create_permissionsql();
             // sql main
-            $sql = sprintf('SELECT bl.blog_id, bl.user_id, bl.cat_id, bl.created+%d AS created, bl.title, %s AS contents, bl.private, bl.comments, bl.`reads`, bl.trackbacks, bl.permission_group, bl.dohtml, bl.dobr, bl.trackbacks, u.uname, u.user_avatar FROM %s AS bl, %s AS u ', $useroffset * 3600,
-                           $bl_contents_field, $this->db->prefix($this->moduleDirName), $this->db->prefix('users'));
+            $sql = sprintf(
+                'SELECT bl.blog_id, bl.user_id, bl.cat_id, bl.created+%d AS created, bl.title, %s AS contents, bl.private, bl.comments, bl.`reads`, bl.trackbacks, bl.permission_group, bl.dohtml, bl.dobr, bl.trackbacks, u.uname, u.user_avatar FROM %s AS bl, %s AS u ',
+                $useroffset * 3600,
+                           $bl_contents_field,
+                $this->db->prefix($this->moduleDirName),
+                $this->db->prefix('users')
+            );
             // criteria
             if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
                 $sql .= sprintf(' %s %s %s', $criteria->renderWhere(), 'AND bl.user_id=u.uid ', $permission_group_sql);
@@ -441,7 +476,7 @@ if (!class_exists('WeblogEntryBase')) {
 
         public function getPrevNextBlog_id($blog_id, $created, $criteria)
         {
-            $return_id = array();
+            $return_id = [];
             $blog_id   = (int)$blog_id;
             $created   = (int)$created;
             if ($criteria->render()) {

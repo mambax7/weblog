@@ -8,7 +8,7 @@ define( "GPERM_VIEWABLE" , 8 ) ;
 */
 require_once __DIR__ . '/../../../include/cp_header.php';
 require_once __DIR__ . '/mygrouppermform.php';
-require_once __DIR__ . '/../include/gtickets.php';
+//require_once __DIR__ . '/../include/gtickets.php';
 require_once __DIR__ . '/../header.php';
 //include_once( __DIR__ . '/../include/read_configs.php' ) ;
 require_once __DIR__ . '/admin_header.php';
@@ -25,13 +25,13 @@ function list_groups()
 {
     global $xoopsModule;
 
-    $global_perms_array = array(
+    $global_perms_array = [
         //      GPERM_POSTABLE => _AM_WEBLOG_PRIV_POST ,
         WEBLOG_PERMIT_EDIT       => _AM_WEBLOG_PRIV_EDIT,
         //      GPERM_DELETABLE => _AM_WEBLOG_PRIV_DELETE ,
         WEBLOG_PERMIT_READINDEX  => _AM_WEBLOG_PRIV_READINDEX,
         WEBLOG_PERMIT_READDETAIL => _AM_WEBLOG_PRIV_READDETAIL
-    );
+    ];
 
     /*
         $global_perms_array = array(

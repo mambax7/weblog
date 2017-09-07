@@ -23,7 +23,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS Root Path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 $moduleDirName = basename(dirname(__DIR__));
 if (!preg_match('/^(\D+)(\d*)$/', $moduleDirName, $regs)) {
@@ -77,7 +77,7 @@ if (!function_exists('weblog_search_base')) {
         $sql    .= 'ORDER BY created DESC';
         $result = $xoopsDB->query($sql, $limit, $offset);
 
-        $ret = array();
+        $ret = [];
         $i   = 0;
         while ($myrow = $xoopsDB->fetchArray($result)) {
             $ret[$i]['image'] = 'assets/images/' . $moduleDirName . '.png';

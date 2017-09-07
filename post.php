@@ -28,7 +28,7 @@ require_once sprintf('%s/modules/%s/class/class.weblogtree.php', XOOPS_ROOT_PATH
 require_once sprintf('%s/modules/%s/class/class.weblog.php', XOOPS_ROOT_PATH, $xoopsModule->dirname());
 require_once sprintf('%s/modules/%s/class/class.weblogcategories.php', XOOPS_ROOT_PATH, $xoopsModule->dirname());
 require_once sprintf('%s/modules/%s/class/class.weblogtrackback.php', XOOPS_ROOT_PATH, $xoopsModule->dirname());
-require_once sprintf('%s/modules/%s/include/gtickets.php', XOOPS_ROOT_PATH, $xoopsModule->dirname());
+//require_once sprintf('%s/modules/%s/include/gtickets.php', XOOPS_ROOT_PATH, $xoopsModule->dirname());
 
 $weblog      = Weblog::getInstance();
 $weblogcat   = WeblogCategories::getInstance();
@@ -131,7 +131,7 @@ if (!empty($_POST['post'])) {
     if (strlen($entry->getVar('contents', 'n')) < $xoopsModuleConfig['minentrysize']) {
         // Include the page header
         include XOOPS_ROOT_PATH . '/header.php';
-        weblog_confirm(array(
+        weblog_confirm([
                            'blog_id'          => $entry->getVar('blog_id'),
                            'private'          => $entry->isPrivate(),
                            'dohtml'           => !$entry->doHtml(),
@@ -147,7 +147,7 @@ if (!empty($_POST['post'])) {
                            'permission_group' => $entry->getVar('permission_group'),
                            'XOOPS_G_TICKET'   => $GLOBALS['xoopsSecurity']->createToken(),
                            'continue'         => 1
-                       ), 'post.php', sprintf(_BL_POST_TOO_SMALL, $xoopsModuleConfig['minentrysize'], strlen($entry->getVar('contents', 'n'))), _BL_CONTINUE_EDITING);
+                       ], 'post.php', sprintf(_BL_POST_TOO_SMALL, $xoopsModuleConfig['minentrysize'], strlen($entry->getVar('contents', 'n'))), _BL_CONTINUE_EDITING);
         // Include the page footer
         include XOOPS_ROOT_PATH . '/footer.php';
         exit();
@@ -198,10 +198,10 @@ if (!empty($_POST['post'])) {
 
         // Send notifications only if the entry not private.
         if ($ret && $entry->isPrivate() === false) {
-            $notificationHandler->triggerEvent('blog', $xoopsUser->getVar('uid'), 'add', $extra_tags = array(
+            $notificationHandler->triggerEvent('blog', $xoopsUser->getVar('uid'), 'add', $extra_tags = [
                 'TITLE'    => $entry->getVar('title'),
                 'PAGE_URI' => $pageUri
-            ), $user_list = array(), $module_id = null, $omit_user_id = null);
+            ], $user_list = [], $module_id = null, $omit_user_id = null);
         }
     }
 
@@ -214,8 +214,8 @@ if (!empty($_POST['post'])) {
         $trackback_result_msg = '';
         if (trim($entry->getVar('ent_trackbackurl', 'n')) || $old_trackbackurl) {
             //        $blog_name = $xoopsModule->name() . " - " . sprintf(_BL_WHOS_BLOG,$xoopsUser->getVar('uname','E')) . " - " . $xoopsConfig['sitename'] ;
-            $before_bn = array('{MODULE_NAME}', '{USER_NAME}', '{SITE_NAME}');
-            $after_bn  = array($xoopsModule->name(), $xoopsUser->getVar('uname', 'E'), $xoopsConfig['sitename']);
+            $before_bn = ['{MODULE_NAME}', '{USER_NAME}', '{SITE_NAME}'];
+            $after_bn  = [$xoopsModule->name(), $xoopsUser->getVar('uname', 'E'), $xoopsConfig['sitename']];
             $blog_name = str_replace($before_bn, $after_bn, $xoopsModuleConfig['transmit_blogname']);
             $blog_url  = sprintf('%s/modules/%s/details.php?blog_id=%d', XOOPS_URL, $xoopsModule->dirname(), $entry->getVar('blog_id'));
             $tb_operator->Create_Trackback_Data($entry, $blog_name, $blog_url);
@@ -295,7 +295,7 @@ if (!empty($_POST['post'])) {
         }
     } else {
         require XOOPS_ROOT_PATH . '/header.php';
-        weblog_confirm(array(
+        weblog_confirm([
                            'blog_id'          => $entry->getVar('blog_id'),
                            'private'          => $entry->isPrivate(),
                            'dohtml'           => !$entry->doHtml(),
@@ -312,7 +312,7 @@ if (!empty($_POST['post'])) {
                            'XOOPS_G_TICKET'   => $GLOBALS['xoopsSecurity']->createToken(),
                            'op'               => 'delete',
                            'ok'               => 1
-                       ), 'post.php', sprintf(_BL_CONFIRM_DELETE, stripslashes($entry->getVar('title'))), false, true);
+                       ], 'post.php', sprintf(_BL_CONFIRM_DELETE, stripslashes($entry->getVar('title'))), false, true);
         require XOOPS_ROOT_PATH . '/footer.php';
     }
 } else {
@@ -327,7 +327,6 @@ if (!empty($_POST['post'])) {
         $entry =& $weblog->getEntry($currentuid, $blog_id, (!$isAdmin) ? $currentuid : 0);
         if (empty($entry)) {
             redirect_header(sprintf('%s/modules/%s/index.php', XOOPS_URL, $xoopsModule->dirname()), 5, _BL_CANNOT_EDIT);
-            exit();
         }
         $selbox = $weblogcat->getMySelectBox($entry->getVar('cat_id'));
         // add trackback data
@@ -353,7 +352,7 @@ if (!empty($_POST['post'])) {
     require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 
     if (isset($recieved_trackback) && is_array($recieved_trackback) && count($recieved_trackback) > 0) {
-        $recieved_trackback_url_array = array();
+        $recieved_trackback_url_array = [];
         foreach ($recieved_trackback as $trackback_obj) {
             $recieved_trackback_url_array[] = $trackback_obj->getVar('tb_url');
         }
@@ -416,8 +415,13 @@ if (!empty($_POST['post'])) {
             }
         }
         if ($imagemanager_valid) {
-            $imagemanager_tag = sprintf('<img onmouseover=\'style.cursor="hand"\' onclick=\'javascript:openWithSelfMain("%s/modules/%s/weblog-imagemanager.php?target=contents","imgmanager",400,430);\' src="%s/modules/%s/assets/images/weblog_imagemanager.gif" alt="image">', XOOPS_URL,
-                                        $xoopsModule->dirname(), XOOPS_URL, $xoopsModule->dirname());
+            $imagemanager_tag = sprintf(
+                '<img onmouseover=\'style.cursor="hand"\' onclick=\'javascript:openWithSelfMain("%s/modules/%s/weblog-imagemanager.php?target=contents","imgmanager",400,430);\' src="%s/modules/%s/assets/images/weblog_imagemanager.gif" alt="image">',
+                XOOPS_URL,
+                                        $xoopsModule->dirname(),
+                XOOPS_URL,
+                $xoopsModule->dirname()
+            );
         } else {
             $imagemanager_tag = _BL_WEBLOG_IMAGEMANAGER_CAUTION;
         }
@@ -494,8 +498,8 @@ if (!empty($_POST['post'])) {
         //  $permission_tab->addOptionArray( array('111'=>'r-r-r' , '110'=>'r-r--' , '100'=>'r----' , '010'=>'--r--') ) ;
         $memberHandler = xoops_getHandler('group');
         $groups        = $memberHandler->getObjects();
-        $group_option  = array();
-        $group_array   = array();
+        $group_option  = [];
+        $group_array   = [];
         foreach ($groups as $group) {
             if ($group->getVar('groupid') == 1) {
                 continue;

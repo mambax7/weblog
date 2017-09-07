@@ -117,17 +117,17 @@ function return_trackback_data($r_trackback_array)
         return false;
     }
 
-    $r_trackback_data_array = array();
+    $r_trackback_data_array = [];
     foreach ($r_trackback_array as $trackback_obj) {
         if (strtolower(get_parent_class($trackback_obj)) != 'weblogtrackbackbase') {
             continue;
         }
         if ($trackback_obj->getVar('direction') == 'recieved') {
-            $r_trackback_data_array[] = array(
+            $r_trackback_data_array[] = [
                 'title'   => $trackback_obj->getVar('title'),
                 'url'     => $trackback_obj->getVar('link'),
                 'excerpt' => $trackback_obj->getVar('description')
-            );
+            ];
         }
     }
 

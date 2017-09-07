@@ -220,4 +220,17 @@ if (defined('FOR_XOOPS_LANG_CHECKER') || !defined('WEBLOG_MI_LOADED')) {
     //1.47
     define('_MI_WEBLOG_EDITOR', 'Select the editor to use to create your blog.');
     define('_MI_WEBLOG_EDITOR_DESC', 'You have here a selection of Editors provided by XOOPS, incl. WYSIWYG editors');
+
+    //Help
+    define('_MI_WEBLOG_DIRNAME', basename(dirname(dirname(__DIR__))));
+    define('_MI_WEBLOG_HELP_HEADER', __DIR__.'/help/helpheader.tpl');
+    define('_MI_WEBLOG_BACK_2_ADMIN', 'Back to Administration of ');
+    define('_MI_WEBLOG_OVERVIEW', 'Overview');
+
+    //define('_MI_WEBLOG_HELP_DIR', __DIR__);
+
+    //help multi-page
+    define('_MI_WEBLOG_DISCLAIMER', 'Disclaimer');
+    define('_MI_WEBLOG_LICENSE', 'License');
+    define('_MI_WEBLOG_SUPPORT', 'Support');
 }

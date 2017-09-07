@@ -57,9 +57,9 @@ if (!defined('DATE_WEBLOG_CALC_CLASS')) {
                 $this->year  = date('Y');        // the year of system date
                 $this->today = date('j');        // the day of system
             }
-            $this->calendar            = array();
-            $this->calendar['days']    = array();
-            $this->calendar['remarks'] = array();
+            $this->calendar            = [];
+            $this->calendar['days']    = [];
+            $this->calendar['remarks'] = [];
             $this->row                 = 0;
             $this->col                 = 0;
         }

@@ -46,14 +46,14 @@ function privmanager()
 {
     $memberHandler = xoops_getHandler('group');
     $groups        = $memberHandler->getObjects();
-    $group_ids     = array();
+    $group_ids     = [];
     foreach ($groups as $group) {
         $group_ids[$group->getVar('groupid')] = $group->getVar('name');
     }
 
     $groupHandler   = xoops_getModuleHandler('priv');
     $priv_groups    = $groupHandler->getObjects();
-    $priv_group_ids = array();
+    $priv_group_ids = [];
     foreach ($priv_groups as $priv_group) {
         $priv_group_ids[$priv_group->getVar('priv_gid')] = $priv_group->getVar('name');
     }

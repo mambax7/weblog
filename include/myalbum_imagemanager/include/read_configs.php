@@ -15,7 +15,7 @@ $myalbum_colsoftableview = 0;
 $myalbum_allowedexts     = 'jpg|jpeg|gif|png';    // these file extensions are permitted
 $myalbum_allowedmime     = 'image/gif|image/pjpeg|image/jpeg|image/x-png|image/png';    // these MIME encoding can be posted.
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS Root Path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 if (!$moduleDirName) {
     $moduleDirName = basename(dirname(dirname(dirname(__DIR__))));
@@ -113,7 +113,7 @@ if ($myalbum_imagingpipe || $myalbum_forcegd2) {
 }
 
 // Normal Extensions of Image
-$myalbum_normal_exts = array('jpg', 'jpeg', 'gif', 'png');
+$myalbum_normal_exts = ['jpg', 'jpeg', 'gif', 'png'];
 
 // Allowed extensions & MIME types
 if (empty($myalbum_allowedexts)) {
@@ -122,7 +122,7 @@ if (empty($myalbum_allowedexts)) {
     $array_allowed_exts = explode('|', $myalbum_allowedexts);
 }
 if (empty($myalbum_allowedmime)) {
-    $array_allowed_mimetypes = array();
+    $array_allowed_mimetypes = [];
 } else {
     $array_allowed_mimetypes = explode('|', $myalbum_allowedmime);
 }

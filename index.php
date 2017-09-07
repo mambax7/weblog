@@ -118,11 +118,11 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 
 // Category navigation
 if ($moduleHelper->getConfig('show_category_list')) {
-    $category_navi = array();
+    $category_navi = [];
     $cat_array     = $weblogcat->getChildTreeArray(0, 'cat_title');
     $cat_root_num  = 0;    // flag for </tr>
     foreach ($cat_array as $cat) {
-        $category               = array();
+        $category               = [];
         $category['cat_id']     = $cat['cat_id'];
         $category['cat_title']  = $myts->htmlSpecialChars($cat['cat_title']);
         $category['count']      = $weblog->getCountByCategory($currentuid, $cat['cat_id'], $user_id);
@@ -181,13 +181,13 @@ if ($count > $perPage) {
 }
 
 foreach ($weblog_result as $entryObject) {
-    $entry = array();
+    $entry = [];
     if ($updateReads === true) {
         $curtime = time();
         $blog_id = $entryObject->getVar('blog_id');
         // wellwine for cookie begins
         // Read in cookie
-        $weblog_read = !empty($HTTP_COOKIE_VARS[WEBLOG_COOKIE_READ]) ? unserialize($HTTP_COOKIE_VARS[WEBLOG_COOKIE_READ]) : array();
+        $weblog_read = !empty($HTTP_COOKIE_VARS[WEBLOG_COOKIE_READ]) ? unserialize($HTTP_COOKIE_VARS[WEBLOG_COOKIE_READ]) : [];
         // if cookie is not set for this blog, update view count and set cookie
         if (empty($weblog_read[$blog_id]) || $weblog_read[$blog_id] + $moduleHelper->getConfig('expiration') < $curtime) {
             $reads = $weblog->incrementReads($blog_id);
@@ -209,7 +209,7 @@ foreach ($weblog_result as $entryObject) {
     } else {
         $TZ = '+' . sprintf('%02d', $xoopsConfig['default_TZ']) . ':00';
     }
-    $rdf_source_data = array(
+    $rdf_source_data = [
         'about'       => sprintf('%s/modules/%s/details.php?blog_id=%d', XOOPS_URL, $myModule->dirname(), $entryObject->getVar('blog_id')),
         'ping'        => $weblog_trackback_url,
         'title'       => addslashes($entryObject->getVar('title')),
@@ -217,7 +217,7 @@ foreach ($weblog_result as $entryObject) {
         'description' => strip_tags(addslashes(xoops_substr($entryObject->getvar('contents', 's'), 0, WEBLOG_RDF_DESCRIPTION_NUM))),
         'creator'     => $entryObject->getVar('uname'),
         'date'        => date("Y-m-d\TH:i:s", $entryObject->getVar('created')) . $TZ
-    );
+    ];
     $rdf_desc        = "<!-- \n" . $net_trackback->toEmbededRDF($rdf_source_data) . "-->\n";
 
     // Retrieve his/her avatar

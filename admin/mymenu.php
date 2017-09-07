@@ -1,5 +1,5 @@
 <?php
-defined('XOOPS_ROOT_PATH') || exit('XOOPS Root Path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 if (!isset($module) || !is_object($module)) {
     $module = $xoopsModule;
@@ -11,10 +11,10 @@ xoops_loadLanguage('modinfo', 'weblog');
 
 include __DIR__ . '/menu.php';
 
-array_push($adminObject, array(
+array_push($adminObject, [
     'title' => _PREFERENCES,
     'link'  => '../system/admin.php?fct=preferences&op=showmod&mod=' . $module->getVar('mid')
-));
+]);
 $menuitem_dirname = $module->getVar('dirname');
 //  array_push( $adminObject , array( 'title' => _PREFERENCES , 'link' => 'admin/admin.php?fct=preferences&op=showmod&mod=' . $module->getvar('mid') ) ) ;
 

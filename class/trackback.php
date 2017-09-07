@@ -84,7 +84,7 @@ if (!class_exists('WeblogTrackbackBase')) {
             if ($blog_id > 0) {
                 $sql = sprintf('SELECT blog_id, tb_url, blog_name, title, description, link, direction,trackback_created FROM %s WHERE %s ORDER BY trackback_created DESC', $this->db->prefix($this->moduleDirName . '_trackback'), $criteria->render());
                 if ($result = $this->db->query($sql)) {
-                    $trackback_array = array();
+                    $trackback_array = [];
                     while ($trackback_data = $this->db->fetchArray($result)) {
                         $trackback_obj = $this->create();
                         $trackback_obj->assignVars($trackback_data);
@@ -147,11 +147,31 @@ if (!class_exists('WeblogTrackbackBase')) {
             $count             = $this->getCount($criteria);
             $trackback_created = time();
             if ($blog_id > 0 && $count > 0) {
-                $sql = sprintf('UPDATE %s SET blog_name=%s, title=%s, description=%s, link=%s, direction=%s,trackback_created=%d WHERE blog_id=%d AND tb_url=%s', $this->db->prefix($this->moduleDirName . '_trackback'), $this->db->quoteString($blog_name), $this->db->quoteString($title),
-                               $this->db->quoteString($description), $this->db->quoteString($link), $this->db->quoteString($direction), $blog_id, $this->db->quoteString($tb_url), $trackback_created);
+                $sql = sprintf(
+                    'UPDATE %s SET blog_name=%s, title=%s, description=%s, link=%s, direction=%s,trackback_created=%d WHERE blog_id=%d AND tb_url=%s',
+                    $this->db->prefix($this->moduleDirName . '_trackback'),
+                    $this->db->quoteString($blog_name),
+                    $this->db->quoteString($title),
+                               $this->db->quoteString($description),
+                    $this->db->quoteString($link),
+                    $this->db->quoteString($direction),
+                    $blog_id,
+                    $this->db->quoteString($tb_url),
+                    $trackback_created
+                );
             } else {
-                $sql = sprintf('INSERT INTO %s (blog_id, tb_url, blog_name, title, description, link, direction, trackback_created) VALUES (%d, %s, %s, %s, %s, %s, %s, %d)', $this->db->prefix($this->moduleDirName . '_trackback'), $blog_id, $this->db->quoteString($tb_url),
-                               $this->db->quoteString($blog_name), $this->db->quoteString($title), $this->db->quoteString($description), $this->db->quoteString($link), $this->db->quoteString($direction), $trackback_created);
+                $sql = sprintf(
+                    'INSERT INTO %s (blog_id, tb_url, blog_name, title, description, link, direction, trackback_created) VALUES (%d, %s, %s, %s, %s, %s, %s, %d)',
+                    $this->db->prefix($this->moduleDirName . '_trackback'),
+                    $blog_id,
+                    $this->db->quoteString($tb_url),
+                               $this->db->quoteString($blog_name),
+                    $this->db->quoteString($title),
+                    $this->db->quoteString($description),
+                    $this->db->quoteString($link),
+                    $this->db->quoteString($direction),
+                    $trackback_created
+                );
             }
             if (!$result = $this->db->queryF($sql)) {  // must be query()
                 $trackback->setErrors('Failed DB query');   // for test hodaka

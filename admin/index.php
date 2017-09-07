@@ -29,7 +29,7 @@ require_once __DIR__ . '/../include/directorychecker.php';
 $adminObject->addConfigBoxLine('');
 $redirectFile = $_SERVER['PHP_SELF'];
 
-$languageConstants = array(
+$languageConstants = [
     _AM_WEBLOG_AVAILABLE2,
     _AM_WEBLOG_NOTAVAILABLE2,
     _AM_WEBLOG_CREATETHEDIR2,
@@ -39,7 +39,7 @@ $languageConstants = array(
     _AM_WEBLOG_DIRNOTCREATED2,
     _AM_WEBLOG_PERMSET2,
     _AM_WEBLOG_PERMNOTSET2
-);
+];
 
 //        foreach (array_keys($folder) as $i) {
 //            $adminObject->addConfigBoxLine(DirectoryChecker::getDirectoryStatus($folder[$i],0755,$languageConstants,$redirectFile));

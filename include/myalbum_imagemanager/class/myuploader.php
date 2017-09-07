@@ -53,8 +53,8 @@ class MyXoopsMediaUploader
 
     public $uploadDir = '';
 
-    public $allowedMimeTypes  = array();
-    public $allowedExtensions = array();
+    public $allowedMimeTypes  = [];
+    public $allowedExtensions = [];
 
     public $maxFileSize = 0;
     public $maxWidth;
@@ -64,7 +64,7 @@ class MyXoopsMediaUploader
 
     public $prefix;
 
-    public $errors = array();
+    public $errors = [];
 
     public $savedDestination;
 
@@ -133,7 +133,7 @@ class MyXoopsMediaUploader
             $this->mediaTmpName = $media_name['tmp_name'];
             $this->mediaError   = !empty($media_name['error']) ? $media_name['error'] : 0;
         }
-        $this->errors = array();
+        $this->errors = [];
         if ((int)$this->mediaSize < 0) {
             $this->setErrors('Invalid File Size');
 
@@ -300,7 +300,7 @@ class MyXoopsMediaUploader
      */
     public function _copyFile($chmod)
     {
-        $matched = array();
+        $matched = [];
         if (!preg_match("/\.([a-zA-Z0-9]+)$/", $this->mediaName, $matched)) {
             return false;
         }

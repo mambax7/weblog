@@ -64,18 +64,18 @@ if (!$entryObject) {
 // obtain trackback
 $tb_operator        = Weblog_Trackback_Operator::getInstance();
 $trackback_array    = $tb_operator->handler->get($entryObject->getVar('blog_id'));
-$trackback_transmit = array();
-$trackback_recieved = array();
+$trackback_transmit = [];
+$trackback_recieved = [];
 if ($trackback_array) {
     foreach ($trackback_array as $trackback_obj) {
-        $trackback_data = array(
+        $trackback_data = [
             'tb_url'            => $trackback_obj->getVar('tb_url'),
             'blog_name'         => $trackback_obj->getVar('blog_name'),
             'title'             => $trackback_obj->getVar('title'),
             'description'       => xoops_substr($trackback_obj->getVar('description'), 0, 120),
             'link'              => $trackback_obj->getVar('link'),
             'trackback_created' => formatTimestamp($trackback_obj->getVar('trackback_created'), 'Y-m-d/H:i:s', $xoopsConfig['default_TZ'])
-        );
+        ];
         if ($trackback_obj->getVar('direction') === 'transmit') {
             $trackback_transmit[] = $trackback_data;
         } elseif ($trackback_obj->getVar('direction') === 'recieved') {
@@ -94,7 +94,7 @@ $weblog_trackback_url = XOOPS_URL . '/modules/' . $xoopsModule->dirname() . '/we
 
 // wellwine for cookie begins
 // Read in cookie
-$weblog_read = !empty($HTTP_COOKIE_VARS[WEBLOG_COOKIE_READ]) ? unserialize($HTTP_COOKIE_VARS[WEBLOG_COOKIE_READ]) : array();
+$weblog_read = !empty($HTTP_COOKIE_VARS[WEBLOG_COOKIE_READ]) ? unserialize($HTTP_COOKIE_VARS[WEBLOG_COOKIE_READ]) : [];
 // if cookie is not set for this blog, update view count and set cookie (and auther or Admin does not count)
 $curtime = time();
 if (empty($weblog_read[$blog_id]) || $weblog_read[$blog_id] + $xoopsModuleConfig['expiration'] < $curtime) {
@@ -148,7 +148,7 @@ if ($xoopsConfig['default_TZ'] < 0) {
 } else {
     $TZ = '+' . sprintf('%02d', $xoopsConfig['default_TZ']) . ':00';
 }
-$rdf_source_data = array(
+$rdf_source_data = [
     'about'       => sprintf('%s/modules/%s/details.php?blog_id=%d', XOOPS_URL, $xoopsModule->dirname(), $entryObject->getVar('blog_id')),
     'ping'        => $weblog_trackback_url,
     'title'       => addslashes($entryObject->getVar('title')),
@@ -156,7 +156,7 @@ $rdf_source_data = array(
     'description' => strip_tags(addslashes(xoops_substr($entry_contents, 0, WEBLOG_RDF_DESCRIPTION_NUM))),
     'creator'     => $entryObject->getVar('uname'),
     'date'        => date("Y-m-d\TH:i:s", $entryObject->getVar('created')) . $TZ
-);
+];
 $rdf_desc        = "<!-- \n" . $net_trackback->toEmbededRDF($rdf_source_data) . "-->\n";
 
 // Include the page header

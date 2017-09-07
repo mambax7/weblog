@@ -53,19 +53,27 @@ if (!defined('WEBLOG_BLOCK_LINKS_INCLUDED')) {
         $user_id    = !empty($_GET['user_id']) ? (int)$_GET['user_id'] : 0;
         $submitter  = empty($user_id) ? $currentuid : $user_id;
 
-        $block = array();
+        $block = [];
         if (preg_match("/^mylinks\d*$/", $options[0])) {
             // in case of mylinks module
-            $sql = sprintf('SELECT c.title AS category, l.title AS title, url, description AS dsc FROM %s AS c, %s AS l, %s AS d WHERE c.cid=l.cid AND d.lid=l.lid AND STATUS=1 ', $xoopsDB->prefix($options[0] . '_cat'), $xoopsDB->prefix($options[0] . '_links'),
-                           $xoopsDB->prefix($options[0] . '_text'));
+            $sql = sprintf(
+                'SELECT c.title AS category, l.title AS title, url, description AS dsc FROM %s AS c, %s AS l, %s AS d WHERE c.cid=l.cid AND d.lid=l.lid AND STATUS=1 ',
+                $xoopsDB->prefix($options[0] . '_cat'),
+                $xoopsDB->prefix($options[0] . '_links'),
+                           $xoopsDB->prefix($options[0] . '_text')
+            );
             if ($submitter) {
                 $sql = sprintf('%s and submitter=%d', $sql, $submitter);
             }
             $sql .= ' order by l.cid,l.date ';
         } elseif (preg_match("/^weblinks\d*$/", $options[0])) {
             // in case of weblink module
-            $sql = sprintf('SELECT link.title AS title, link.url AS url, link.description AS dsc, cat.title AS category FROM %s AS cat, %s AS link, %s AS clink WHERE link.lid=clink.lid AND clink.cid=cat.cid ', $xoopsDB->prefix($options[0] . '_category'), $xoopsDB->prefix($options[0] . '_link'),
-                           $xoopsDB->prefix($options[0] . '_catlink'));
+            $sql = sprintf(
+                'SELECT link.title AS title, link.url AS url, link.description AS dsc, cat.title AS category FROM %s AS cat, %s AS link, %s AS clink WHERE link.lid=clink.lid AND clink.cid=cat.cid ',
+                $xoopsDB->prefix($options[0] . '_category'),
+                $xoopsDB->prefix($options[0] . '_link'),
+                           $xoopsDB->prefix($options[0] . '_catlink')
+            );
             if ($submitter) {
                 $sql = sprintf('%s and link.uid=%d', $sql, $submitter);
             }
@@ -73,20 +81,20 @@ if (!defined('WEBLOG_BLOCK_LINKS_INCLUDED')) {
         }
 
         if (!isset($sql)) {
-            return array();
+            return [];
         }
 
         $result = $xoopsDB->query($sql, $link_num, 0);
         while ($myrow = $xoopsDB->fetchArray($result)) {
             $category = $myrow['category'];
             if (!isset($block['links'][$category])) {
-                $block['links'][$category] = array();
+                $block['links'][$category] = [];
             }
-            $block['links'][$category][] = array(
+            $block['links'][$category][] = [
                 'title' => $myrow['title'],
                 'url'   => $myrow['url'],
                 'dsc'   => $myrow['dsc']
-            );
+            ];
         }
 
         if ($submitter) {
@@ -113,7 +121,7 @@ if (!defined('WEBLOG_BLOCK_LINKS_INCLUDED')) {
         global $xoopsDB, $xoopsUser;
 
         $moduleDirName     = empty($options[0]) ? basename(dirname(__DIR__)) : $options[0];
-        $apply_linkmodules = array('mylinks', 'weblinks');
+        $apply_linkmodules = ['mylinks', 'weblinks'];
         $linkmods          = '';
         foreach ($apply_linkmodules as $modulename) {
             $linkmods .= "dirname like '" . $modulename . "%' or ";

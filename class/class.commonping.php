@@ -6,8 +6,8 @@ require_once sprintf('%s/modules/%s/include/encode_set.inc.php', XOOPS_ROOT_PATH
 class Weblog_Commonping
 {
     public $Commonping_Target           = '';
-    public $Commonping_Servers          = array();
-    public $Commonping_Servers_Response = array();
+    public $Commonping_Servers          = [];
+    public $Commonping_Servers_Response = [];
     public $Ping_XML;    // XML_RPC_Message object
     public $Server_Response;    // XML_RPC_Response object
 
@@ -17,10 +17,10 @@ class Weblog_Commonping
         // Create XML
         $siteName = encoding_set($siteName, 'UTF-8');
 
-        $params         = array(
+        $params         = [
             new XML_RPC_Value($siteName, 'string'),
             new XML_RPC_Value($siteURL, 'string')
-        );
+        ];
         $this->Ping_XML = new XML_RPC_Message('weblogUpdates.ping', $params);
     }
 

@@ -40,8 +40,10 @@ if (defined('FOR_XOOPS_LANG_CHECKER') || !defined('WEBLOG_MI_LOADED')) {
     define('_MI_WEBLOG_PRIVMANAGER', 'weBLog Berechtigungen'); //eng
     define('_MI_WEBLOG_MYBLOCKSADMIN', 'Blöcke und Gruppen'); //eng
     define('_MI_WEBLOG_TEMPLATE_MANEGER', 'Templates');
-    define('_AM_WEBLOG_PRIVMANAGER_WEBLOG_CAUTION',
-           'Achtung: Das sind keine Xoops-Berechtigungen, sondern spezielle Berechtigungen für das Modul. Man kann zwischen dieser Berechtigung oder der Xoops-Berechtigung wählen. Die dazu nötige Einstellung befindet sich in der allgemeinen Modulvoreinstellung.');
+    define(
+        '_AM_WEBLOG_PRIVMANAGER_WEBLOG_CAUTION',
+           'Achtung: Das sind keine Xoops-Berechtigungen, sondern spezielle Berechtigungen für das Modul. Man kann zwischen dieser Berechtigung oder der Xoops-Berechtigung wählen. Die dazu nötige Einstellung befindet sich in der allgemeinen Modulvoreinstellung.'
+    );
 
     define('_MI_WEBLOG_NOTIFY', 'Dieses weBLog');
     define('_MI_WEBLOG_NOTIFYDSC', 'Wenn etwas bei dem weBLog passiert');

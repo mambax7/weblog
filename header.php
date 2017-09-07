@@ -8,7 +8,7 @@
 
 use Xmf\Module\Helper;
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 require_once __DIR__ . '/../../mainfile.php';
 // $moduleDirName  / $mydirnumber are critical GLOBALS.
 $moduleDirName = basename(__DIR__);

@@ -24,7 +24,7 @@
  */
 
 // configure values and common functions
-defined('XOOPS_ROOT_PATH') || exit('XOOPS Root Path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 // configure values and common functions
 $moduleDirName = basename(dirname(__DIR__));

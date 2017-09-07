@@ -24,7 +24,7 @@
  */
 
 // configure values and common functions
-defined('XOOPS_ROOT_PATH') || exit('XOOPS Root Path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 // You shouldn't have to change any of these
 $weblogUrl['root']   = XOOPS_URL . '/modules/' . $moduleDirName;
@@ -68,7 +68,7 @@ if (!defined('_WEBLOG_COMMON_FUNCTIONS')) {
     function encoding_set($data, $to_enc, $from_enc = false)
     {
         if (is_array($data)) {
-            $enc_data = array();
+            $enc_data = [];
             foreach ($data as $key => $value) {
                 $enc_data[$key] = weblog_convert_encoding($value, $to_enc, $from_enc);
             }
@@ -119,7 +119,7 @@ if (!defined('_WEBLOG_COMMON_FUNCTIONS')) {
     // entry convert functions
     // function which these WeblogEntry class use
 
-    function weblog_create_permissionsql($blockModuleConfig = array(), $moduleDirName = '')
+    function weblog_create_permissionsql($blockModuleConfig = [], $moduleDirName = '')
     {
         global $xoopsUser, $xoopsModule, $xoopsModuleConfig;
 
@@ -148,7 +148,7 @@ if (!defined('_WEBLOG_COMMON_FUNCTIONS')) {
             $isAdmin          = $xoopsUser->isAdmin($wbModule->mid());
         } else {
             $currentuid       = 0;
-            $currentusergroup = array(XOOPS_GROUP_ANONYMOUS);
+            $currentusergroup = [XOOPS_GROUP_ANONYMOUS];
             $isAdmin          = false;
         }
         // permission sql prepare
@@ -173,7 +173,7 @@ if (!defined('_WEBLOG_COMMON_FUNCTIONS')) {
             $bl_contents_field = 'bl.contents';
         }
 
-        return array($bl_contents_field, $permission_group_sql);
+        return [$bl_contents_field, $permission_group_sql];
     }
 
     /*

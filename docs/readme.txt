@@ -120,7 +120,7 @@ version 1.42 -- 05/06/2005
     15.able to set whether count up XOOPS user posts or not when user post entry.
     16. PHP5 ready
     17.some bugs fix.
-	18.Add Spanish language pack.(thanks lunallena)
+    18.Add Spanish language pack.(thanks lunallena)
     Thanks for all users who tell me bugs or requests at http://xoopsdevelopment.tohokuaiki.jp
 
 ----------- Japanese UTF-8 ------------
@@ -246,6 +246,6 @@ version 1.42 -- 2005/05/06
     15.XOOPSの「投稿数」に反映するかどうか設定できるようにしました。
     16.PHP5対応
     17.その他もろもろのバグフィックス
-	18.スペイン語対応(lunallenaさんありがとうございます)
+    18.スペイン語対応(lunallenaさんありがとうございます)
     http://xoopsdevelopment.tohokuaiki.jpで様々なバグやリクエストをくださった全てのユーザに感謝します。
 

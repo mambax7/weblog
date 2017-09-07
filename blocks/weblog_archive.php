@@ -39,7 +39,7 @@ if (!defined('WEBLOG_BLOCK_ARCHIVE_INCLUDED')) {
         } else {
             require_once XOOPS_ROOT_PATH . '/language/english/calendar.php';
         }
-        $month_arr = array(
+        $month_arr = [
             1  => _CAL_JANUARY,
             2  => _CAL_FEBRUARY,
             3  => _CAL_MARCH,
@@ -52,7 +52,7 @@ if (!defined('WEBLOG_BLOCK_ARCHIVE_INCLUDED')) {
             10 => _CAL_OCTOBER,
             11 => _CAL_NOVEMBER,
             12 => _CAL_DECEMBER
-        );
+        ];
 
         // must adjust the selected time to server timestamp
         //$timeoffset = $useroffset - $xoopsConfig['server_TZ'];
@@ -62,7 +62,7 @@ if (!defined('WEBLOG_BLOCK_ARCHIVE_INCLUDED')) {
         $sql .= ' group by thismonth';
         $sql .= ' order by thismonth DESC';
 
-        $block = array();
+        $block = [];
         $count = $xoopsDB->getRowsNum($xoopsDB->query($sql));
         if (!$count) {
             return $block;
@@ -70,9 +70,9 @@ if (!defined('WEBLOG_BLOCK_ARCHIVE_INCLUDED')) {
 
         $lines = $xoopsDB->query($sql, $numperblock, $offset);
 
-        $archives = array();
+        $archives = [];
         $i        = 0;
-        $months   = array();
+        $months   = [];
         while ($line = $xoopsDB->fetchArray($lines)) {
             //$months[$i]['date'] = $line['thismonth']."00";
             $months[$i]['year']      = (string)substr($line['thismonth'], 0, 4);
@@ -156,7 +156,7 @@ if (!defined('WEBLOG_BLOCK_ARCHIVE_INCLUDED')) {
         } else {
             require_once XOOPS_ROOT_PATH . '/language/english/calendar.php';
         }
-        $month_arr = array(
+        $month_arr = [
             1  => _CAL_JANUARY,
             2  => _CAL_FEBRUARY,
             3  => _CAL_MARCH,
@@ -169,8 +169,8 @@ if (!defined('WEBLOG_BLOCK_ARCHIVE_INCLUDED')) {
             10 => _CAL_OCTOBER,
             11 => _CAL_NOVEMBER,
             12 => _CAL_DECEMBER
-        );
-        $week_arr  = array(
+        ];
+        $week_arr  = [
             _MB_WEBLOG_LANG_SUNDAY,
             _MB_WEBLOG_LANG_MONDAY,
             _MB_WEBLOG_LANG_TUESDAY,
@@ -178,7 +178,7 @@ if (!defined('WEBLOG_BLOCK_ARCHIVE_INCLUDED')) {
             _MB_WEBLOG_LANG_THURSDAY,
             _MB_WEBLOG_LANG_FRIDAY,
             _MB_WEBLOG_LANG_SATURDAY
-        );
+        ];
 
         // get one month calendar array
         require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/class/class.calendar.php';
@@ -232,7 +232,7 @@ if (!defined('WEBLOG_BLOCK_ARCHIVE_INCLUDED')) {
         //echo $sql ;
         $lines = $xoopsDB->query($sql);
 
-        $entries = array();
+        $entries = [];
         if ($lines) {
             while (list($day, $blog_id) = $xoopsDB->fetchRow($lines)) {
                 //          $entries[$blog_id] = (int)($day);

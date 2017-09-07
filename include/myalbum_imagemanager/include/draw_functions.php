@@ -6,7 +6,7 @@ function myalbum_header()
     global $mod_url, $moduleDirName;
 
     $tpl = new XoopsTpl();
-    $tpl->assign(array('mod_url' => $mod_url));
+    $tpl->assign(['mod_url' => $mod_url]);
     $tpl->display("db:{$moduleDirName }_header.tpl");
 }
 
@@ -16,7 +16,7 @@ function myalbum_footer()
     global $mod_copyright, $moduleDirName;
 
     $tpl = new XoopsTpl();
-    $tpl->assign(array('mod_copyright' => $mod_copyright));
+    $tpl->assign(['mod_copyright' => $mod_copyright]);
     $tpl->display("db:{$moduleDirName }_footer.tpl");
 }
 
@@ -107,7 +107,7 @@ function myalbum_get_array_for_photo_assign($fetched_result_array, $summary = fa
         $description = $myts->extractSummary($description);
     }
 
-    return array(
+    return [
         'lid'             => $lid,
         'cid'             => $cid,
         'ext'             => $ext,
@@ -137,7 +137,7 @@ function myalbum_get_array_for_photo_assign($fetched_result_array, $summary = fa
         'is_popularphoto' => $hits >= $myalbum_popular,
         'info_morephotos' => sprintf(_ALBM_MOREPHOTOS, $submitter_name),
         'cat_title'       => $myts->htmlSpecialChars($cat_title)
-    );
+    ];
 }
 
 // Get photo's array to assign into template (light version)
@@ -168,7 +168,7 @@ function myalbum_get_array_for_photo_assign_light($fetched_result_array, $summar
         $width_spec      = '';
     }
 
-    return array(
+    return [
         'lid'             => $lid,
         'cid'             => $cid,
         'ext'             => $ext,
@@ -187,7 +187,7 @@ function myalbum_get_array_for_photo_assign_light($fetched_result_array, $summar
         'votes'           => $votes,
         'comments'        => $comments,
         'is_normal_image' => $is_normal_image
-    );
+    ];
 }
 
 // get list of sub categories in header space
@@ -197,7 +197,7 @@ function myalbum_get_sub_categories($parent_id, $cattree)
 
     $myts = MyTextSanitizer::getInstance();
 
-    $ret = array();
+    $ret = [];
 
     $crs = $xoopsDB->query("SELECT cid, title, imgurl FROM $table_cat WHERE pid=$parent_id ORDER BY title")
            || die('Error: Get Category.');
@@ -205,15 +205,15 @@ function myalbum_get_sub_categories($parent_id, $cattree)
     while (list($cid, $title, $imgurl) = $xoopsDB->fetchRow($crs)) {
 
         // Show first child of this category
-        $subcat = array();
+        $subcat = [];
         $arr    = $cattree->getFirstChild($cid, 'title');
         foreach ($arr as $child) {
-            $subcat[] = array(
+            $subcat[] = [
                 'cid'              => $child['cid'],
                 'title'            => $myts->htmlSpecialChars($child['title']),
                 'photo_small_sum'  => myalbum_get_photo_small_sum_from_cat($child['cid'], 'status>0'),
                 'number_of_subcat' => count($cattree->getFirstChildId($child['cid']))
-            );
+            ];
         }
 
         // Category's banner default
@@ -226,14 +226,14 @@ function myalbum_get_sub_categories($parent_id, $cattree)
         array_push($cids, $cid);
         $photo_total_sum = myalbum_get_photo_total_sum_from_cats($cids, 'status>0');
 
-        $ret[] = array(
+        $ret[] = [
             'cid'             => $cid,
             'imgurl'          => $myts->htmlSpecialChars($imgurl),
             'photo_small_sum' => myalbum_get_photo_small_sum_from_cat($cid, 'status>0'),
             'photo_total_sum' => $photo_total_sum,
             'title'           => $myts->htmlSpecialChars($title),
             'subcategories'   => $subcat
-        );
+        ];
     }
 
     return $ret;
@@ -247,12 +247,12 @@ function myalbum_get_img_attribs_for_preview($preview_name)
     $ext = substr(strrchr($preview_name, '.'), 1);
 
     if (in_array(strtolower($ext), $myalbum_normal_exts)) {
-        return array("$photos_url/$preview_name", "width='$myalbum_thumbsize'", "$photos_url/$preview_name");
+        return ["$photos_url/$preview_name", "width='$myalbum_thumbsize'", "$photos_url/$preview_name"];
     } else {
         if (file_exists("$mod_path/icons/$ext.gif")) {
-            return array("$mod_url/icons/mp3.gif", '', "$photos_url/$preview_name");
+            return ["$mod_url/icons/mp3.gif", '', "$photos_url/$preview_name"];
         } else {
-            return array("$mod_url/icons/default.gif", '', "$photos_url/$preview_name");
+            return ["$mod_url/icons/default.gif", '', "$photos_url/$preview_name"];
         }
     }
 }
