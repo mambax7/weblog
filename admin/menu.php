@@ -32,42 +32,55 @@ if (false !== ($moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName))) {
     $moduleHelper = Xmf\Module\Helper::getHelper('system');
 }
 
-
 $pathIcon32 = \Xmf\Module\Admin::menuIconPath('');
 //$pathModIcon32 = $moduleHelper->getModule()->getInfo('modicons32');
 
 $moduleHelper->loadLanguage('modinfo');
 
-$adminmenu              = [];
-$i                      = 0;
-'title' =>  _AM_MODULEADMIN_HOME,
-'link' =>  'admin/index.php',
-'icon' =>  $pathIcon32 . '/home.png',
-++$i;
-'title' =>  _MI_WEBLOG_CATMANAGER,
-'link' =>  'admin/catmanager.php',
-'icon' =>  $pathIcon32 . '/category.png',
-++$i;
-'title' =>  _MI_WEBLOG_PRIVMANAGER,
-'link' =>  'admin/privmanager.php',
-'icon' =>  $pathIcon32 . '/manage.png',
-++$i;
-'title' =>  _MI_WEBLOG_MYGROUPSADMIN,
-'link' =>  'admin/groupperm_global.php',
-'icon' =>  $pathIcon32 . '/permissions.png',
-++$i;
-'title' =>  _MI_WEBLOG_DBMANAGER,
-'link' =>  'admin/dbmanager.php',
-'icon' =>  $pathIcon32 . '/list.png',
-//++$i;
+$adminmenu[] = [
+    'title' => _AM_MODULEADMIN_HOME,
+    'link'  => 'admin/index.php',
+    'icon'  => $pathIcon32 . '/home.png',
+];
+
+$adminmenu[] = [
+    'title' => _MI_WEBLOG_CATMANAGER,
+    'link'  => 'admin/catmanager.php',
+    'icon'  => $pathIcon32 . '/category.png',
+];
+
+$adminmenu[] = [
+    'title' => _MI_WEBLOG_PRIVMANAGER,
+    'link'  => 'admin/privmanager.php',
+    'icon'  => $pathIcon32 . '/manage.png',
+];
+
+$adminmenu[] = [
+    'title' => _MI_WEBLOG_MYGROUPSADMIN,
+    'link'  => 'admin/groupperm_global.php',
+    'icon'  => $pathIcon32 . '/permissions.png',
+];
+
+$adminmenu[] = [
+    'title' => _MI_WEBLOG_DBMANAGER,
+    'link'  => 'admin/dbmanager.php',
+    'icon'  => $pathIcon32 . '/list.png',
+];
+
+//$adminmenu[] = [
 //'title' =>  _MI_WEBLOG_MYBLOCKSADMIN ,
 //'link' =>  "admin/myblocksadmin.php" ,
 //$adminmenu[$i]["icon"]  = $pathIcon32 . '/block.png';
-//++$i;
+//];
+
+//$adminmenu[] = [
 //'title' =>  _MI_WEBLOG_TEMPLATE_MANEGER ,
 //'link' => templates" ,
 //$adminmenu[$i]["icon"]  = $pathIcon32 . '/watermark.png';
-++$i;
-'title' =>  _AM_MODULEADMIN_ABOUT,
-'link' =>  'admin/about.php',
-'icon' =>  $pathIcon32 . '/about.png',
+//];
+
+$adminmenu[] = [
+    'title' => _AM_MODULEADMIN_ABOUT,
+    'link'  => 'admin/about.php',
+    'icon'  => $pathIcon32 . '/about.png',
+];
