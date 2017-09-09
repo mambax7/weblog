@@ -182,7 +182,7 @@ if (!class_exists('WeblogPrivBase')) {
 
         public function hasPrivilege($user)
         {
-            $gids     =& $user->getGroups();
+            $gids     = $user->getGroups();
             $criteria = new criteriaCompo();
             foreach ($gids as $gid) {
                 $criteria->add(new criteria('priv_gid', $gid), 'OR');

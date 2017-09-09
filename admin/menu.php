@@ -40,34 +40,34 @@ $moduleHelper->loadLanguage('modinfo');
 
 $adminmenu              = [];
 $i                      = 0;
-$adminmenu[$i]['title'] = _AM_MODULEADMIN_HOME;
-$adminmenu[$i]['link']  = 'admin/index.php';
-$adminmenu[$i]['icon']  = $pathIcon32 . '/home.png';
+'title' =>  _AM_MODULEADMIN_HOME,
+'link' =>  'admin/index.php',
+'icon' =>  $pathIcon32 . '/home.png',
 ++$i;
-$adminmenu[$i]['title'] = _MI_WEBLOG_CATMANAGER;
-$adminmenu[$i]['link']  = 'admin/catmanager.php';
-$adminmenu[$i]['icon']  = $pathIcon32 . '/category.png';
+'title' =>  _MI_WEBLOG_CATMANAGER,
+'link' =>  'admin/catmanager.php',
+'icon' =>  $pathIcon32 . '/category.png',
 ++$i;
-$adminmenu[$i]['title'] = _MI_WEBLOG_PRIVMANAGER;
-$adminmenu[$i]['link']  = 'admin/privmanager.php';
-$adminmenu[$i]['icon']  = $pathIcon32 . '/manage.png';
+'title' =>  _MI_WEBLOG_PRIVMANAGER,
+'link' =>  'admin/privmanager.php',
+'icon' =>  $pathIcon32 . '/manage.png',
 ++$i;
-$adminmenu[$i]['title'] = _MI_WEBLOG_MYGROUPSADMIN;
-$adminmenu[$i]['link']  = 'admin/groupperm_global.php';
-$adminmenu[$i]['icon']  = $pathIcon32 . '/permissions.png';
+'title' =>  _MI_WEBLOG_MYGROUPSADMIN,
+'link' =>  'admin/groupperm_global.php',
+'icon' =>  $pathIcon32 . '/permissions.png',
 ++$i;
-$adminmenu[$i]['title'] = _MI_WEBLOG_DBMANAGER;
-$adminmenu[$i]['link']  = 'admin/dbmanager.php';
-$adminmenu[$i]['icon']  = $pathIcon32 . '/list.png';
+'title' =>  _MI_WEBLOG_DBMANAGER,
+'link' =>  'admin/dbmanager.php',
+'icon' =>  $pathIcon32 . '/list.png',
 //++$i;
-//$adminmenu[$i]['title'] = _MI_WEBLOG_MYBLOCKSADMIN ;
-//$adminmenu[$i]['link'] = "admin/myblocksadmin.php" ;
+//'title' =>  _MI_WEBLOG_MYBLOCKSADMIN ,
+//'link' =>  "admin/myblocksadmin.php" ,
 //$adminmenu[$i]["icon"]  = $pathIcon32 . '/block.png';
 //++$i;
-//$adminmenu[$i]['title'] = _MI_WEBLOG_TEMPLATE_MANEGER ;
-//$adminmenu[$i]['link'] = "admin/index.php?op=templates" ;
+//'title' =>  _MI_WEBLOG_TEMPLATE_MANEGER ,
+//'link' => templates" ,
 //$adminmenu[$i]["icon"]  = $pathIcon32 . '/watermark.png';
 ++$i;
-$adminmenu[$i]['title'] = _AM_MODULEADMIN_ABOUT;
-$adminmenu[$i]['link']  = 'admin/about.php';
-$adminmenu[$i]['icon']  = $pathIcon32 . '/about.png';
+'title' =>  _AM_MODULEADMIN_ABOUT,
+'link' =>  'admin/about.php',
+'icon' =>  $pathIcon32 . '/about.png',
