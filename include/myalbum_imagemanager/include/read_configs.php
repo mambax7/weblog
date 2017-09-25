@@ -56,7 +56,7 @@ $myalbum_configs = $xoopsModuleConfig;
     }   */
 
 foreach ($myalbum_configs as $key => $val) {
-    if (strncmp($key, 'weblog_myalbum_', 15) == 0) {
+    if (0 == strncmp($key, 'weblog_myalbum_', 15)) {
         $key  = substr($key, 7);
         $$key = $val;
     }
@@ -77,10 +77,10 @@ if ($myalbum_addposts < 0) {
 }
 
 // Path to Main Photo & Thumbnail ;
-if (ord($myalbum_photospath) != 0x2f) {
+if (0x2f != ord($myalbum_photospath)) {
     $myalbum_photospath = "/$myalbum_photospath";
 }
-if (ord($myalbum_thumbspath) != 0x2f) {
+if (0x2f != ord($myalbum_thumbspath)) {
     $myalbum_thumbspath = "/$myalbum_thumbspath";
 }
 $photos_dir = XOOPS_ROOT_PATH . $myalbum_photospath;

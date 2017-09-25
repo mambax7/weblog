@@ -28,7 +28,7 @@ class Weblog_Commonping
     public function set_commonping_target($pingTargetURL)
     {
         $check_url = parse_url($pingTargetURL);
-        if ($check_url['scheme'] !== 'http' || !$check_url['host']) {
+        if ('http' !== $check_url['scheme'] || !$check_url['host']) {
             return false;
         } else {
             $this->Commonping_Target = $pingTargetURL;
@@ -51,7 +51,7 @@ class Weblog_Commonping
 
         // result
         if (get_class($this->Server_Response) == strtolower('XML_RPC_Response')
-            && $this->Server_Response->faultCode() === false) {
+            && false === $this->Server_Response->faultCode()) {
             return true;
         } else {
             return false;
@@ -67,11 +67,11 @@ class Weblog_Commonping
     // sammury response code you can get more information through $this->getResponse()
     public function getResultMessage()
     {
-        if (is_a($this->Server_Response, 'XML_RPC_Response') === false) {
+        if (false === is_a($this->Server_Response, 'XML_RPC_Response')) {
             return '';
         }
 
-        if ($this->Server_Response->faultCode() === false) {
+        if (false === $this->Server_Response->faultCode()) {
             return "Success. Response: '" . $this->Server_Response->serialize() . "'";
         } else {
             return 'Failed. Code: ' . $this->Server_Response->faultCode() . " Reason: '" . $this->Server_Response->faultString() . "'";

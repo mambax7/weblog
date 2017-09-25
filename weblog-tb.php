@@ -40,7 +40,7 @@ if (isset($_SERVER['SERVER_SOFTWARE']) && preg_match('/Microsoft-IIS/i', $_SERVE
     $tb_id = $tb_operator->getId();
 }
 // get trackback ID by another process
-if (empty($tb_id) || get_class($tb_id) == 'pear_error' || !preg_match("/^\d+$/", $tb_id)) {
+if (empty($tb_id) || 'pear_error' == get_class($tb_id) || !preg_match("/^\d+$/", $tb_id)) {
     if (isset($_SERVER['REQUEST_URI'])) {    // get tb_id from REQUEST_URI
         $request_url = explode('/', $_SERVER['REQUEST_URI']);
         if (count($request_url) > 1) {
@@ -51,7 +51,7 @@ if (empty($tb_id) || get_class($tb_id) == 'pear_error' || !preg_match("/^\d+$/",
         }
     }
 }
-if (empty($tb_id) || get_class($tb_id) == 'pear_error' || !preg_match("/^\d+$/", $tb_id)) {
+if (empty($tb_id) || 'pear_error' == get_class($tb_id) || !preg_match("/^\d+$/", $tb_id)) {
     if (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])) {    // get tb_id from QUERY_STRING
         if (preg_match("/^\d+$/", $_SERVER['QUERY_STRING'])) {
             $tb_id = $_SERVER['QUERY_STRING'];
@@ -67,7 +67,7 @@ $entry  = $weblog->handler->get($tb_id);
 if (!$tb_operator->isPing()) {
     $link = sprintf('%s/modules/%s/details.php?blog_id=%d', XOOPS_URL, $xoopsModule->dirname(), $tb_id);
     // rss mode
-    if (isset($_GET['__mode']) && $_GET['__mode'] == 'rss') {
+    if (isset($_GET['__mode']) && 'rss' == $_GET['__mode']) {
         $trackback_array      = $tb_operator->handler->get($tb_id);
         $trackback_data_array = return_trackback_data($trackback_array);
         $lang                 = _LANGCODE;
@@ -119,10 +119,10 @@ function return_trackback_data($r_trackback_array)
 
     $r_trackback_data_array = [];
     foreach ($r_trackback_array as $trackback_obj) {
-        if (strtolower(get_parent_class($trackback_obj)) != 'weblogtrackbackbase') {
+        if ('weblogtrackbackbase' != strtolower(get_parent_class($trackback_obj))) {
             continue;
         }
-        if ($trackback_obj->getVar('direction') == 'recieved') {
+        if ('recieved' == $trackback_obj->getVar('direction')) {
             $r_trackback_data_array[] = [
                 'title'   => $trackback_obj->getVar('title'),
                 'url'     => $trackback_obj->getVar('link'),

@@ -105,14 +105,14 @@ $catbox                    = [];
 $catselbox[0]['prefix']    = '';
 $catselbox[0]['cat_id']    = 0;
 $catselbox[0]['cat_title'] = _BL_SELECT_ALL;
-$catselbox[0]['selected']  = ($cat_id == 0) ? ' selected' : '';
+$catselbox[0]['selected']  = (0 == $cat_id) ? ' selected' : '';
 $i                         = 1;
 
 $myts = MyTextSanitizer::getInstance();
 foreach ($cat_array as $cat) {
     $catselbox[$i]['prefix']    = substr(str_replace('.', '--', $cat['prefix']), 2);
     $catselbox[$i]['cat_id']    = $myts->htmlSpecialChars($cat['cat_id']);
-    $catselbox[$i]['cat_title'] = $myts->htmlSpecialChars($cat['cat_id']) == 0 ? '_BL_SELECT_ALLCATEGORY' : $myts->htmlSpecialChars($cat['cat_title']);
+    $catselbox[$i]['cat_title'] = 0 == $myts->htmlSpecialChars($cat['cat_id']) ? '_BL_SELECT_ALLCATEGORY' : $myts->htmlSpecialChars($cat['cat_title']);
     $catselbox[$i]['selected']  = ($cat_id == $cat['cat_id']) ? ' selected' : '';
     ++$i;
     $catbox[$cat['cat_id']] = $myts->htmlSpecialChars($cat['cat_title']);

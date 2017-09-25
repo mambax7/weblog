@@ -87,7 +87,7 @@ class Weblog_Trackback_Operator extends Net_TrackBack
     {
         // create $post_trackback_urls
         $trackback_url_array = [];
-        if ($entry->getVar('blog_id') == 0 || !$old_trackbackurl) {
+        if (0 == $entry->getVar('blog_id') || !$old_trackbackurl) {
             $trackback_url_add_array = explode("\n", trim($entry->getVar('ent_trackbackurl')));
             $trackback_url_del_array = [];
         } else {
@@ -158,22 +158,22 @@ class Weblog_Trackback_Operator extends Net_TrackBack
             }
         }
         // blog_id
-        if ($direction === 'transmit') {
+        if ('transmit' === $direction) {
             if (empty($entry) || !$trackback_url || !$direction) {
                 return false;
             }
             $blog_id = $entry->getVar('blog_id');
-        } elseif ($direction === 'recieved') {
+        } elseif ('recieved' === $direction) {
             /****** hodaka rejects trackback spams 2006.09.22 ******/
             $this->sender_ip = $this->getIP();
-            if ($this->sender_ip === 'unknown') {
+            if ('unknown' === $this->sender_ip) {
                 $tb_rss_data['result'] = 'ip unknown';
                 $this->sendTBResultMail($tb_rss_data);
 
                 return false;
             }
             // in case with no title or no blog_name
-            if ($tb_rss_data['blog_name'] == '' || $tb_rss_data['title'] == '') {
+            if ('' == $tb_rss_data['blog_name'] || '' == $tb_rss_data['title']) {
                 $tb_rss_data['result'] = 'no name or no title';
                 $this->sendTBResultMail($tb_rss_data);
 
@@ -246,7 +246,7 @@ class Weblog_Trackback_Operator extends Net_TrackBack
     {
         if ($tb_url) {
             $url_array = parse_url($tb_url);
-            if ($url_array['scheme'] === 'http' && $url_array['host'] && $url_array['path']) {
+            if ('http' === $url_array['scheme'] && $url_array['host'] && $url_array['path']) {
                 return true;
             } else {
                 return false;
@@ -257,7 +257,7 @@ class Weblog_Trackback_Operator extends Net_TrackBack
     public function Weblog_Post_Trackback($trackback_url)
     {
         $return_from_tb_server = $this->sendPing($trackback_url, $this->post_trackback_data, $this->user_agent, 'utf-8');
-        if ($return_from_tb_server === true) {
+        if (true === $return_from_tb_server) {
             $this->tb_result[$trackback_url] = 'trackback success';
 
             return true;
@@ -274,7 +274,7 @@ class Weblog_Trackback_Operator extends Net_TrackBack
         if (!empty($tb_url)) {
             $tb_url    = trim($tb_url, '?');
             $url_array = parse_url($tb_url);
-            if ($url_array['scheme'] === 'http' && $url_array['host'] && $url_array['path']) {
+            if ('http' === $url_array['scheme'] && $url_array['host'] && $url_array['path']) {
                 $params = ['method' => HTTP_REQUEST_METHOD_GET];
                 if (preg_match("/\?/", $url_array['path'])) {
                     $tb_url .= '&__mode=rss';
@@ -285,7 +285,7 @@ class Weblog_Trackback_Operator extends Net_TrackBack
                 $req->addHeader('User-Agent', $this->user_agent);
                 $req->sendRequest();
                 $request_code = $req->getResponseCode();
-                if ($request_code == '200') {
+                if ('200' == $request_code) {
                     return $req->getResponseBody();
                 }
             }
@@ -370,7 +370,7 @@ class Weblog_Trackback_Operator extends Net_TrackBack
         $ip_array        = $this->getIpArray();
 
         foreach ($ip_array as $ip_s) {
-            if ($ip_s != '' and !$this->isIpInNetArray($ip_s, $ip_private_list)) {
+            if ('' != $ip_s and !$this->isIpInNetArray($ip_s, $ip_private_list)) {
                 $ip = $ip_s;
                 break;
             }
@@ -383,11 +383,11 @@ class Weblog_Trackback_Operator extends Net_TrackBack
     {
         $cad = '';
 
-        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) and $_SERVER['HTTP_X_FORWARDED_FOR'] != '') {
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) and '' != $_SERVER['HTTP_X_FORWARDED_FOR']) {
             $cad = $_SERVER['HTTP_X_FORWARDED_FOR'];
         }
 
-        if (isset($_SERVER['REMOTE_ADDR']) and $_SERVER['REMOTE_ADDR'] != '') {
+        if (isset($_SERVER['REMOTE_ADDR']) and '' != $_SERVER['REMOTE_ADDR']) {
             $cad = $cad . ',' . $_SERVER['REMOTE_ADDR'];
         }
 
@@ -420,7 +420,7 @@ class Weblog_Trackback_Operator extends Net_TrackBack
         $binip     = str_pad(decbin($lip), 32, '0', 'STR_PAD_LEFT');
         $firstip   = substr($binip, 0, $mask);
 
-        return (strcmp($firstpart, $firstip) == 0);
+        return (0 == strcmp($firstpart, $firstip));
     }
 
     public function sendTBResultMail($tb_rss_data)

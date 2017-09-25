@@ -69,7 +69,7 @@ if (!class_exists('WeblogPrivBase')) {
             if ($id > 0) {
                 $sql = sprintf('SELECT p.priv_id, p.priv_gid, g.name FROM %s AS p, %s AS g WHERE p.priv_gid=%d AND p.priv_gid=g.groupid', $this->db->prefix($this->moduleDirName . '_priv'), $this->db->prefix('groups'), $id);
                 if ($result = $this->db->query($sql)) {
-                    if ($this->db->getRowsNum($result) == 1) {
+                    if (1 == $this->db->getRowsNum($result)) {
                         $entry = $this->create();
                         $entry->assignVars($this->db->fetchArray($result));
 
@@ -83,7 +83,7 @@ if (!class_exists('WeblogPrivBase')) {
 
         public function insert(XoopsObject $entry)
         {
-            if (strtolower(get_parent_class($entry)) != 'weblogprivbase') {  // must be lowercase only
+            if ('weblogprivbase' != strtolower(get_parent_class($entry))) {  // must be lowercase only
 
                 return false;
             }
@@ -119,7 +119,7 @@ if (!class_exists('WeblogPrivBase')) {
 
         public function delete(XoopsObject $entry)
         {
-            if (strtolower(get_parent_class($entry)) != 'weblogprivbase') {
+            if ('weblogprivbase' != strtolower(get_parent_class($entry))) {
                 return false;
             }
 
@@ -156,7 +156,7 @@ if (!class_exists('WeblogPrivBase')) {
                 $sql .= sprintf(' %s %s', $criteria->renderWhere(), 'AND p.priv_gid=g.groupid');
                 //$groupby = trim(str_replace('GROUP BY', "", $criteria->getGroupby()));
                 //$sql .= ($groupby=='')?'':sprintf(' %s', $criteria->getGroupby());
-                $sort  = ($criteria->getSort() != '') ? $criteria->getSort() : 'priv_id';
+                $sort  = ('' != $criteria->getSort()) ? $criteria->getSort() : 'priv_id';
                 $sql   .= sprintf(' ORDER BY %s %s', $sort, $criteria->getOrder());
                 $limit = $criteria->getLimit();
                 $start = $criteria->getStart();

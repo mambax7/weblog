@@ -43,7 +43,7 @@ if (!defined('WEBLOG_BLOCK_LINKS_INCLUDED')) {
         $only_post     = $options[3];
         $showdsc       = $options[4];
 
-        if ($only_post == '1') {
+        if ('1' == $only_post) {
             if (!preg_match("|weblog\d*/post\.php$|", $_SERVER['SCRIPT_NAME'])) {
                 return false;
             }
@@ -129,7 +129,7 @@ if (!defined('WEBLOG_BLOCK_LINKS_INCLUDED')) {
         $mod_sql = sprintf('SELECT dirname FROM %s WHERE isactive=1 AND (%s) ', $xoopsDB->prefix('modules'), rtrim($linkmods, ' or'));
 
         $mod_result = $xoopsDB->query($mod_sql);
-        if ($xoopsDB->getRowsNum($mod_result) == 0) {
+        if (0 == $xoopsDB->getRowsNum($mod_result)) {
             return false;
         }
 

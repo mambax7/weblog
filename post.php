@@ -75,7 +75,7 @@ function &getEntry($post)
 
 function weblog_confirm($hiddens, $action, $msg, $submit = '', $back = false)
 {
-    $submit = ($submit != '') ? trim($submit) : _SUBMIT;
+    $submit = ('' != $submit) ? trim($submit) : _SUBMIT;
     echo '<div class="confirmMsg"><h4>' . $msg . '</h4><form method="post" action="' . $action . '">';
     $input_hidden = '';
     foreach ($hiddens as $name => $value) {
@@ -118,7 +118,7 @@ if (!$isAdmin && (!$currentuid || !checkprivilege('edit', $xoopsModule->dirname(
 }
 
 // change specify date to created time.
-$offset = (get_class($xoopsUser) == 'xoopsuser') ? $xoopsUser->timezone() - $xoopsConfig['server_TZ'] : 0;
+$offset = ('xoopsuser' == get_class($xoopsUser)) ? $xoopsUser->timezone() - $xoopsConfig['server_TZ'] : 0;
 if (isset($_POST['created_date']['date']) && is_array($_POST['created_date'])) {
     $_POST['created'] = strtotime($_POST['created_date']['date']) + $_POST['created_date']['time'] - ($offset * 3600);
 }
@@ -197,7 +197,7 @@ if (!empty($_POST['post'])) {
         $pageUri .= $entry->getVar('blog_id');
 
         // Send notifications only if the entry not private.
-        if ($ret && $entry->isPrivate() === false) {
+        if ($ret && false === $entry->isPrivate()) {
             $notificationHandler->triggerEvent('blog', $xoopsUser->getVar('uid'), 'add', $extra_tags = [
                 'TITLE'    => $entry->getVar('title'),
                 'PAGE_URI' => $pageUri
@@ -221,7 +221,7 @@ if (!empty($_POST['post'])) {
             $tb_operator->Create_Trackback_Data($entry, $blog_name, $blog_url);
             $trackback =& $tb_operator->newInstance();
             foreach ($tb_operator->get_Trackback_Url($entry, $old_trackbackurl) as $trackback_url => $type) {
-                if ($type == 'add') {
+                if ('add' == $type) {
                     $tb_operator->Create_Trackback_Data($entry, $blog_name, $blog_url);
                     if ($tb_operator->Weblog_Post_Trackback($trackback_url)) {
                         // get trackback as quote .
@@ -230,7 +230,7 @@ if (!empty($_POST['post'])) {
                         $tb_operator->Set_Trackback_Values($trackback, $tb_rss_data, $trackback_url, 'transmit', $entry);
                         $tb_operator->saveTrackback($trackback);
                     }
-                } elseif ($type == 'del') {
+                } elseif ('del' == $type) {
                     $tb_operator->removeTrackback($entry->getVar('blog_id'), $trackback_url, 'transmit');
                 }
             }
@@ -248,7 +248,7 @@ if (!empty($_POST['post'])) {
                     $tb_del_num--;
                 }
             }
-            if ($tb_del_num != 0) {
+            if (0 != $tb_del_num) {
                 $weblog->handler->incrementTrackbacks($entry->getVar('blog_id'), $tb_del_num);
             }
         }
@@ -270,7 +270,7 @@ if (!empty($_POST['post'])) {
     } else {
         redirect_header(sprintf('%s/modules/%s/index.php', XOOPS_URL, $xoopsModule->dirname()), 5, _BL_ANON_CANNOT_POST_SORRY);
     }
-} elseif (!empty($_POST['delete']) || (!empty($_POST['op']) && $_POST['op'] == 'delete')) {
+} elseif (!empty($_POST['delete']) || (!empty($_POST['op']) && 'delete' == $_POST['op'])) {
     if (!$GLOBALS['xoopsSecurity']->check()) {
         redirect_header(XOOPS_URL . '/', 3, $GLOBALS['xoopsSecurity']->getErrors());
     }
@@ -501,7 +501,7 @@ if (!empty($_POST['post'])) {
         $group_option  = [];
         $group_array   = [];
         foreach ($groups as $group) {
-            if ($group->getVar('groupid') == 1) {
+            if (1 == $group->getVar('groupid')) {
                 continue;
             }
             $group_option[$group->getVar('groupid')] = $group->getVar('name');
@@ -510,7 +510,7 @@ if (!empty($_POST['post'])) {
         if (is_array($entry->getVar('permission_group', 'n'))) {
             $default_permission = $entry->getVar('permission_group', 'n');
         } else {
-            if ($entry->getVar('permission_group', 'n') == 'all') {
+            if ('all' == $entry->getVar('permission_group', 'n')) {
                 $default_permission = $group_array;
             } else {
                 $default_permission = explode('|', $entry->getVar('permission_group', 'n'));
@@ -538,7 +538,7 @@ if (!empty($_POST['post'])) {
 
         if ($xoopsModuleConfig['showavatar']) {
             $avatar = $currentUser->getVar('user_avatar', 'E');
-            if (!empty($avatar) && $avatar != 'blank.gif') {
+            if (!empty($avatar) && 'blank.gif' != $avatar) {
                 $use_avatar = 1;
                 $avatar_img = sprintf('%s/uploads/%s', XOOPS_URL, $avatar);
                 //        $dimension = ( ini_get('allow_url_fopen') ) ? getimagesize($avatar_img) : "" ;

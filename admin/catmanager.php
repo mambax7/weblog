@@ -203,7 +203,7 @@ function delCategory($post, $get)
     $catHandler   = xoops_getModuleHandler('category');
     $gpermHandler = xoops_getHandler('groupperm');
 
-    if (!isset($post['ok']) || $post['ok'] != 1) {
+    if (!isset($post['ok']) || 1 != $post['ok']) {
         $category = $catHandler->get($get['cat_id']);
         xoops_cp_header();
         xoops_confirm(['action' => 'delCat', 'cat_id' => (int)$get['cat_id'], 'ok' => 1], 'catmanager.php', sprintf(_AM_WEBLOG_DELCONFIRM, $category->getVar('cat_title')));

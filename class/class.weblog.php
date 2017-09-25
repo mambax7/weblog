@@ -68,7 +68,7 @@ class Weblog
         $criteria = new criteriaCompo(new criteria('user_id', $user_id));
         $criteria->add(new criteria('blog_id', $blog_id));
         $count = $this->handler->getCount($criteria);
-        if ($count == 1) {
+        if (1 == $count) {
             return true;
         }
 

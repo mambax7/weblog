@@ -29,7 +29,7 @@ $moduleDirName = basename(__DIR__);
 if (!preg_match('/^(\D+)(\d*)$/', $moduleDirName, $regs)) {
     echo('invalid dirname: ' . htmlspecialchars($moduleDirName));
 }
-$mydirnumber = $regs[2] === '' ? '' : (string)$regs[2];
+$mydirnumber = '' === $regs[2] ? '' : (string)$regs[2];
 
 $modversion['version']             = 1.47;
 $modversion['module_status']       = 'Beta 1';
@@ -345,7 +345,7 @@ $groups        = $memberHandler->getObjects();
 $group_option  = [];
 $group_default = [];
 foreach ($groups as $group) {
-    if ($group->getVar('groupid') == 1) {
+    if (1 == $group->getVar('groupid')) {
         continue;
     }
     $group_option[$group->getVar('name')] = $group->getVar('groupid');
@@ -723,8 +723,8 @@ $modversion['notification']['event'][1]['mail_subject']  = _MI_WEBLOG_ADD_NOTIFY
 
 //----------------------------
 // Keep the values of block's options when module is updated (by nobunobu)
-if (!empty($_POST['fct']) && !empty($_POST['op']) && !empty($_POST['diranme']) && $_POST['fct'] == 'modulesadmin'
-    && $_POST['op'] == 'update_ok'
+if (!empty($_POST['fct']) && !empty($_POST['op']) && !empty($_POST['diranme']) && 'modulesadmin' == $_POST['fct']
+    && 'update_ok' == $_POST['op']
     && $_POST['dirname'] == $modversion['dirname']) {
     //  include __DIR__ . "/include/onupdate.inc.php" ;
 }

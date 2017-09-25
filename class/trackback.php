@@ -56,7 +56,7 @@ if (!class_exists('WeblogTrackbackBase')) {
                 return false;
             }
             $url_array = parse_url($tb_url);
-            if ($url_array['scheme'] == 'http' && $url_array['host'] && $url_array['path']) {
+            if ('http' == $url_array['scheme'] && $url_array['host'] && $url_array['path']) {
                 return true;
             }
 
@@ -123,7 +123,7 @@ if (!class_exists('WeblogTrackbackBase')) {
             //}
 
             //NEW
-            if (get_parent_class($trackback) != 'weblogtrackbackbase') {  // must be lowercase only
+            if ('weblogtrackbackbase' != get_parent_class($trackback)) {  // must be lowercase only
                 $trackback->setErrors("Object isn't a sub-class of WeblogTrackbackBase");    // trapped by hodaka
 
                 return false;
@@ -177,7 +177,7 @@ if (!class_exists('WeblogTrackbackBase')) {
                 $trackback->setErrors('Failed DB query');   // for test hodaka
 
                 return false;
-            } elseif ($this->db->getAffectedRows() != 1) {
+            } elseif (1 != $this->db->getAffectedRows()) {
                 $trackback->setErrors('No databse record updated');    // for test by hodaka
 
                 return false;
@@ -188,7 +188,7 @@ if (!class_exists('WeblogTrackbackBase')) {
 
         public function delete(XoopsObject $trackback)
         {
-            if (strtolower(get_parent_class($trackback)) != 'weblogtrackbackbase') {
+            if ('weblogtrackbackbase' != strtolower(get_parent_class($trackback))) {
                 return false;
             }
             $criteria = new CriteriaCompo(new Criteria('blog_id', $trackback->getVar('blog_id')));

@@ -76,9 +76,9 @@ if ($trackback_array) {
             'link'              => $trackback_obj->getVar('link'),
             'trackback_created' => formatTimestamp($trackback_obj->getVar('trackback_created'), 'Y-m-d/H:i:s', $xoopsConfig['default_TZ'])
         ];
-        if ($trackback_obj->getVar('direction') === 'transmit') {
+        if ('transmit' === $trackback_obj->getVar('direction')) {
             $trackback_transmit[] = $trackback_data;
-        } elseif ($trackback_obj->getVar('direction') === 'recieved') {
+        } elseif ('recieved' === $trackback_obj->getVar('direction')) {
             $trackback_recieved[] = $trackback_data;
         }
     }
@@ -118,7 +118,7 @@ $avatar_img   = '';
 $avatar_width = 0;
 if ($xoopsModuleConfig['showavatar']) {
     $avatar = $entryObject->getVar('user_avatar', 'E');
-    if (!empty($avatar) && $avatar !== 'blank.gif') {
+    if (!empty($avatar) && 'blank.gif' !== $avatar) {
         $use_avatar   = 1;
         $avatar_img   = sprintf('%s/uploads/%s', XOOPS_URL, $avatar);
         $dimension    = ini_get('allow_url_fopen') ? getimagesize(sprintf('%s/uploads/%s', XOOPS_ROOT_PATH, $avatar)) : '';
@@ -181,7 +181,7 @@ $xoopsTpl->assign('contents', $entry_contents);
 $xoopsTpl->assign('private', $entryObject->getVar('private'));
 $xoopsTpl->assign('profileUri', sprintf('%s/userinfo.php?uid=%d', XOOPS_URL, $entryObject->getVar('user_id')));
 $xoopsTpl->assign('current_uid', $currentuid);
-$xoopsTpl->assign('is_private', $entryObject->getVar('private') === 'Y' ? 1 : 0);
+$xoopsTpl->assign('is_private', 'Y' === $entryObject->getVar('private') ? 1 : 0);
 $xoopsTpl->assign('private', _BL_PRIVATE);
 $xoopsTpl->assign('lang_comments', _BL_COMMENTS);
 $xoopsTpl->assign('comments_num', $entryObject->getVar('comments'));

@@ -61,14 +61,14 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
             // Retrieve his/her avatar
             $entry['use_avatar'] = 0;
             $entry['avatar_img'] = '';
-            if ($use_avatars == 1) {
+            if (1 == $use_avatars) {
                 $avatar = $myrow['user_avatar'];
-                if (!empty($avatar) && $avatar != 'blank.gif') {
+                if (!empty($avatar) && 'blank.gif' != $avatar) {
                     $entry['use_avatar'] = 1;
                     $entry['avatar_img'] = sprintf('%s/uploads/%s', XOOPS_URL, $avatar);
                 }
             }
-            if ($link_entries == 1) {
+            if (1 == $link_entries) {
                 $entry['profile_uri'] = sprintf('%s/modules/%s/index.php?user_id=%d', XOOPS_URL, $moduleDirName, $myrow['user_id']);
             } else {
                 $entry['profile_uri'] = sprintf('%s/userinfo.php?uid=%d', XOOPS_URL, $myrow['user_id']);
@@ -156,7 +156,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
         while ($myrow = $xoopsDB->fetchArray($result)) {
             $entry = [];
             $title = $myts->htmlSpecialChars($myrow['title']);
-            if ($block_size != 3) {
+            if (3 != $block_size) {
                 if (strlen($title) >= $max_size) {
                     $title = xoops_substr($title, 0, $max_size - 1);
                 }
@@ -177,16 +177,16 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
             // Retrieve his/her avatar
             $entry['use_avatar'] = 0;
             $entry['avatar_img'] = '';
-            if ($use_avatars == 1) {
+            if (1 == $use_avatars) {
                 $avatar = $myrow['user_avatar'];
-                if (!empty($avatar) && $avatar != 'blank.gif') {
+                if (!empty($avatar) && 'blank.gif' != $avatar) {
                     $entry['use_avatar'] = 1;
                     $entry['avatar_img'] = sprintf('%s/uploads/%s', XOOPS_URL, $avatar);
                 }
             }
 
             $entry['uname'] = $myts->htmlSpecialChars($myrow['uname']);
-            if ($link_entries == 1) {
+            if (1 == $link_entries) {
                 $entry['profile_uri'] = sprintf('%s/modules/%s/index.php?user_id=%d', XOOPS_URL, $moduleDirName, $myrow['user_id']);
             } else {
                 $entry['profile_uri'] = sprintf('%s/userinfo.php?uid=%d', XOOPS_URL, $myrow['user_id']);
@@ -289,7 +289,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
             $useroffset = $xoopsConfig['default_TZ'] - $xoopsConfig['server_TZ'];
         }
 
-        if ($order_by == 0) {     // last entry time
+        if (0 == $order_by) {     // last entry time
             $user_sql   = sprintf('SELECT user_id,uname,user_avatar,max(created)+%d AS sort_value FROM %s AS bl , %s AS u WHERE bl.user_id=u.uid ', $useroffset * 3600, $xoopsDB->prefix($moduleDirName), $xoopsDB->prefix('users'));
             $sort_value = _MB_WEBLOG_USERS_SORT_UPDATE;
         } else {        // order by most reads user
@@ -309,7 +309,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
         $alart = false;
         while ($userrow = $xoopsDB->fetchArray($result_user)) {
             $user_id         = $myts->htmlSpecialChars($userrow['user_id']);
-            $user_sortvalue  = ($order_by == 0) ? date($date_format, $myts->htmlSpecialChars($userrow['sort_value'])) : $myts->htmlSpecialChars($userrow['sort_value']);
+            $user_sortvalue  = (0 == $order_by) ? date($date_format, $myts->htmlSpecialChars($userrow['sort_value'])) : $myts->htmlSpecialChars($userrow['sort_value']);
             $users[$user_id] = [
                 'uname'         => $myts->htmlSpecialChars($userrow['uname']),
                 'avatar_img'    => sprintf('%s/uploads/%s', XOOPS_URL, $myts->htmlSpecialChars($userrow['user_avatar'])),
@@ -447,7 +447,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
         while ($myrow = $xoopsDB->fetchArray($result)) {
             $trackback = [];
             $tb_title  = $myts->htmlSpecialChars($myrow['tb_title']);
-            if ($block_size != 3) {
+            if (3 != $block_size) {
                 if (strlen($tb_title) >= $max_size) {
                     $tb_title = xoops_substr($tb_title, 0, $max_size - 1);
                 }
@@ -544,7 +544,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
         while ($myrow = $xoopsDB->fetchArray($result)) {
             $comment   = [];
             $com_title = $myts->htmlSpecialChars($myrow['com_title']);
-            if ($block_size != 3) {
+            if (3 != $block_size) {
                 if (strlen($com_title) >= $max_size) {
                     $com_title = xoops_substr($com_title, 0, $max_size - 1);
                 }
@@ -558,8 +558,8 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
             if ($comment['permission']) {
                 $alart = true;
             }
-            $comment['com_uname'] = ($myrow['com_uid'] == 0) ? $xoopsConfig['anonymous'] : $myrow['uname'];
-            if ($myrow['com_uid'] != 0) {
+            $comment['com_uname'] = (0 == $myrow['com_uid']) ? $xoopsConfig['anonymous'] : $myrow['uname'];
+            if (0 != $myrow['com_uid']) {
                 $comment['profile_uri'] = sprintf('%s/userinfo.php?uid=%d', XOOPS_URL, $myts->htmlSpecialChars($myrow['com_uid']));
             }
             $block['comments'][] = $comment;
@@ -601,7 +601,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
 
         if (function_exists('gd_info')) {
             $gd_infomation = gd_info();
-            if (substr($gd_infomation['GD Version'], 0, 10) != 'bundled (2') {    // GD version 2 is required
+            if ('bundled (2' != substr($gd_infomation['GD Version'], 0, 10)) {    // GD version 2 is required
 
                 return false;
             }
@@ -717,7 +717,7 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
 
         $moduleDirName = empty($options[0]) ? basename(dirname(__DIR__)) : $options[0];
         require_once sprintf('%s/modules/%s/config.php', XOOPS_ROOT_PATH, $moduleDirName);
-        $sort_order = ($options[1] == 1) ? 'cat_id' : 'cat_title';
+        $sort_order = (1 == $options[1]) ? 'cat_id' : 'cat_title';
 
         $currentuid = !empty($xoopsUser) ? $xoopsUser->getVar('uid', 'E') : 0;
         $user_id    = !empty($_GET['user_id']) ? (int)$_GET['user_id'] : 0;
@@ -738,9 +738,9 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
             }
             list($category['count']) = $xoopsDB->fetchRow($xoopsDB->query($count_sql));
             $prefix_num = (int)strlen($cat['prefix']);
-            if ($prefix_num == 1) {
+            if (1 == $prefix_num) {
                 $category['margin'] = '8px 0px 0px 0px';
-            } elseif ($prefix_num == 2) {
+            } elseif (2 == $prefix_num) {
                 $category['margin'] = '4px 0px 0px 0px';
             } else {
                 $category['margin'] = '0px 0px 0px 4px';
@@ -763,8 +763,8 @@ if (!defined('WEBLOG_BLOCK_RECENT_INCLUDED')) {
     function b_weblog_category_list_edit($options)
     {
         $moduleDirName = empty($options[0]) ? basename(dirname(__DIR__)) : $options[0];
-        $sel1          = ($options[1] == 1) ? ' selected' : '';
-        $sel2          = ($options[1] == 2) ? ' selected' : '';
+        $sel1          = (1 == $options[1]) ? ' selected' : '';
+        $sel2          = (2 == $options[1]) ? ' selected' : '';
         $select_box    = "<select name='options[]'>";
         $select_box    .= "<option value='1'$sel1>" . _MB_WEBLOG_EDIT_CAT_ID . '</option>';
         $select_box    .= "<option value='2'$sel2>" . _MB_WEBLOG_EDIT_CAT_TITLE . '</option>';

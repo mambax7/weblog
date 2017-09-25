@@ -57,7 +57,7 @@ if (!empty($target_module) && is_object($target_module)) {
     $target_mid     = $target_module->getVar('mid');
     $target_mname   = $target_module->getVar('name') . '&nbsp;' . sprintf('(%2.2f)', $target_module->getVar('version') / 100.0);
     $query4redirect = '?dirname=' . urlencode(strip_tags($_GET['dirname']));
-} elseif (isset($_GET['mid']) && $_GET['mid'] == 0 || $xoopsModule->getVar('dirname') == 'blocksadmin') {
+} elseif (isset($_GET['mid']) && 0 == $_GET['mid'] || 'blocksadmin' == $xoopsModule->getVar('dirname')) {
     $target_mid     = 0;
     $target_mname   = '';
     $query4redirect = '?mid=0';
@@ -129,7 +129,7 @@ function list_blocks()
         $bid        = $block_arr[$i]->getVar('bid');
 
         // visible and side
-        if ($block_arr[$i]->getVar('visible') != 1) {
+        if (1 != $block_arr[$i]->getVar('visible')) {
             $sseln = ' checked';
             $scoln = '#FF0000';
         } else {
@@ -193,7 +193,7 @@ function list_blocks()
         }
 
         // delete link if it is cloned block
-        if ($block_arr[$i]->getVar('block_type') == 'D' || $block_arr[$i]->getVar('block_type') == 'C') {
+        if ('D' == $block_arr[$i]->getVar('block_type') || 'C' == $block_arr[$i]->getVar('block_type')) {
             $delete_link = "<br><a href='admin.php?fct=blocksadmin&amp;op=delete&amp;bid=$bid'>" . _DELETE . '</a>';
         } else {
             $delete_link = '';
@@ -201,7 +201,7 @@ function list_blocks()
 
         // clone link if it is marked as cloneable block
         // $modversion['blocks'][n]['can_clone']
-        if ($block_arr[$i]->getVar('block_type') == 'D' || $block_arr[$i]->getVar('block_type') == 'C') {
+        if ('D' == $block_arr[$i]->getVar('block_type') || 'C' == $block_arr[$i]->getVar('block_type')) {
             $can_clone = true;
         } else {
             $can_clone = false;
@@ -275,7 +275,7 @@ function list_blocks()
             </td>
         </tr>\n";
 
-        $class = ($class == 'even') ? 'odd' : 'even';
+        $class = ('even' == $class) ? 'odd' : 'even';
     }
 
     echo "

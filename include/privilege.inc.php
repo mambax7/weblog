@@ -32,11 +32,11 @@ function checkprivilege($type, $moduleDirName, $cat_id = 0)
     $priv_class = 'Privilege' . ucfirst($xoopsModuleConfig['privilege_system']);
     $priv       = new $priv_class();
 
-    if ($type == 'read_index') {
+    if ('read_index' == $type) {
         return $priv->can_read_index($moduleDirName, $cat_id);
-    } elseif ($type == 'read_detail') {
+    } elseif ('read_detail' == $type) {
         return $priv->can_read_detail($moduleDirName);
-    } elseif ($type == 'edit') {
+    } elseif ('edit' == $type) {
         return $priv->can_edit($moduleDirName, $cat_id);
     } else {
         return false;
@@ -163,7 +163,7 @@ class PrivilegeWeblog
         $currentuid = $currentUser->getVar('uid');
         // Check to ensure this user can post.
         $priv = xoops_getModuleHandler('priv');
-        if ($currentuid == 0
+        if (0 == $currentuid
             || (!$isAdmin
                 && ($xoopsModuleConfig['adminonly']
                     || !$priv->hasPrivilege($currentUser)))) {

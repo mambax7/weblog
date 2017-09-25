@@ -135,7 +135,7 @@ if (!defined('DATE_WEBLOG_CALC_CLASS')) {
         {
             // insert days from 1 by 1
             for ($i = 1; $i <= 31; ++$i) {
-                if (checkdate($this->month, $i, $this->year) === true) {
+                if (true === checkdate($this->month, $i, $this->year)) {
 
                     // Saturday ?
                     if ($this->col > 6) {
@@ -150,12 +150,12 @@ if (!defined('DATE_WEBLOG_CALC_CLASS')) {
                                 && $this->year == date('Y')) ? 'today ' : '';
 
                     // is it Sunday ?
-                    $remarks .= ($this->col == 0) ? 'sunday ' : '';
+                    $remarks .= (0 == $this->col) ? 'sunday ' : '';
 
                     // is it Saturday ?
-                    $remarks .= ($this->col == 6) ? 'saturday ' : '';
+                    $remarks .= (6 == $this->col) ? 'saturday ' : '';
 
-                    if ($remarks != '') {
+                    if ('' != $remarks) {
                         $remarks = substr($remarks, 0, -1);
                     }
                     $this->calendar['remarks'][$this->row][$this->col] = $remarks;

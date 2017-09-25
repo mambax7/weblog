@@ -63,7 +63,7 @@ if (!empty($_POST['do_delete'])) {
 }
 
 // Confirm Delete
-if (isset($_POST['op']) && $_POST['op'] == 'conf_delete') {
+if (isset($_POST['op']) && 'conf_delete' == $_POST['op']) {
     if (!$GLOBALS['xoopsSecurity']->check()) {
         redirect_header($mod_url . '/weblog-imagemanager.php?target=contents', 3, $GLOBALS['xoopsSecurity']->getErrors());
     }

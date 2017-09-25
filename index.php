@@ -93,7 +93,7 @@ if ($user_id > 0) {
     $page_rss      = _BL_RSS_RECENT;
 }
 
-if (($moduleHelper->getConfig('update_reads_when') == 2 && $user_id > 0) || $moduleHelper->getConfig('update_reads_when') == 3) {
+if ((2 == $moduleHelper->getConfig('update_reads_when') && $user_id > 0) || 3 == $moduleHelper->getConfig('update_reads_when')) {
     $updateReads = true;
 } else {
     $updateReads = false;
@@ -128,11 +128,11 @@ if ($moduleHelper->getConfig('show_category_list')) {
         $category['count']      = $weblog->getCountByCategory($currentuid, $cat['cat_id'], $user_id);
         $prefix_num             = (int)strlen($cat['prefix']);
         $category['prefix_num'] = $prefix_num;    // flag for </td>
-        if ($prefix_num == 1) {
+        if (1 == $prefix_num) {
             $category['cat_root_num'] = $cat_root_num;
             ++$cat_root_num;
             $category['margin'] = '8px 4px 0px 0px';
-        } elseif ($prefix_num == 2) {
+        } elseif (2 == $prefix_num) {
             $category['margin'] = '4px 4px 0px 0px';
         } else {
             $category['margin'] = '0px 0px 0px 4px';
@@ -182,7 +182,7 @@ if ($count > $perPage) {
 
 foreach ($weblog_result as $entryObject) {
     $entry = [];
-    if ($updateReads === true) {
+    if (true === $updateReads) {
         $curtime = time();
         $blog_id = $entryObject->getVar('blog_id');
         // wellwine for cookie begins
@@ -226,7 +226,7 @@ foreach ($weblog_result as $entryObject) {
     $entry['avatar_width'] = 0;
     if ($moduleHelper->getConfig('showavatar')) {
         $avatar = $entryObject->getVar('user_avatar', 'E');
-        if (!empty($avatar) && $avatar !== 'blank.gif') {
+        if (!empty($avatar) && 'blank.gif' !== $avatar) {
             $entry['use_avatar'] = 1;
             $entry['avatar_img'] = sprintf('%s/uploads/%s', XOOPS_URL, $avatar);
         }
@@ -248,7 +248,7 @@ foreach ($weblog_result as $entryObject) {
     $entry['comlink']       = sprintf('%s/modules/%s/details.php?blog_id=%d#comment', XOOPS_URL, $myModule->dirname(), $entryObject->getVar('blog_id'));
     $entry['lang_comments'] = _BL_COMMENTS;
 
-    $entry['is_private']      = ($entryObject->getVar('private') === 'Y') ? 1 : 0;
+    $entry['is_private']      = ('Y' === $entryObject->getVar('private')) ? 1 : 0;
     $entry['private']         = _BL_PRIVATE;
     $entry['read_users_blog'] = sprintf('<a href="index.php?user_id=%d">%s</a>', $entryObject->getVar('user_id'), sprintf(_BL_READ_USERS_BLOG, $entryObject->getVar('uname')));
     //  $priv = xoops_getModuleHandler('priv');

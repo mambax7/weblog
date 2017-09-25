@@ -72,7 +72,7 @@ if (!class_exists('WeblogCategoryBase')) {
             if ($cat_id > 0) {
                 $sql = sprintf('SELECT cat_id, cat_pid, cat_title, cat_created, cat_description, cat_imgurl FROM %s WHERE cat_id=%d', $this->db->prefix($this->moduleDirName . '_category'), $cat_id);
                 if ($result = $this->db->query($sql)) {
-                    if ($this->db->getRowsNum($result) == 1) {
+                    if (1 == $this->db->getRowsNum($result)) {
                         $cat = $this->create();
                         $cat->assignVars($this->db->fetchArray($result));
 
@@ -86,7 +86,7 @@ if (!class_exists('WeblogCategoryBase')) {
 
         public function insert(XoopsObject $category)
         {
-            if (strtolower(get_parent_class($category)) !== 'weblogcategorybase') {  // must be lowercase only
+            if ('weblogcategorybase' !== strtolower(get_parent_class($category))) {  // must be lowercase only
 
                 //mb                return false;
             }
@@ -139,7 +139,7 @@ if (!class_exists('WeblogCategoryBase')) {
 
         public function delete(XoopsObject $category)
         {
-            if (strtolower(get_parent_class($category)) !== 'weblogcategorybase') {
+            if ('weblogcategorybase' !== strtolower(get_parent_class($category))) {
                 return false;
             }
 
@@ -176,7 +176,7 @@ if (!class_exists('WeblogCategoryBase')) {
                 $sql .= sprintf(' %s', $criteria->renderWhere());
                 //$groupby = trim(str_replace('GROUP BY', "", $criteria->getGroupby()));
                 //$sql .= ($groupby=='')?'':sprintf(' %s', $criteria->getGroupby());
-                $sort  = ($criteria->getSort() != '') ? $criteria->getSort() : 'cat_id';
+                $sort  = ('' != $criteria->getSort()) ? $criteria->getSort() : 'cat_id';
                 $sql   .= sprintf(' ORDER BY %s %s', $sort, $criteria->getOrder());
                 $limit = $criteria->getLimit();
                 $start = $criteria->getStart();
@@ -291,17 +291,17 @@ if (!class_exists('WeblogCategoryBase')) {
 
             $modid = $xoopsModule->getVar('mid');
 
-            if ($sel_name == '') {
+            if ('' == $sel_name) {
                 $sel_name = $this->id;
             }
             $myts = MyTextSanitizer::getInstance();
             echo "<select name='" . $sel_name . "'";
-            if ($onchange != '') {
+            if ('' != $onchange) {
                 echo " onchange='" . $onchange . "'";
             }
             echo ">\n";
             // Admin or not using post permission ,show all categories
-            if ((is_object($xoopsUser) && get_class($xoopsUser) === 'xoopsuser' && $xoopsUser->isAdmin($modid))
+            if ((is_object($xoopsUser) && 'xoopsuser' === get_class($xoopsUser) && $xoopsUser->isAdmin($modid))
                 || (!isset($xoopsModuleConfig['category_post_permission'])
                     || !$xoopsModuleConfig['category_post_permission'])) {
                 $sql = sprintf('SELECT %s, %s FROM %s WHERE %s=0 ', $this->id, $title, $this->table, $this->pid);
@@ -310,7 +310,7 @@ if (!class_exists('WeblogCategoryBase')) {
                 $sql .= $this->weblog_cat_gpermsql();
                 $sql .= ' group by cat_id ';
             }
-            if ($order != '') {
+            if ('' != $order) {
                 $sql .= " ORDER BY $order";
             }
             //      $fp = fopen("/tmp/log.sql","a");
@@ -348,7 +348,7 @@ if (!class_exists('WeblogCategoryBase')) {
             $modid = $xoopsModule->getVar('mid');
 
             // Admin or not using post permission ,show all categories
-            if ((is_object($xoopsUser) && get_class($xoopsUser) === 'xoopsuser' && $xoopsUser->isAdmin($modid))
+            if ((is_object($xoopsUser) && 'xoopsuser' === get_class($xoopsUser) && $xoopsUser->isAdmin($modid))
                 || (!isset($xoopsModuleConfig['category_post_permission'])
                     || !$xoopsModuleConfig['category_post_permission'])) {
                 $sql = sprintf('SELECT * FROM %s WHERE %s=%s ', $this->table, $this->pid, $sel_id);
@@ -357,13 +357,13 @@ if (!class_exists('WeblogCategoryBase')) {
                 $sql .= $this->weblog_cat_gpermsql();
                 $sql .= ' group by cat_id ';
             }
-            if ($order != '') {
+            if ('' != $order) {
                 $sql .= " ORDER BY $order";
             }
             //echo $sql ;
             $result = $this->db->query($sql);
             $count  = $this->db->getRowsNum($result);
-            if ($count == 0) {
+            if (0 == $count) {
                 return $parray;
             }
             while ($row = $this->db->fetchArray($result)) {
@@ -384,11 +384,11 @@ if (!class_exists('WeblogCategoryBase')) {
 
             $whr_phrase = '';
             // only post.php
-            if (basename($_SERVER['SCRIPT_NAME']) !== 'post.php') {
+            if ('post.php' !== basename($_SERVER['SCRIPT_NAME'])) {
                 return '';
             }
             // get user groups
-            if (isset($xoopsUser) && get_class($xoopsUser) === 'xoopsuser') {
+            if (isset($xoopsUser) && 'xoopsuser' === get_class($xoopsUser)) {
                 $currentuid       = $xoopsUser->getVar('uid');
                 $currentusergroup = $xoopsUser->getGroups();
                 $isAdmin          = $xoopsUser->isAdmin($modid);

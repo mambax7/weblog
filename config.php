@@ -133,7 +133,7 @@ if (!defined('_WEBLOG_COMMON_FUNCTIONS')) {
             $config = $blockModuleConfig;
         }
         if (empty($xoopsModule)
-            || (get_class($xoopsModule) === 'xoopsmodule'
+            || ('xoopsmodule' === get_class($xoopsModule)
                 && $xoopsModule->dirname() != $moduleDirName)) {
             $moduleHandler = xoops_getHandler('module');
             $wbModule      = $moduleHandler->getByDirname($moduleDirName);
@@ -142,7 +142,7 @@ if (!defined('_WEBLOG_COMMON_FUNCTIONS')) {
         }
 
         // check user's group privilege
-        if (isset($xoopsUser) && get_class($xoopsUser) === 'xoopsuser') {
+        if (isset($xoopsUser) && 'xoopsuser' === get_class($xoopsUser)) {
             $currentuid       = $xoopsUser->getVar('uid');
             $currentusergroup = $xoopsUser->getGroups();
             $isAdmin          = $xoopsUser->isAdmin($wbModule->mid());

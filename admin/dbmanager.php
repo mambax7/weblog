@@ -78,15 +78,15 @@ function addColumn($post)
     $column = $post['param'][1];
 
     if ($table == $moduleDirName) {
-        if ($column === 'cat_id') {
+        if ('cat_id' === $column) {
             $sql = sprintf('ALTER TABLE %s ADD cat_id INT( 5 ) UNSIGNED DEFAULT \'1\' NOT NULL', $xoopsDB->prefix($moduleDirName));
-        } elseif ($column === 'dohtml') {
+        } elseif ('dohtml' === $column) {
             $sql = sprintf('ALTER TABLE %s ADD dohtml TINYINT( 1 ) DEFAULT \'0\' NOT NULL', $xoopsDB->prefix($moduleDirName));
-        } elseif ($column === 'trackbacks') {
+        } elseif ('trackbacks' === $column) {
             $sql = sprintf('ALTER TABLE %s ADD trackbacks INT(11) NOT NULL DEFAULT \'0\' ', $xoopsDB->prefix($moduleDirName));
-        } elseif ($column === 'permission_group') {
+        } elseif ('permission_group' === $column) {
             $sql = sprintf('ALTER TABLE %s ADD permission_group VARCHAR(255) NOT NULL DEFAULT \'all\' ', $xoopsDB->prefix($moduleDirName));
-        } elseif ($column === 'dobr') {
+        } elseif ('dobr' === $column) {
             $sql = sprintf('ALTER TABLE %s ADD dobr TINYINT(1) UNSIGNED NOT NULL DEFAULT \'1\' ', $xoopsDB->prefix($moduleDirName));
         } else {
             redirect_header('dbmanager.php', 2, _AM_WEBLOG_UNSUPPORTED);
@@ -274,7 +274,7 @@ function checkTable($table, $columns = [])
             echo tableRow(sprintf(_AM_WEBLOG_ADD, $column), sprintf(_AM_WEBLOG_ADDDSC, $column), 'addcolumn', $hidden);
             $alter = true;
         }
-        if ($alter === false) {
+        if (false === $alter) {
             echo tableRow(sprintf(_AM_WEBLOG_NOADD, $table), sprintf(_AM_WEBLOG_NOADDDSC, $table));
         }
     }

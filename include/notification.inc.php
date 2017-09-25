@@ -29,7 +29,7 @@ $moduleDirName = basename(dirname(__DIR__));
 if (!preg_match('/^(\D+)(\d*)$/', $moduleDirName, $regs)) {
     die('invalid dirname: ' . htmlspecialchars($moduleDirName));
 }
-$mydirnumber = $regs[2] === '' ? '' : (int)$regs[2];
+$mydirnumber = '' === $regs[2] ? '' : (int)$regs[2];
 
 eval('
 function blog' . $mydirnumber . '_info($category, $item_id)
@@ -56,7 +56,7 @@ function blog_info_base($moduleDirName, $category, $item_id)
 
     require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/language/' . $xoopsConfig['language'] . '/main.php';
 
-    if ($category == 'global') {
+    if ('global' == $category) {
         $item['name'] = '';
         $item['url']  = '';
 
@@ -64,7 +64,7 @@ function blog_info_base($moduleDirName, $category, $item_id)
     }
 
     global $xoopsDB;
-    if ($category == 'blog') {
+    if ('blog' == $category) {
         // Assume we have a valid forum id
         $sql          = 'SELECT uname FROM ' . $xoopsDB->prefix('users') . ' WHERE uid = ' . $item_id;
         $result       = $xoopsDB->query($sql); // TODO: error check
@@ -73,7 +73,7 @@ function blog_info_base($moduleDirName, $category, $item_id)
         $item['url']  = XOOPS_URL . '/modules/' . $module->getVar('dirname') . '/index.php?user_id=' . $item_id;
 
         return $item;
-    } elseif ($category == 'blog_entry') {
+    } elseif ('blog_entry' == $category) {
         // Assume we have a valid forum id
         $sql          = 'SELECT title FROM ' . $xoopsDB->prefix($moduleDirName) . ' WHERE blog_id = ' . $item_id;
         $result       = $xoopsDB->query($sql); // TODO: error check

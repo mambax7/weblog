@@ -71,32 +71,32 @@ if (!class_exists('WeblogEntryBase')) {
 
         public function isPrivate()
         {
-            return ($this->getVar('private', 'n') === 'Y') ? true : false;
+            return ('Y' === $this->getVar('private', 'n')) ? true : false;
         }
 
         public function doHtml()
         {
-            return ($this->getVar('dohtml') == 1) ? true : false;
+            return (1 == $this->getVar('dohtml')) ? true : false;
         }
 
         public function doBr()
         {
-            return ($this->getVar('dobr') == 1) ? true : false;
+            return (1 == $this->getVar('dobr')) ? true : false;
         }
 
         public function isUpdateping()
         {
-            return ($this->getVar('updateping') == 1) ? true : false;
+            return (1 == $this->getVar('updateping')) ? true : false;
         }
 
         public function isSpecifycreated()
         {
-            return ($this->getVar('specify_created') == 1) ? true : false;
+            return (1 == $this->getVar('specify_created')) ? true : false;
         }
 
         public function &getVar($key, $format = 's', $blog_id = 0, $contents_mode = false)
         {
-            if (!($key === 'contents' && $contents_mode)) {
+            if (!('contents' === $key && $contents_mode)) {
                 $ret = parent::getVar($key, $format);
 
                 return $ret;
@@ -132,7 +132,7 @@ if (!class_exists('WeblogEntryBase')) {
             }
 
             if (empty($xoopsModule)
-                || (get_class($xoopsModule) === 'xoopsmodule'
+                || ('xoopsmodule' === get_class($xoopsModule)
                     && $xoopsModule->dirname() != $moduleDirName)) {    // for using block
                 $moduleHandler = xoops_getHandler('module');
                 $wbModule      = $moduleHandler->getByDirname($moduleDirName);
@@ -140,7 +140,7 @@ if (!class_exists('WeblogEntryBase')) {
                 $wbModule = $xoopsModule;
             }
             // check user
-            if (isset($xoopsUser) && get_class($xoopsUser) === 'xoopsuser') {
+            if (isset($xoopsUser) && 'xoopsuser' === get_class($xoopsUser)) {
                 $currentuid = $xoopsUser->getVar('uid');
                 //          $currentusergroup = $xoopsUser->getGroups();
                 $isAdmin = $xoopsUser->isAdmin($wbModule->mid());
@@ -222,7 +222,7 @@ if (!class_exists('WeblogEntryBase')) {
                     $permission_group_sql
                 );
                 if ($result = $this->db->query($sql)) {
-                    if ($this->db->getRowsNum($result) == 1) {
+                    if (1 == $this->db->getRowsNum($result)) {
                         $result = $entry = $this->create();
                         $entry->assignVars($this->db->fetchArray($result));
 
@@ -238,7 +238,7 @@ if (!class_exists('WeblogEntryBase')) {
         {
             global $xoopsModuleConfig;
 
-            if (strtolower(get_parent_class($entry)) !== 'weblogentrybase') {  // must be lowercase only
+            if ('weblogentrybase' !== strtolower(get_parent_class($entry))) {  // must be lowercase only
 
                 return false;
             }
@@ -263,7 +263,7 @@ if (!class_exists('WeblogEntryBase')) {
                 $groups        = $memberHandler->getObjects();
                 $group_array   = [];
                 foreach ($groups as $group) {
-                    if ($group->getVar('groupid') == 1) {
+                    if (1 == $group->getVar('groupid')) {
                         continue;
                     }
                     $group_array[] = $group->getVar('groupid');
@@ -346,7 +346,7 @@ if (!class_exists('WeblogEntryBase')) {
 
         public function delete(XoopsObject $entry)
         {
-            if (strtolower(get_parent_class($entry)) !== 'weblogentrybase') {
+            if ('weblogentrybase' !== strtolower(get_parent_class($entry))) {
                 return false;
             }
 
@@ -392,7 +392,7 @@ if (!class_exists('WeblogEntryBase')) {
                 $sql .= sprintf(' %s %s %s', $criteria->renderWhere(), 'AND bl.user_id=u.uid ', $permission_group_sql);
                 //$groupby = trim(str_replace('GROUP BY', "", $criteria->getGroupby()));
                 //$sql .= ($groupby=='')?'':sprintf(' %s', $criteria->getGroupby());
-                $sort  = ($criteria->getSort() != '') ? $criteria->getSort() : 'blog_id';
+                $sort  = ('' != $criteria->getSort()) ? $criteria->getSort() : 'blog_id';
                 $sql   .= sprintf(' ORDER BY %s %s', $sort, $criteria->getOrder());
                 $limit = $criteria->getLimit();
                 $start = $criteria->getStart();

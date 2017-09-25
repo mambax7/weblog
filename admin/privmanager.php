@@ -78,7 +78,7 @@ function privmanager()
     echo "<tr valign='top' align='center'>";
     echo "<td class='even'><select name='gid[]' size='10' multiple>";
     foreach ($non_groups as $g_id => $g_name) {
-        if ($g_id != XOOPS_GROUP_ANONYMOUS) {
+        if (XOOPS_GROUP_ANONYMOUS != $g_id) {
             echo sprintf("<option value='%d'>%s</option>", $g_id, $g_name);
         }
     }

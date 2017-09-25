@@ -29,7 +29,7 @@ $moduleDirName = basename(dirname(__DIR__));
 if (!preg_match('/^(\D+)(\d*)$/', $moduleDirName, $regs)) {
     die('invalid dirname: ' . htmlspecialchars($moduleDirName));
 }
-$mydirnumber = $regs[2] === '' ? '' : (int)$regs[2];
+$mydirnumber = '' === $regs[2] ? '' : (int)$regs[2];
 
 eval('
 
@@ -54,12 +54,12 @@ if (!function_exists('weblog_search_base')) {
         }
 
         $showcontext = isset($_GET['showcontext']) ? $_GET['showcontext'] : 0;
-        if ($showcontext == 1 && function_exists('search_make_context')) {
+        if (1 == $showcontext && function_exists('search_make_context')) {
             $sql = sprintf("SELECT blog_id,title,created,user_id,contents,dohtml,dobr FROM %s WHERE (private='N' OR user_id=%d) AND created+%d<=%d ", $xoopsDB->prefix($moduleDirName), $currentuid, $useroffset * 3600, time());
         } else {
             $sql = sprintf("SELECT blog_id,title,created,user_id FROM %s WHERE (private='N' OR user_id=%d) AND created+%d<=%d ", $xoopsDB->prefix($moduleDirName), $currentuid, $useroffset * 3600, time());
         }
-        if ($userid != 0) {
+        if (0 != $userid) {
             $sql .= 'AND user_id=' . $userid . ' ';
         }
 

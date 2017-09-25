@@ -33,7 +33,7 @@ function indexLink()
 function tableRow($title, $description, $action = '', $hidden = [])
 {
     $html = sprintf("<tr valign='top' align='left'><td class='head'>%s<br><br><span style='font-weight:normal;'>%s</span></td>", $title, $description);
-    if ($action != '') {
+    if ('' != $action) {
         $html .= "<td class='even'><form method='post' action='dbmanager.php'>\r\n";
         $html .= sprintf("<input type='hidden' name='action' value='%s'>", $action);
         if (count($hidden) > 0) {

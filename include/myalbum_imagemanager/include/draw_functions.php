@@ -30,11 +30,11 @@ function myalbum_get_name_from_uid($uid)
         $poster        = $memberHandler->getUser($uid);
 
         if (is_object($poster)) {
-            if ($myalbum_nameoruname === 'uname') {
+            if ('uname' === $myalbum_nameoruname) {
                 $name = $poster->uname();
             } else {
                 $name = htmlspecialchars($poster->name());
-                if ($name == '') {
+                if ('' == $name) {
                     $name = $poster->uname();
                 }
             }
@@ -86,7 +86,7 @@ function myalbum_get_array_for_photo_assign($fetched_result_array, $summary = fa
 
     // Voting stats
     if ($rating > 0) {
-        if ($votes == 1) {
+        if (1 == $votes) {
             $votestring = _ALBM_ONEVOTE;
         } else {
             $votestring = sprintf(_ALBM_NUMVOTES, $votes);
@@ -132,8 +132,8 @@ function myalbum_get_array_for_photo_assign($fetched_result_array, $summary = fa
         'info_votes'      => $info_votes,
         'comments'        => $comments,
         'is_normal_image' => $is_normal_image,
-        'is_newphoto'     => $date > time() - 86400 * $myalbum_newdays && $status == 1,
-        'is_updatedphoto' => $date > time() - 86400 * $myalbum_newdays && $status == 2,
+        'is_newphoto'     => $date > time() - 86400 * $myalbum_newdays && 1 == $status,
+        'is_updatedphoto' => $date > time() - 86400 * $myalbum_newdays && 2 == $status,
         'is_popularphoto' => $hits >= $myalbum_popular,
         'info_morephotos' => sprintf(_ALBM_MOREPHOTOS, $submitter_name),
         'cat_title'       => $myts->htmlSpecialChars($cat_title)
@@ -157,7 +157,7 @@ function myalbum_get_array_for_photo_assign_light($fetched_result_array, $summar
         $is_normal_image = true;
         // Width of thumb
         $width_spec = "width='$myalbum_thumbsize'";
-        if ($myalbum_makethumb && $ext !== 'gif') {
+        if ($myalbum_makethumb && 'gif' !== $ext) {
             // if thumb images was made, 'width' and 'height' will not set.
             $width_spec = '';
         }
@@ -217,7 +217,7 @@ function myalbum_get_sub_categories($parent_id, $cattree)
         }
 
         // Category's banner default
-        if ($imgurl === 'http://') {
+        if ('http://' === $imgurl) {
             $imgurl = '';
         }
 

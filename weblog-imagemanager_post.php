@@ -121,19 +121,19 @@ if (!empty($_POST['submit'])) {
 
     // Check if upload file name specified
     $field = $_POST['xoops_upload_file'][0];
-    if (empty($field) || $field == '') {
+    if (empty($field) || '' == $field) {
         die('UPLOAD error: file name not specified');
     }
     $field = $_POST['xoops_upload_file'][0];
 
-    if ($_FILES[$field]['name'] == '') {
+    if ('' == $_FILES[$field]['name']) {
         // No photo uploaded
 
-        if (trim($_POST['title']) === '') {
+        if ('' === trim($_POST['title'])) {
             $_POST['title'] = 'no title';
         }
 
-        if ($preview_name != '' && is_readable("$photos_dir/$preview_name")) {
+        if ('' != $preview_name && is_readable("$photos_dir/$preview_name")) {
             $tmp_name = $preview_name;
         } else {
             if (empty($myalbum_allownoimage)) {
@@ -143,7 +143,7 @@ if (!empty($_POST['submit'])) {
                 $tmp_name = 'pixel_trans.gif';
             }
         }
-    } elseif ($_FILES[$field]['tmp_name'] == '') {
+    } elseif ('' == $_FILES[$field]['tmp_name']) {
         // Fail to upload (wrong file name etc.)
         redirect_header('weblog-imagemanager_post.php', 2, _BL_ALBM_FILEERROR);
     } else {
@@ -158,7 +158,7 @@ if (!empty($_POST['submit'])) {
             // Succeed to upload
 
             // The original file name will be the title if title is empty
-            if (trim($_POST['title']) === '') {
+            if ('' === trim($_POST['title'])) {
                 $_POST['title'] = $uploader->getMediaName();
             }
 
@@ -187,7 +187,7 @@ if (!empty($_POST['submit'])) {
     $status = 1;
     $sql    = "INSERT INTO $table_photos (lid, cid, title, ext, submitter, status, date) VALUES ($newid, $cid, '" . addslashes($title) . "', '$ext', $submitter, $status, $date)";
     $xoopsDB->query($sql) || die('DB error: INSERT photo table' . $sql);
-    if ($newid == 0) {
+    if (0 == $newid) {
         $newid = $xoopsDB->getInsertId();
     }
 
